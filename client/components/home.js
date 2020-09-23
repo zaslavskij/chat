@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import Head from './head'
-// import wave from '../assets/images/wave.jpg'
 
 const Home = () => {
   const [counter, setCounterNew] = useState(0)
