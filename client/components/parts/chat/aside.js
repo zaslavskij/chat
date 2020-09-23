@@ -1,7 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Channel from './channel'
 
-const Aside = () => {
+const Aside = ({ channelTitle }) => {
   return (
     <div className="bg-green-600 text-purple-lighter flex-none w-64 pb-6 hidden md:block">
       <div className="text-white mb-2 mt-3 px-4 flex justify-between">
@@ -34,10 +35,14 @@ const Aside = () => {
             </svg>
           </div>
         </div>
-        <Channel />
+        <Channel title={channelTitle} />
       </div>
     </div>
   )
+}
+
+Aside.propTypes = {
+  channelTitle: PropTypes.string.isRequired
 }
 
 export default Aside
