@@ -10,6 +10,7 @@ import store, { history } from '../redux'
 import Login from '../components/login'
 import Chat from '../components/chat'
 import Register from '../components/register'
+import AdminPanel from '../components/admin-panel'
 import NotFound from '../components/404'
 
 import Startup from './startup'
@@ -76,6 +77,7 @@ const RootComponent = (props) => {
             <Route exact path="/register" component={() => <Register />} />
             <Route exact path="/login" component={() => <Login />} />
             <Route exact path="/chat" component={() => <Chat />} />
+            <Route exact path="/admin" component={() => <AdminPanel />} />
             {/* <PrivateRoute exact path="/hidden-route" component={() => <DummyView />} /> */}
             <Route component={() => <NotFound />} />
           </Switch>
