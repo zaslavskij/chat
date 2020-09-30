@@ -11,7 +11,7 @@ const cookies = new Cookies()
 const initialState = {
   email: '',
   password: '',
-  token: cookies.get('token') || '',
+  token: cookies.get('token'),
   user: {}
 }
 
@@ -76,11 +76,18 @@ export function authUser() {
 }
 
 export function validateUser() {
-  return async (dispatch) => {
-    await axios('/api/v1/auth')
-
-    dispatch({ type: VALIDATE, user })
-
-    history.push('/chat')
+  return (dispatch) => {
+    axios('/api/v1/auth').then(({ data }) => {
+      dispatch({ type: AUTH, token: data.token, user: data.user })
+      history.push('/chat')
+    })
+  }
+}
+export function tryGetUserInfo() {
+  return () => {
+    axios('/api/v1/user-info').then(({ data }) => {
+      // eslint-disable-next-line
+      console.log(data)
+    })
   }
 }

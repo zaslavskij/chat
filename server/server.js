@@ -14,6 +14,7 @@ import config from './config'
 import MongooseService from './services/mongoose'
 import passportJWT from './services/passport'
 import User from './models/User.model'
+import auth from './middleware/auth'
 
 import Html from '../client/html'
 
@@ -55,32 +56,35 @@ middleware.forEach((it) => server.use(it))
 
 MongooseService.connect()
 
-server.post('/api/v1/register', async ({ body: { email, password } }, res) => {
-  const user = await new User({
-    email,
-    password
-  })
+server.get('/api/v1/user-info', auth([]), (req, res) => {
+  res.json({ status: '123' })
+})
 
+server.get('/api/v1/auth', async (req, res) => {
   try {
-    await user.save()
-  } catch (err) {
-    res.json({ message: 'error' })
-  }
+    const jwtUser = jwt.verify(req.cookie.token, config.secret)
+    const user = User.findById(jwtUser.uid)
 
-  res.json({ status: 'success', message: 'user created' })
-  // eslint-disable-next-line
+    const payload = { uid: user.id }
+    const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
+    delete user.password
+    res.cookies('token', token, { maxAge: 1000 * 60 * 60 * 48 })
+    res.json({ status: 'ok' })
+  } catch (err) {
+    res.json({ status: 'error', err })
+  }
 })
 
 server.post('/api/v1/auth', async (req, res) => {
   try {
     const user = await User.findAndValidateUser(req.body)
+
     const payload = { uid: user.id }
     const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
     delete user.password
     res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
-    res.json({ status: 'ok', user })
+    res.json({ status: 'ok' })
   } catch (err) {
-    console.log(err)
     res.json({ status: 'error', err })
   }
 })
