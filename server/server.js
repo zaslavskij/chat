@@ -72,10 +72,17 @@ server.post('/api/v1/register', async ({ body: { email, password } }, res) => {
 })
 
 server.post('/api/v1/auth', async (req, res) => {
-  const user = await User.findAndValidateUser(req.body)
-  const payload = { uid: user.id }
-  const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
-  res.json({ status: 'ok', token })
+  try {
+    const user = await User.findAndValidateUser(req.body)
+    const payload = { uid: user.id }
+    const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
+    delete user.password
+    res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
+    res.json({ status: 'ok', user })
+  } catch (err) {
+    console.log(err)
+    res.json({ status: 'error', err })
+  }
 })
 
 server.use('/api/', (req, res) => {

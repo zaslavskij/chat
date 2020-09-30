@@ -1,11 +1,18 @@
 import axios from 'axios'
+import Cookies from 'universal-cookie'
+import { history } from '..'
 
 const SET_EMAIL = 'SET_EMAIL'
 const SET_PASSWORD = 'SET_PASSWORD'
+const AUTH = 'AUTH'
+
+const cookies = new Cookies()
 
 const initialState = {
   email: '',
-  password: ''
+  password: '',
+  token: cookies.get('token') || '',
+  user: {}
 }
 
 export default (state = initialState, action) => {
@@ -15,6 +22,9 @@ export default (state = initialState, action) => {
     }
     case SET_PASSWORD: {
       return { ...state, password: action.password }
+    }
+    case AUTH: {
+      return { ...state, token: action.token, password: '', user: action.user }
     }
     default:
       return state
@@ -45,10 +55,12 @@ export function createUser() {
 }
 
 export function authUser() {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const { email, password } = getState().reg
 
-    axios({
+    const {
+      data: { token, user }
+    } = await axios({
       headers: {
         'Content-Type': 'application/json'
       },
@@ -56,5 +68,19 @@ export function authUser() {
       url: '/api/v1/auth',
       data: JSON.stringify({ email, password })
     })
+
+    dispatch({ type: AUTH, token, user })
+
+    history.push('/chat')
+  }
+}
+
+export function validateUser() {
+  return async (dispatch) => {
+    await axios('/api/v1/auth')
+
+    dispatch({ type: VALIDATE, user })
+
+    history.push('/chat')
   }
 }

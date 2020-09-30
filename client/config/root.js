@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Provider } from 'react-redux'
+import { Provider, useSelector } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 import { Switch, Route, Redirect, StaticRouter } from 'react-router-dom'
 
@@ -26,8 +26,9 @@ const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
 }
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
+  const auth = useSelector((s) => s.reg)
   const func = (props) =>
-    !!rest.user && !!rest.user.name && !!rest.token ? (
+    !!auth.user && !!auth.token ? (
       <Component {...props} />
     ) : (
       <Redirect
@@ -76,9 +77,9 @@ const RootComponent = (props) => {
           <Switch>
             <Route exact path="/register" component={() => <Register />} />
             <Route exact path="/login" component={() => <Login />} />
-            <Route exact path="/chat" component={() => <Chat />} />
+            <PrivateRoute exact path="/chat" component={() => <Chat />} />
+            {/* <Route exact path="/chat" component={() => <Chat />} /> */}
             <Route exact path="/admin" component={() => <AdminPanel />} />
-            {/* <PrivateRoute exact path="/hidden-route" component={() => <DummyView />} /> */}
             <Route component={() => <NotFound />} />
           </Switch>
         </Startup>
