@@ -12,6 +12,7 @@ import Chat from '../components/chat'
 import Register from '../components/register'
 import AdminPanel from '../components/admin-panel'
 import NotFound from '../components/404'
+import Hello from '../components/hello'
 
 import Startup from './startup'
 
@@ -74,6 +75,7 @@ const RootComponent = (props) => {
       <RouterSelector history={history} location={props.location} context={props.context}>
         <Startup>
           <Switch>
+            <Route exact path="/" component={() => <Hello />} />
             <Route exact path="/register" component={() => <Register />} />
             <Route exact path="/login" component={() => <Login />} />
             <Route exact path="/chat" component={() => <Chat />} />
