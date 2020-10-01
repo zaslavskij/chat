@@ -7,8 +7,15 @@ import { renderToStaticNodeStream } from 'react-dom/server'
 import React from 'react'
 
 import cookieParser from 'cookie-parser'
+import passport from 'passport'
+// import jsonwebtoken from 'jsonwebtoken'
+
+import mongooseService from './services/mongoose'
+import passportJWT from './services/passport'
+
 import config from './config'
 import Html from '../client/html'
+import User from './model/User.model'
 
 const Root = () => ''
 
@@ -31,15 +38,40 @@ let connections = []
 const port = process.env.PORT || 8090
 const server = express()
 
+mongooseService.connect()
+
 const middleware = [
   cors(),
+  passport.initialize(),
   express.static(path.resolve(__dirname, '../dist/assets')),
   bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }),
   bodyParser.json({ limit: '50mb', extended: true }),
   cookieParser()
 ]
 
+passport.use('jwt', passportJWT.jwt)
+
 middleware.forEach((it) => server.use(it))
+
+server.post('/api/v1/register', async (req, res) => {
+  try {
+    const { email, password } = req.body
+    const user = new User({ email, password })
+    await user.save()
+    res.json({ status: 'ok', message: 'user was successfully registered' })
+  } catch (err) {
+    res.json({ status: 'error', message: `Error occured: ${err}` })
+  }
+})
+
+server.post('/api/v1/auth', async (req, res) => {
+  try {
+    const user = await User.findAndValidateUser(req.body)
+    res.json({ status: 'ok', message: 'user was successfully authentificated', user })
+  } catch (err) {
+    res.json({ status: 'error', message: `Error occured: ${err}` })
+  }
+})
 
 server.use('/api/', (req, res) => {
   res.status(404)
