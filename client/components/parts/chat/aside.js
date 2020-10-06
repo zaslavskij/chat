@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import Channel from './channel'
 
 const Aside = ({ channelTitle }) => {
@@ -41,8 +41,6 @@ const Aside = ({ channelTitle }) => {
   )
 }
 
-Aside.propTypes = {
-  channelTitle: PropTypes.string.isRequired
-}
+Aside.propTypes = {}
 
 export default Aside

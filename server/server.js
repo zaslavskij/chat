@@ -66,8 +66,11 @@ server.post('/api/v1/register', async (req, res) => {
 
 server.post('/api/v1/auth', async (req, res) => {
   try {
-    const user = await User.findAndValidateUser(req.body)
-    res.json({ status: 'ok', message: 'user was successfully authentificated', user })
+    let user = await User.findAndValidateUser(req.body)
+    user = user.toObject()
+    delete user.password
+    console.log(Object.keys(user))
+    res.json({ status: 'ok', user })
   } catch (err) {
     res.json({ status: 'error', message: `Error occured: ${err}` })
   }

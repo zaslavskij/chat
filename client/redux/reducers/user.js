@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { history } from '..'
 
 const TYPE_PASSWORD = 'TYPE_PASSWORD'
 const TYPE_EMAIL = 'TYPE_EMAIL'
@@ -19,6 +20,9 @@ export default (state = initialState, action) => {
     }
     case TYPE_EMAIL: {
       return { ...state, email: action.email }
+    }
+    case LOGIN: {
+      return { ...state, user: action.user, password: '' }
     }
     default:
       return state
@@ -44,8 +48,10 @@ export function tryLogin() {
         'Content-Type': 'application/json'
       }
     })
-    console.log(data)
-    dispatch({ type: LOGIN, data })
+    console.log(JSON.stringify(data))
+
+    dispatch({ type: LOGIN, user: data.user })
+    history.push('/chat')
   }
 }
 
