@@ -1,16 +1,18 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 // import PropTypes from 'prop-types'
 import Channel from './channel'
 
-const Aside = ({ channelTitle }) => {
+const Aside = () => {
+  const user = useSelector((s) => s.user.user)
   return (
     <div className="bg-green-600 text-purple-lighter flex-none w-64 pb-6 hidden md:block">
       <div className="text-white mb-2 mt-3 px-4 flex justify-between">
         <div className="flex-auto">
-          <h1 className="font-semibold text-xl leading-tight mb-1 truncate">Tailwind CSS</h1>
+          <h1 className="font-semibold text-xl leading-tight mb-1 truncate">Messenger</h1>
           <div className="flex items-center mb-6">
             <span className="bg-green rounded-full block w-2 h-2 mr-2"> </span>
-            <span className="text-white opacity-50 text-sm">Adam Wathan</span>
+            <span className="text-white opacity-50 text-sm">{user.email}</span>
           </div>
         </div>
         <div>
@@ -35,7 +37,9 @@ const Aside = ({ channelTitle }) => {
             </svg>
           </div>
         </div>
-        <Channel title={channelTitle} />
+        {user.channels.map((name) => (
+          <Channel key={name} title={name} />
+        ))}
       </div>
     </div>
   )

@@ -6,6 +6,7 @@ const TYPE_PASSWORD = 'TYPE_PASSWORD'
 const TYPE_EMAIL = 'TYPE_EMAIL'
 const LOGIN = 'LOGIN'
 const REGISTER = 'REGISTER'
+const TRY_LOGIN = 'TRY_LOGIN'
 
 const cookies = new Cookies()
 
@@ -26,6 +27,9 @@ export default (state = initialState, action) => {
     }
     case LOGIN: {
       return { ...state, user: action.user, password: '' }
+    }
+    case TRY_LOGIN: {
+      return { ...state, user: action.user, token: action.token, password: '' }
     }
     default:
       return state
@@ -55,6 +59,16 @@ export function login() {
 
     dispatch({ type: LOGIN, user: data.user, token: data.token })
     history.push('/chat')
+  }
+}
+
+export function tryLogin() {
+  return async (dispatch) => {
+    const { data } = await axios({
+      url: '/api/v1/auth',
+      method: 'get'
+    }).catch(console.log)
+    dispatch({ type: TRY_LOGIN, user: data.user, token: data.token })
   }
 }
 

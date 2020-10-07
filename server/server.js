@@ -19,6 +19,52 @@ import User from './model/User.model'
 
 const Root = () => ''
 
+// const usersData = [
+//   {
+//     email: 'steve@jobs.com',
+//     password: 'huislona1',
+//     channels: ['general', 'dev talks', 'mvp']
+//   },
+//   {
+//     email: 'anna@pavkina.com',
+//     password: 'huislona1',
+//     channels: ['general', 'mvp']
+//   },
+//   {
+//     email: 'alex@zaslavskij.com',
+//     password: 'huislona1',
+//     channels: ['general']
+//   }
+// ]
+
+// usersData.forEach(async (item) => {
+//   const user = new User(item)
+//   await user.save()
+// })
+
+// const channels = [
+//   {
+//     title: 'general',
+//     users: [],
+//     messages: []
+//   },
+//   {
+//     title: 'mvp',
+//     users: [],
+//     messages: []
+//   },
+//   {
+//     title: 'dev talks',
+//     users: [],
+//     messages: []
+//   }
+// ]
+
+// channels.forEach(async (item) => {
+//   const channel = new Channel(item)
+//   await channel.save()
+// })
+
 try {
   // eslint-disable-next-line import/no-unresolved
   // ;(async () => {
@@ -71,7 +117,7 @@ server.post('/api/v1/auth', async (req, res) => {
     const payload = { uid: user._id }
     const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
     delete user.password
-    console.log(JSON.stringify(user, 2, 2))
+
     res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
     res.json({ status: 'ok', user })
   } catch (err) {
@@ -79,6 +125,21 @@ server.post('/api/v1/auth', async (req, res) => {
   }
 })
 
+server.get('/api/v1/auth', async (req, res) => {
+  try {
+    const jwtUser = jwt.verify(req.cookies.token, config.secret)
+    const user = await User.findById(jwtUser.uid)
+
+    const payload = { uid: user._id }
+    const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
+    delete user.password
+    res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
+    res.json({ status: 'ok', token, user })
+  } catch (err) {
+    console.log(err)
+    res.json({ status: 'error', err })
+  }
+})
 server.use('/api/', (req, res) => {
   res.status(404)
   res.end()
