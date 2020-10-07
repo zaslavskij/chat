@@ -8,7 +8,7 @@ import React from 'react'
 
 import cookieParser from 'cookie-parser'
 import passport from 'passport'
-// import jsonwebtoken from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 
 import mongooseService from './services/mongoose'
 import passportJWT from './services/passport'
@@ -68,8 +68,11 @@ server.post('/api/v1/auth', async (req, res) => {
   try {
     let user = await User.findAndValidateUser(req.body)
     user = user.toObject()
+    const payload = { uid: user._id }
+    const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
     delete user.password
-    console.log(Object.keys(user))
+    console.log(JSON.stringify(user, 2, 2))
+    res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
     res.json({ status: 'ok', user })
   } catch (err) {
     res.json({ status: 'error', message: `Error occured: ${err}` })

@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Cookies from 'universal-cookie'
 import { history } from '..'
 
 const TYPE_PASSWORD = 'TYPE_PASSWORD'
@@ -6,11 +7,13 @@ const TYPE_EMAIL = 'TYPE_EMAIL'
 const LOGIN = 'LOGIN'
 const REGISTER = 'REGISTER'
 
+const cookies = new Cookies()
+
 const initialState = {
   email: '',
   password: '',
-  user: '',
-  token: ''
+  user: {},
+  token: cookies.get('token')
 }
 
 export default (state = initialState, action) => {
@@ -37,7 +40,7 @@ export function typeEmail(email) {
   return { type: TYPE_EMAIL, email }
 }
 
-export function tryLogin() {
+export function login() {
   return async (dispatch, getState) => {
     const { email, password } = getState().user
     const { data } = await axios({
@@ -50,12 +53,12 @@ export function tryLogin() {
     })
     console.log(JSON.stringify(data))
 
-    dispatch({ type: LOGIN, user: data.user })
+    dispatch({ type: LOGIN, user: data.user, token: data.token })
     history.push('/chat')
   }
 }
 
-export function tryRegister() {
+export function register() {
   return async (dispatch, getState) => {
     const {
       user: { email, password }
@@ -70,5 +73,6 @@ export function tryRegister() {
     })
     console.log(data)
     dispatch({ type: REGISTER })
+    history.push('/chat')
   }
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import SubmitButton from '../buttons/submit-button'
 import InputForm from './form-input'
-import { typeEmail, typePassword, tryLogin, tryRegister } from '../../../redux/reducers/user'
+import { typeEmail, typePassword, login, register } from '../../../redux/reducers/user'
 
 const Form = ({ parent }) => {
   const fields = [
@@ -25,7 +25,7 @@ const Form = ({ parent }) => {
       })}
 
       <div className="flex items-center justify-between">
-        <SubmitButton cb={parent === 'login' ? tryLogin : tryRegister} title={parent} />
+        <SubmitButton cb={parent === 'login' ? login : register} title={parent} />
       </div>
     </form>
   )

@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Provider } from 'react-redux'
+import { Provider, useSelector } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 import { Switch, Route, Redirect, StaticRouter } from 'react-router-dom'
 
@@ -10,16 +10,19 @@ import store, { history } from '../redux'
 import Login from '../components/login'
 import Chat from '../components/chat'
 import Register from '../components/register'
-import AdminPanel from '../components/admin-panel'
+// import AdminPanel from '../components/admin-panel'
 import NotFound from '../components/404'
 import Hello from '../components/hello'
 
 import Startup from './startup'
 
+const isUserEmpty = (user) => Object.keys(user).length === 0 && user.constructor === Object
+
 const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
+  const { user, token } = useSelector((s) => s.user)
   const func = (props) =>
-    !!rest.user && !!rest.user.name && !!rest.token ? (
-      <Redirect to={{ pathname: '/' }} />
+    !isUserEmpty(user) && !!token ? (
+      <Redirect to={{ pathname: '/chat' }} />
     ) : (
       <Component {...props} />
     )
@@ -27,13 +30,14 @@ const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
 }
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
+  const { user, token } = useSelector((s) => s.user)
   const func = (props) =>
-    !!rest.user && !!rest.user.name && !!rest.token ? (
+    !isUserEmpty(user) && !!token ? (
       <Component {...props} />
     ) : (
       <Redirect
         to={{
-          pathname: '/login'
+          pathname: '/'
         }}
       />
     )
@@ -75,12 +79,11 @@ const RootComponent = (props) => {
       <RouterSelector history={history} location={props.location} context={props.context}>
         <Startup>
           <Switch>
-            <Route exact path="/" component={() => <Hello />} />
-            <Route exact path="/register" component={() => <Register />} />
-            <Route exact path="/login" component={() => <Login />} />
-            <Route exact path="/chat" component={() => <Chat />} />
-            <Route exact path="/admin" component={() => <AdminPanel />} />
-            {/* <PrivateRoute exact path="/hidden-route" component={() => <DummyView />} /> */}
+            <OnlyAnonymousRoute exact path="/" component={() => <Hello />} />
+            <OnlyAnonymousRoute exact path="/login" component={() => <Login />} />
+            {/* <OnlyAnonymousRoute exact path="/admin" component={() => <AdminPanel />} /> */}
+            <OnlyAnonymousRoute exact path="/register" component={() => <Register />} />
+            <PrivateRoute exact path="/chat" component={() => <Chat />} />
             <Route component={() => <NotFound />} />
           </Switch>
         </Startup>
