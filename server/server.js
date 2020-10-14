@@ -17,6 +17,8 @@ import config from './config'
 import Html from '../client/html'
 import User from './model/User.model'
 
+let connections = []
+
 const Root = () => ''
 
 // const usersData = [
@@ -79,8 +81,6 @@ try {
   console.log(' run yarn build:prod to enable ssr')
 }
 
-let connections = []
-
 const port = process.env.PORT || 8090
 const server = express()
 
@@ -119,7 +119,7 @@ server.post('/api/v1/auth', async (req, res) => {
     delete user.password
 
     res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
-    res.json({ status: 'ok', user })
+    res.json({ status: 'ok', user, token })
   } catch (err) {
     res.json({ status: 'error', message: `Error occured: ${err}` })
   }

@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 // import PropTypes from 'prop-types'
 import Channel from './channel'
+import ProfileBlock from './profile-block'
 
 const Aside = () => {
   const user = useSelector((s) => s.user.user)
@@ -10,10 +11,7 @@ const Aside = () => {
       <div className="text-white mb-2 mt-3 px-4 flex justify-between">
         <div className="flex-auto">
           <h1 className="font-semibold text-xl leading-tight mb-1 truncate">Messenger</h1>
-          <div className="flex items-center mb-6">
-            <span className="bg-green rounded-full block w-2 h-2 mr-2"> </span>
-            <span className="text-white opacity-50 text-sm">{user.email}</span>
-          </div>
+          <ProfileBlock username={user.nickname || user.email} />
         </div>
         <div>
           <svg className="h-6 w-6 fill-current text-white opacity-25" viewBox="0 0 20 20">
@@ -26,7 +24,7 @@ const Aside = () => {
       </div>
       <div className="mb-8">
         <div className="px-4 mb-2 text-white flex justify-between items-center">
-          <div className="opacity-75">Channels</div>
+          <div className="opacity-75">Chats</div>
           <div>
             <svg
               className="fill-current h-4 w-4 opacity-50"
@@ -37,9 +35,7 @@ const Aside = () => {
             </svg>
           </div>
         </div>
-        {user.channels.map((name) => (
-          <Channel key={name} title={name} />
-        ))}
+        {user.chats && user.chats.map((name) => <Channel key={name} title={name} />)}
       </div>
     </div>
   )

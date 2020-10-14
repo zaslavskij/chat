@@ -7,6 +7,7 @@ const TYPE_EMAIL = 'TYPE_EMAIL'
 const LOGIN = 'LOGIN'
 const REGISTER = 'REGISTER'
 const TRY_LOGIN = 'TRY_LOGIN'
+const KILL_SESSION = 'KILL_SESSION'
 
 const cookies = new Cookies()
 
@@ -26,10 +27,13 @@ export default (state = initialState, action) => {
       return { ...state, email: action.email }
     }
     case LOGIN: {
-      return { ...state, user: action.user, password: '' }
+      return { ...state, user: action.user, token: action.token, password: '' }
     }
     case TRY_LOGIN: {
       return { ...state, user: action.user, token: action.token, password: '' }
+    }
+    case KILL_SESSION: {
+      return { ...state, token: '', user: {} }
     }
     default:
       return state
@@ -89,4 +93,8 @@ export function register() {
     dispatch({ type: REGISTER })
     history.push('/chat')
   }
+}
+
+export function killSession() {
+  return { type: KILL_SESSION }
 }

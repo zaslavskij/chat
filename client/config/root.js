@@ -10,7 +10,7 @@ import store, { history } from '../redux'
 import Login from '../components/login'
 import Chat from '../components/chat'
 import Register from '../components/register'
-// import AdminPanel from '../components/admin-panel'
+import AdminPanel from '../components/admin-panel'
 import NotFound from '../components/404'
 import Hello from '../components/hello'
 
@@ -20,6 +20,7 @@ const isUserEmpty = (user) => Object.keys(user).length === 0 && user.constructor
 
 const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
   const { user, token } = useSelector((s) => s.user)
+  console.log('anonymousRoute', isUserEmpty(user), 'token', token)
   const func = (props) =>
     !isUserEmpty(user) && !!token ? (
       <Redirect to={{ pathname: '/chat' }} />
@@ -31,6 +32,7 @@ const OnlyAnonymousRoute = ({ component: Component, ...rest }) => {
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const { user, token } = useSelector((s) => s.user)
+  console.log('PrivateRoute', isUserEmpty(user), 'token', token)
   const func = (props) =>
     !isUserEmpty(user) && !!token ? (
       <Component {...props} />
@@ -81,7 +83,7 @@ const RootComponent = (props) => {
           <Switch>
             <OnlyAnonymousRoute exact path="/" component={() => <Hello />} />
             <OnlyAnonymousRoute exact path="/login" component={() => <Login />} />
-            {/* <OnlyAnonymousRoute exact path="/admin" component={() => <AdminPanel />} /> */}
+            <PrivateRoute exact path="/admin" component={() => <AdminPanel />} />
             <OnlyAnonymousRoute exact path="/register" component={() => <Register />} />
             <PrivateRoute exact path="/chat" component={() => <Chat />} />
             <Route component={() => <NotFound />} />
