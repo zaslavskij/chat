@@ -8,14 +8,15 @@ import React from 'react'
 
 import cookieParser from 'cookie-parser'
 import passport from 'passport'
-import jwt from 'jsonwebtoken'
 
 import mongooseService from './services/mongoose'
 import passportJWT from './services/passport'
 
 import config from './config'
 import Html from '../client/html'
-import User from './model/User.model'
+
+import regRouter from './routes/register'
+import authRouter from './routes/auth'
 
 let connections = []
 
@@ -99,47 +100,9 @@ passport.use('jwt', passportJWT.jwt)
 
 middleware.forEach((it) => server.use(it))
 
-server.post('/api/v1/register', async (req, res) => {
-  try {
-    const { email, password } = req.body
-    const user = new User({ email, password })
-    await user.save()
-    res.json({ status: 'ok', message: 'user was successfully registered' })
-  } catch (err) {
-    res.json({ status: 'error', message: `Error occured: ${err}` })
-  }
-})
+server.use('/api/v1/register', regRouter)
+server.use('/api/v1/auth', authRouter)
 
-server.post('/api/v1/auth', async (req, res) => {
-  try {
-    let user = await User.findAndValidateUser(req.body)
-    user = user.toObject()
-    const payload = { uid: user._id }
-    const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
-    delete user.password
-
-    res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
-    res.json({ status: 'ok', user, token })
-  } catch (err) {
-    res.json({ status: 'error', message: `Error occured: ${err}` })
-  }
-})
-
-server.get('/api/v1/auth', async (req, res) => {
-  try {
-    const jwtUser = jwt.verify(req.cookies.token, config.secret)
-    const user = await User.findById(jwtUser.uid)
-
-    const payload = { uid: user._id }
-    const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
-    delete user.password
-    res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
-    res.json({ status: 'ok', token, user })
-  } catch (err) {
-    console.log(err)
-    res.json({ status: 'error', err })
-  }
-})
 server.use('/api/', (req, res) => {
   res.status(404)
   res.end()

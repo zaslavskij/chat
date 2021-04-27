@@ -35,6 +35,9 @@ export default (state = initialState, action) => {
     case KILL_SESSION: {
       return { ...state, token: '', user: {} }
     }
+    case REGISTER: {
+      return { ...state, token: action.token, user: action.user, password: '' }
+    }
     default:
       return state
   }
@@ -90,7 +93,7 @@ export function register() {
       }
     })
     console.log(data)
-    dispatch({ type: REGISTER })
+    dispatch({ type: REGISTER, user: data.user, token: data.token })
     history.push('/chat')
   }
 }
