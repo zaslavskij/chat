@@ -1,13 +1,7 @@
 import axios from 'axios'
 import Cookies from 'universal-cookie'
 import { history } from '..'
-
-const TYPE_PASSWORD = 'TYPE_PASSWORD'
-const TYPE_EMAIL = 'TYPE_EMAIL'
-const LOGIN = 'LOGIN'
-const REGISTER = 'REGISTER'
-const TRY_LOGIN = 'TRY_LOGIN'
-const KILL_SESSION = 'KILL_SESSION'
+import types from '../types'
 
 const cookies = new Cookies()
 
@@ -20,22 +14,22 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case TYPE_PASSWORD: {
+    case types.LOGIN.TYPE_PASSWORD: {
       return { ...state, password: action.password }
     }
-    case TYPE_EMAIL: {
+    case types.LOGIN.TYPE_EMAIL: {
       return { ...state, email: action.email }
     }
-    case LOGIN: {
+    case types.LOGIN.LOGIN: {
       return { ...state, user: action.user, token: action.token, password: '' }
     }
-    case TRY_LOGIN: {
+    case types.LOGIN.TRY_LOGIN: {
       return { ...state, user: action.user, token: action.token, password: '' }
     }
-    case KILL_SESSION: {
+    case types.LOGIN.KILL_SESSION: {
       return { ...state, token: '', user: {} }
     }
-    case REGISTER: {
+    case types.LOGIN.REGISTER: {
       return { ...state, token: action.token, user: action.user, password: '' }
     }
     default:
@@ -44,11 +38,11 @@ export default (state = initialState, action) => {
 }
 
 export function typePassword(password) {
-  return { type: TYPE_PASSWORD, password }
+  return { type: types.LOGIN.TYPE_PASSWORD, password }
 }
 
 export function typeEmail(email) {
-  return { type: TYPE_EMAIL, email }
+  return { type: types.LOGIN.TYPE_EMAIL, email }
 }
 
 export function login() {
@@ -63,7 +57,7 @@ export function login() {
       }
     })
 
-    dispatch({ type: LOGIN, user: data.user, token: data.token })
+    dispatch({ type: types.LOGIN.LOGIN, user: data.user, token: data.token })
     history.push('/chat')
   }
 }
@@ -74,7 +68,7 @@ export function tryLogin() {
       url: '/api/v1/auth',
       method: 'get'
     }).catch(console.log)
-    dispatch({ type: TRY_LOGIN, user: data.user, token: data.token })
+    dispatch({ type: types.LOGIN.TRY_LOGIN, user: data.user, token: data.token })
   }
 }
 
@@ -91,11 +85,11 @@ export function register() {
         'Content-Type': 'application/json'
       }
     })
-    dispatch({ type: REGISTER, user: data.user, token: data.token })
+    dispatch({ type: types.LOGIN.REGISTER, user: data.user, token: data.token })
     history.push('/chat')
   }
 }
 
 export function killSession() {
-  return { type: KILL_SESSION }
+  return { type: types.LOGIN.KILL_SESSION }
 }
