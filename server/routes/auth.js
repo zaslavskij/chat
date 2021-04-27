@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
     user = user.toObject()
     const payload = { uid: user._id }
     const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
-    delete user.password
+    user = { role: user.role, email: user.email, nikname: user.nickname }
 
     res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
     res.json({ status: 'ok', user, token })
@@ -24,11 +24,11 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const jwtUser = jwt.verify(req.cookies.token, config.secret)
-    const user = await User.findById(jwtUser.uid)
+    let user = await User.findById(jwtUser.uid)
 
     const payload = { uid: user._id }
     const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
-    delete user.password
+    user = { role: user.role, email: user.email, nikname: user.nickname }
     res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
     res.json({ status: 'ok', token, user })
   } catch (err) {

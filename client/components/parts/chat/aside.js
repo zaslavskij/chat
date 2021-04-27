@@ -1,11 +1,8 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-// import PropTypes from 'prop-types'
 import Channel from './channel'
 import ProfileBlock from './profile-block'
 
-const Aside = () => {
-  const user = useSelector((s) => s.user.user)
+const Aside = ({ user }) => {
   return (
     <div className="bg-green-600 text-purple-lighter flex-none w-64 pb-6 hidden md:block">
       <div className="text-white mb-2 mt-3 px-4 flex justify-between">

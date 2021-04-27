@@ -12,7 +12,7 @@ router.post('/', async (req, res) => {
     let user = new User({ email, password })
     await user.save()
     const token = jwt.sign({ uid: user._id }, config.secret, { expiresIn: '48h' })
-    user = { role: user.role, email: user.email }
+    user = { role: user.role, email: user.email, nikname: user.nickname }
     res.cookie('token', token, { expiresIn: 1000 * 60 * 60 * 48 })
     res.json({ status: 'ok', message: 'user was successfully registered', user, token })
   } catch (err) {

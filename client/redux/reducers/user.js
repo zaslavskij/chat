@@ -62,7 +62,6 @@ export function login() {
         'Content-Type': 'application/json'
       }
     })
-    console.log(JSON.stringify(data))
 
     dispatch({ type: LOGIN, user: data.user, token: data.token })
     history.push('/chat')
@@ -92,7 +91,6 @@ export function register() {
         'Content-Type': 'application/json'
       }
     })
-    console.log(data)
     dispatch({ type: REGISTER, user: data.user, token: data.token })
     history.push('/chat')
   }

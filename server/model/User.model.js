@@ -8,6 +8,13 @@ const userSchema = new mongoose.Schema(
       type: [String],
       default: ['user']
     },
+    nickname: {
+      type: String,
+      default() {
+        return this.email.split('@')[0]
+      },
+      required: true
+    },
     password: {
       type: String,
       required: true
