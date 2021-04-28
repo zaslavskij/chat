@@ -16,6 +16,13 @@ const initialState = {
 
 export default function channels(state = initialState, action) {
   switch (action.type) {
+    case types.CHANNEL.CREATE_CHANNEL: {
+      return {
+        ...state,
+        selected: action.channel,
+        list: { ...state.list, [action.channel]: { users: [], messages: [] } }
+      }
+    }
     case types.CHANNEL.SELECT_CHANNEL: {
       return { ...state, selected: action.selected }
     }
@@ -42,6 +49,11 @@ export default function channels(state = initialState, action) {
 export function selectChannel(selected) {
   return { type: types.CHANNEL.SELECT_CHANNEL, selected }
 }
+
+export function createChannel(channel) {
+  return { type: types.CHANNEL.CREATE_CHANNEL, channel }
+}
+
 export function sendMessage(message) {
   return (dispatch, getState) => {
     const {

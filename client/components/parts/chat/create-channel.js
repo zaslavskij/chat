@@ -1,7 +1,10 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { FaPlus, FaTimes } from 'react-icons/fa'
+import { createChannel } from '../../../redux/reducers/channels'
 
 const CreateChannel = () => {
+  const dispatch = useDispatch()
   const [creatingShown, toggleCreating] = useState(false)
   const [val, setVal] = useState('')
   return (
@@ -37,7 +40,11 @@ const CreateChannel = () => {
             </button>
             {val.length > 0 && (
               <button
-                onClick={() => toggleCreating(!creatingShown)}
+                onClick={() => {
+                  dispatch(createChannel(val))
+                  toggleCreating(!creatingShown)
+                  setVal('')
+                }}
                 type="button"
                 className="flex p-1 items-center justify-around"
               >
