@@ -9,9 +9,7 @@ const initialState = {
     },
     Other: {
       users: [],
-      messages: [
-        { timestamp: +new Date(), nickname: 'notMe', message: '**some** awesome text2222' }
-      ]
+      messages: []
     }
   }
 }
