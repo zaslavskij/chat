@@ -7,7 +7,7 @@ const ProfileDropdown = () => {
   const dispatch = useDispatch()
   const cookie = new Cookie()
   return (
-    <div className="origin-bottom-right absolute right-0 top-0 mt-8 pl-4 w-56 rounded-md shadow-lg">
+    <div className="origin-bottom-right absolute right-0 top-0 mt-8 w-56 rounded-md shadow-lg">
       <div className="rounded-md bg-white shadow-xs">
         <div
           className="py-1"
