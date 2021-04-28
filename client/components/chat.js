@@ -8,13 +8,15 @@ import MessagesList from './parts/chat/messages-list'
 
 const Chat = () => {
   const { user } = useSelector((s) => s.user)
+  const channels = useSelector((s) => s.channels)
+  const { selected } = channels
   return (
     <div className="font-sans antialiased h-screen flex">
-      <Aside user={user} />
+      <Aside user={user} selected={selected} channels={Object.keys(channels.list)} />
       <div className="flex-1 flex flex-col bg-white overflow-hidden">
         <Header />
-        <MessagesList />
-        <InputMessage />
+        <MessagesList messages={channels.list[selected].messages} />
+        <InputMessage selected={selected} />
       </div>
     </div>
   )

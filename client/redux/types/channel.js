@@ -1,0 +1,2 @@
+export const SELECT_CHANNEL = 'SELECT_CHANNEL'
+export const SEND_MESSAGE = 'SEND_MESSAGE'
