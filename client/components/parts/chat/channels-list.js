@@ -1,5 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import { FaPlus } from 'react-icons/fa'
 import { selectChannel } from '../../../redux/reducers/channels'
 import Channel from './channel'
 
@@ -10,15 +11,6 @@ const ChannelsList = ({ channels, selected }) => {
     <div className="mb-8">
       <div className="px-4 text-white flex justify-between items-center">
         <div className="opacity-75">Chats</div>
-        <div>
-          <svg
-            className="fill-current h-4 w-4 opacity-50"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-          >
-            <path d="M11 9h4v2h-4v4H9v-4H5V9h4V5h2v4zm-1 11a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z" />
-          </svg>
-        </div>
       </div>
       <div className="flex flex-col items-stretch">
         {channels.length &&
@@ -30,6 +22,12 @@ const ChannelsList = ({ channels, selected }) => {
               cb={(ch) => dispatch(selectChannel(ch))}
             />
           ))}
+        <button
+          className="flex justify-between items-center cursor-pointer py-1 px-4 text-white bg-opacity-25"
+          type="button"
+        >
+          Create channel <FaPlus />
+        </button>
       </div>
     </div>
   )
