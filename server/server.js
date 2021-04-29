@@ -142,9 +142,7 @@ if (config.isSocketsEnabled) {
   const echo = sockjs.createServer()
   echo.on('connection', (conn) => {
     connections.push(conn)
-    conn.on('data', async (d) => {
-      console.log(d)
-    })
+    conn.on('data', async () => {})
 
     conn.on('close', () => {
       connections = connections.filter((c) => c.readyState !== 3)
@@ -152,4 +150,5 @@ if (config.isSocketsEnabled) {
   })
   echo.installHandlers(app, { prefix: '/ws' })
 }
+
 console.log(`Serving at http://localhost:${port}`)
