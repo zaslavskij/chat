@@ -1,4 +1,5 @@
 import types from '../types'
+import { getSocket } from '..'
 
 const initialState = {
   selected: 'general',
@@ -62,7 +63,7 @@ export function sendMessage(message) {
       },
       channels: { selected }
     } = getState()
-
+    getSocket().send(JSON.stringify({ message: 'sayHello' }))
     return dispatch({ type: types.CHANNEL.SEND_MESSAGE, selected, message, nickname })
   }
 }
