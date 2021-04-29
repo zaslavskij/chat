@@ -2,7 +2,6 @@ import express from 'express'
 import path from 'path'
 import cors from 'cors'
 import bodyParser from 'body-parser'
-import sockjs from 'sockjs'
 import { renderToStaticNodeStream } from 'react-dom/server'
 import React from 'react'
 
@@ -18,7 +17,7 @@ import Html from '../client/html'
 import regRouter from './routes/register'
 import authRouter from './routes/auth'
 
-let connections = []
+import webSockets from './services/websockets'
 
 const Root = () => ''
 
@@ -139,16 +138,7 @@ server.get('/*', (req, res) => {
 const app = server.listen(port)
 
 if (config.isSocketsEnabled) {
-  const echo = sockjs.createServer()
-  echo.on('connection', (conn) => {
-    connections.push(conn)
-    conn.on('data', async () => {})
-
-    conn.on('close', () => {
-      connections = connections.filter((c) => c.readyState !== 3)
-    })
-  })
-  echo.installHandlers(app, { prefix: '/ws' })
+  webSockets(app)
 }
 
 console.log(`Serving at http://localhost:${port}`)
