@@ -8,7 +8,7 @@ export default function initSockets(app) {
   echo.on('connection', (conn) => {
     connections.push(conn)
     conn.on('data', async (d) => {
-      wsRouter(d, Object.keys(conn), connections.length)
+      wsRouter(JSON.parse(d), connections)
     })
     conn.on('close', () => {
       connections = connections.filter((c) => c.readyState !== 3)

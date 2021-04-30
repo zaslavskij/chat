@@ -1,4 +1,5 @@
 import types from '../types'
+import ws from '../../../_common/ws-action-types'
 import { getSocket } from '..'
 
 const initialState = {
@@ -63,7 +64,7 @@ export function sendMessage(message) {
       },
       channels: { selected }
     } = getState()
-    getSocket().send(JSON.stringify({ message: 'sayHello' }))
+    getSocket().send(JSON.stringify({ type: ws.CHAT.SEND_MESSAGE, message }))
     return dispatch({ type: types.CHANNEL.SEND_MESSAGE, selected, message, nickname })
   }
 }
