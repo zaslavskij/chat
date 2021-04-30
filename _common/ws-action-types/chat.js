@@ -1,3 +1,4 @@
-const SEND_MESSAGE = 'SEND_MESSAGE'
+const SEND_TO_SERVER = 'SEND_TO_SERVER'
+const SEND_TO_CLIENT = 'SEND_TO_CLIENT'
 
-export default { SEND_MESSAGE }
+export default { SEND_TO_SERVER, SEND_TO_CLIENT }

@@ -28,7 +28,7 @@ export default function channels(state = initialState, action) {
     case types.CHANNEL.SELECT_CHANNEL: {
       return { ...state, selected: action.selected }
     }
-    case types.CHANNEL.SEND_MESSAGE: {
+    case ws.CHAT.SEND_TO_CLIENT: {
       return {
         ...state,
         list: {
@@ -64,7 +64,7 @@ export function sendMessage(message) {
       },
       channels: { selected }
     } = getState()
-    getSocket().send(JSON.stringify({ type: ws.CHAT.SEND_MESSAGE, message }))
-    return dispatch({ type: types.CHANNEL.SEND_MESSAGE, selected, message, nickname })
+
+    getSocket().send(JSON.stringify({ type: ws.CHAT.SEND_TO_SERVER, message, nickname, selected }))
   }
 }
