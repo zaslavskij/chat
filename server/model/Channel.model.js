@@ -7,7 +7,8 @@ const channelsSchema = new mongoose.Schema({
     unique: true
   },
   users: {
-    type: [String]
+    type: [String],
+    default: []
   },
   messages: {
     type: [Object],

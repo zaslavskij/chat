@@ -2,27 +2,21 @@ import types from '../types'
 import ws from '../../../_common/ws-action-types'
 import { getSocket } from '..'
 
-const initialState = {
-  selected: 'general',
-  list: {
-    general: {
-      users: [],
-      messages: [{ timestamp: +new Date(), nickname: 'me', message: '**some** awesome text' }]
-    },
-    Other: {
-      users: [],
-      messages: []
-    }
-  }
-}
+const initialState = { selected: '', list: {} }
 
-export default function channels(state = initialState, action) {
+export default function channelsReducer(state = initialState, action) {
   switch (action.type) {
+    case types.CHANNEL.GET_CHANNELS: {
+      return { ...state, selected: Object.keys(action.channels)[0], list: action.channels }
+    }
     case types.CHANNEL.CREATE_CHANNEL: {
       return {
         ...state,
-        selected: action.channel,
-        list: { ...state.list, [action.channel]: { users: [], messages: [] } }
+        selected: action.title,
+        list: {
+          ...state.list,
+          [action.title]: { _id: action._id, users: action.users, messages: action.messages }
+        }
       }
     }
     case types.CHANNEL.SELECT_CHANNEL: {
@@ -52,8 +46,20 @@ export function selectChannel(selected) {
   return { type: types.CHANNEL.SELECT_CHANNEL, selected }
 }
 
-export function createChannel(channel) {
-  return { type: types.CHANNEL.CREATE_CHANNEL, channel }
+export function createChannel(t) {
+  return async (dispatch) => {
+    fetch('/api/v1/channels/new', {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ title: t })
+    })
+      .then((r) => r.json())
+      .then(({ channel: { title, messages, users, _id } }) => {
+        return dispatch({ type: types.CHANNEL.CREATE_CHANNEL, title, messages, users, _id })
+      })
+  }
 }
 
 export function sendMessage(message) {
@@ -66,5 +72,20 @@ export function sendMessage(message) {
     } = getState()
 
     getSocket().send(JSON.stringify({ type: ws.CHAT.SEND_TO_SERVER, message, nickname, selected }))
+  }
+}
+
+export function getChannels() {
+  return (dispatch) => {
+    fetch('/api/v1/channels/all', {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      method: 'GET'
+    })
+      .then((r) => r.json())
+      .then(({ channels }) => {
+        return dispatch({ type: types.CHANNEL.GET_CHANNELS, channels })
+      })
   }
 }

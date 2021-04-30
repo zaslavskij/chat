@@ -16,6 +16,7 @@ import Html from '../client/html'
 
 import regRouter from './routes/register'
 import authRouter from './routes/auth'
+import channelRouter from './routes/channel'
 
 import webSockets from './services/websockets'
 
@@ -101,6 +102,7 @@ middleware.forEach((it) => server.use(it))
 
 server.use('/api/v1/register', regRouter)
 server.use('/api/v1/auth', authRouter)
+server.use('/api/v1/channels', channelRouter)
 
 server.use('/api/', (req, res) => {
   res.status(404)
