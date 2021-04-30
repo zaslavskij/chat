@@ -5,7 +5,6 @@ const Channel = ({ title, selected, cb }) => {
     <button
       type="button"
       onClick={() => {
-        console.log(title)
         return cb(title)
       }}
       className={`${
