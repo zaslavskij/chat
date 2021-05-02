@@ -3,6 +3,10 @@
     "version": "0.0.2",
     "description": "Boilerplate SkillCrucial",
     "main": "index.js",
+    "engines": {
+        "node": "12.22.1",
+        "yarn": "1.22.10"
+    },
     "scripts": {
         "docker-start-dev": "docker-compose -f \"docker\\DEV.docker-compose.yml\" up",
         "docker-stop-dev": "docker-compose -f \"docker\\DEV.docker-compose.yml\" down",
@@ -48,6 +52,7 @@
         }
     },
     "dependencies": {
+        "@react-icons/all-files": "^4.1.0",
         "axios": "^0.20.0",
         "bcrypt-nodejs": "^0.0.3",
         "body-parser": "^1.19.0",

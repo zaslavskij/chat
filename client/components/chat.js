@@ -15,19 +15,16 @@ const Chat = () => {
   }, [])
   const { user } = useSelector((s) => s.user)
   const { selected, list } = useSelector((s) => s.channels)
+  const messages = typeof list[selected] !== 'undefined' ? list[selected].messages : []
 
   return (
     <div className="font-sans antialiased h-screen flex">
-      {Object.keys(list).length > 0 && (
-        <>
-          <Aside user={user} selected={selected} channels={Object.keys(list)} />
-          <div className="flex-1 flex flex-col bg-white overflow-hidden">
-            <Header selected={selected} />
-            <MessagesList messages={list[selected].messages} />
-            <InputMessage selected={selected} />
-          </div>
-        </>
-      )}
+      <Aside user={user} selected={selected} channels={Object.keys(list)} />
+      <div className="flex-1 flex flex-col bg-white overflow-hidden">
+        <Header selected={selected} />
+        <MessagesList messages={messages} />
+        <InputMessage selected={selected} />
+      </div>
     </div>
   )
 }
