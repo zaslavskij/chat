@@ -8,7 +8,7 @@ const InputMessage = ({ selected }) => {
   const [message, setMessage] = useState('')
   const dispatch = useDispatch()
   return (
-    <div className="pb-6 px-4 flex-none">
+    <div className="pb-6 px-4 border-t pt-4 border-gray-200 flex-none">
       <div className="flex rounded-lg border-2 border-grey overflow-hidden">
         <input
           type="text"

@@ -12,7 +12,7 @@ const MessagesList = ({ messages }) => {
   useEffect(scrollToBottom, [messages])
 
   return (
-    <div className="px-6 py-4 flex-1 overflow-y-scroll">
+    <div className="px-6 pt-4 flex-1 overflow-y-scroll">
       {messages.length > 0 &&
         messages.map(({ timestamp, nickname, message, date, time }) => {
           return (
