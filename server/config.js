@@ -5,8 +5,8 @@ const options = {
   app: process.env.APP,
   env: process.env.NODE_ENV,
   isSocketsEnabled: process.env.ENABLE_SOCKETS,
-  db: process.env.MONGO_URL,
-  secret: process.env.SECRET || 'heyThere'
+  DB_URL: process.env.DB_URL,
+  secret: process.env.SECRET
 }
 
 export default options

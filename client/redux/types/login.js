@@ -1,0 +1,6 @@
+export const TYPE_PASSWORD = 'TYPE_PASSWORD'
+export const TYPE_EMAIL = 'TYPE_EMAIL'
+export const LOGIN = 'LOGIN'
+export const REGISTER = 'REGISTER'
+export const TRY_LOGIN = 'TRY_LOGIN'
+export const KILL_SESSION = 'KILL_SESSION'

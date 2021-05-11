@@ -2,23 +2,71 @@ import express from 'express'
 import path from 'path'
 import cors from 'cors'
 import bodyParser from 'body-parser'
-import sockjs from 'sockjs'
 import { renderToStaticNodeStream } from 'react-dom/server'
 import React from 'react'
 
 import cookieParser from 'cookie-parser'
 import passport from 'passport'
-import jwt from 'jsonwebtoken'
+
+import mongooseService from './services/mongoose'
+import passportJWT from './services/passport'
 
 import config from './config'
-import MongooseService from './services/mongoose'
-import passportJWT from './services/passport'
-import User from './models/User.model'
-import auth from './middleware/auth'
-
 import Html from '../client/html'
 
+import regRouter from './routes/register'
+import authRouter from './routes/auth'
+import channelRouter from './routes/channel'
+
+import webSockets from './services/websockets'
+
 const Root = () => ''
+
+// const usersData = [
+//   {
+//     email: 'steve@jobs.com',
+//     password: 'huislona1',
+//     channels: ['general', 'dev talks', 'mvp']
+//   },
+//   {
+//     email: 'anna@pavkina.com',
+//     password: 'huislona1',
+//     channels: ['general', 'mvp']
+//   },
+//   {
+//     email: 'alex@zaslavskij.com',
+//     password: 'huislona1',
+//     channels: ['general']
+//   }
+// ]
+
+// usersData.forEach(async (item) => {
+//   const user = new User(item)
+//   await user.save()
+// })
+
+// const channels = [
+//   {
+//     title: 'general',
+//     users: [],
+//     messages: []
+//   },
+//   {
+//     title: 'mvp',
+//     users: [],
+//     messages: []
+//   },
+//   {
+//     title: 'dev talks',
+//     users: [],
+//     messages: []
+//   }
+// ]
+
+// channels.forEach(async (item) => {
+//   const channel = new Channel(item)
+//   await channel.save()
+// })
 
 try {
   // eslint-disable-next-line import/no-unresolved
@@ -29,17 +77,15 @@ try {
   //   Root = (props) => <items.Root {...props} />
   //   console.log(JSON.stringify(items.Root))
   // })()
-  // eslint-disable-next-line
   console.log(Root)
 } catch (ex) {
-  // eslint-disable-next-line
   console.log(' run yarn build:prod to enable ssr')
 }
 
-let connections = []
-
 const port = process.env.PORT || 8090
 const server = express()
+
+mongooseService.connect()
 
 const middleware = [
   cors(),
@@ -50,44 +96,13 @@ const middleware = [
   cookieParser()
 ]
 
-passport.use('jwt', passportJWT)
+passport.use('jwt', passportJWT.jwt)
 
 middleware.forEach((it) => server.use(it))
 
-MongooseService.connect()
-
-server.get('/api/v1/user-info', auth([]), (req, res) => {
-  res.json({ status: '123' })
-})
-
-server.get('/api/v1/auth', async (req, res) => {
-  try {
-    const jwtUser = jwt.verify(req.cookie.token, config.secret)
-    const user = User.findById(jwtUser.uid)
-
-    const payload = { uid: user.id }
-    const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
-    delete user.password
-    res.cookies('token', token, { maxAge: 1000 * 60 * 60 * 48 })
-    res.json({ status: 'ok' })
-  } catch (err) {
-    res.json({ status: 'error', err })
-  }
-})
-
-server.post('/api/v1/auth', async (req, res) => {
-  try {
-    const user = await User.findAndValidateUser(req.body)
-
-    const payload = { uid: user.id }
-    const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
-    delete user.password
-    res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
-    res.json({ status: 'ok' })
-  } catch (err) {
-    res.json({ status: 'error', err })
-  }
-})
+server.use('/api/v1/register', regRouter)
+server.use('/api/v1/auth', authRouter)
+server.use('/api/v1/channels', channelRouter)
 
 server.use('/api/', (req, res) => {
   res.status(404)
@@ -125,16 +140,7 @@ server.get('/*', (req, res) => {
 const app = server.listen(port)
 
 if (config.isSocketsEnabled) {
-  const echo = sockjs.createServer()
-  echo.on('connection', (conn) => {
-    connections.push(conn)
-    conn.on('data', async () => {})
-
-    conn.on('close', () => {
-      connections = connections.filter((c) => c.readyState !== 3)
-    })
-  })
-  echo.installHandlers(app, { prefix: '/ws' })
+  webSockets(app)
 }
-// eslint-disable-next-line
+
 console.log(`Serving at http://localhost:${port}`)

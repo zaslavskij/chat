@@ -1,19 +1,21 @@
 import React from 'react'
+import ReactMarkdown from 'react-markdown'
 
-const Message = () => {
+const Message = ({ date, time, nickname, message }) => {
   return (
     <div className="flex items-start mb-4 text-sm">
-      <img
-        src="https://pbs.twimg.com/profile_images/875010472105222144/Pkt9zqPY_400x400.jpg"
-        className="w-10 h-10 rounded mr-3"
-        alt=""
-      />
+      <img src="http://placehold.it/300" className="w-12 h-12 rounded mr-3" alt="" />
       <div className="flex-1 overflow-hidden">
-        <div>
-          <span className="font-bold">Steve Schoger</span>
-          <span className="text-grey text-xs">11:46</span>
+        <div className="flex flex-col">
+          <span className="font-bold">{nickname}</span>
+          <span className="text-grey text-xs text-gray-600">
+            {date}&nbsp;
+            {time}
+          </span>
         </div>
-        <p className="text-black leading-normal">The slack from the other side.</p>
+        <span className="text-black leading-normal">
+          <ReactMarkdown>{message}</ReactMarkdown>
+        </span>
       </div>
     </div>
   )

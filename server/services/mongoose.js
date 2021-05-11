@@ -1,22 +1,19 @@
 import mongoose from 'mongoose'
 import config from '../config'
 
-mongoose.connection.on('error', () => {
-  // eslint-disable-next-line
-  console.log('connection to db failed')
+mongoose.connection.on('connected', () => {
+  console.log('db is connected')
+})
+
+mongoose.connection.on('error', (err) => {
+  console.log(`can not connect to db: ${err}`)
   process.exit(1)
 })
 
-mongoose.connection.on('connected', () => {
-  // eslint-disable-next-line
-  console.log('connected to db succesfull')
-})
-
-exports.connect = (mongoURL = config.db) => {
+exports.connect = async (mongoURL = config.DB_URL) => {
   mongoose.connect(mongoURL, {
-    useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true
+    useNewUrlParser: true
   })
   return mongoose.connection
 }
