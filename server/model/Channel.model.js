@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import User from './User.model'
 
 const channelsSchema = new mongoose.Schema({
   title: {
@@ -44,8 +45,14 @@ const channelsSchema = new mongoose.Schema({
 channelsSchema.statics = {
   async addPost({ channel, nickname, message, timestamp, date, time }) {
     const ch = await this.findOne({ title: channel })
-    ch.messages.push({ nickname, message, timestamp, date, time })
-    await ch.save()
+    const user = await User.findOne({ nickname })
+
+    if (ch.users.includes(user._id)) {
+      ch.messages.push({ nickname, message, timestamp, date, time })
+      await ch.save()
+    } else {
+      throw new Error('No credentials to wraite posts at the channel')
+    }
   },
 
   async getChannels(userId) {
