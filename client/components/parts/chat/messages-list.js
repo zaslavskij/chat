@@ -1,8 +1,16 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 import Message from './message'
 import NoMessagesThumb from './no-messages-thumb'
 
 const MessagesList = ({ messages }) => {
+  const messagesEndRef = useRef(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  useEffect(scrollToBottom, [messages])
+
   return (
     <div className="px-6 py-4 flex-1 overflow-y-scroll">
       {messages.length > 0 &&
@@ -17,6 +25,7 @@ const MessagesList = ({ messages }) => {
             />
           )
         })}
+      <div ref={messagesEndRef}> </div>
       {messages.length === 0 && <NoMessagesThumb />}
     </div>
   )
