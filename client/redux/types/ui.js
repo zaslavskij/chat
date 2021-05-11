@@ -1,0 +1,2 @@
+export const ASIDE_TOGGLE = 'ASIDE_TOGGLE'
+export const ASIDE_TOGGLE1 = 'ASIDE_TOGGLE1'
