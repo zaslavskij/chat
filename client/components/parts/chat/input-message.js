@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { FaPaperPlane, FaBackspace } from 'react-icons'
+import { FaPaperPlane, FaBackspace } from 'react-icons/fa'
 
 import { sendMessage } from '../../../redux/reducers/channels'
 

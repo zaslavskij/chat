@@ -1,3 +1,6 @@
+import jwt from 'jsonwebtoken'
+
+import config from '../config'
 import Channel from '../model/Channel.model'
 
 async function create({ body: { title } }, res) {
@@ -13,8 +16,9 @@ async function create({ body: { title } }, res) {
 }
 
 async function all(req, res) {
+  const jwtUser = jwt.verify(req.cookies.token, config.secret)
   try {
-    let channels = await Channel.find({})
+    let channels = await Channel.getChannels(jwtUser.uid)
     channels = channels.reduce((acc, rec) => {
       return {
         ...acc,

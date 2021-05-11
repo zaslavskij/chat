@@ -5,7 +5,7 @@ const options = {
   app: process.env.APP,
   env: process.env.NODE_ENV,
   isSocketsEnabled: process.env.ENABLE_SOCKETS,
-  dbUrl: process.env.MONGO_URL,
+  DB_URL: process.env.DB_URL,
   secret: process.env.SECRET
 }
 

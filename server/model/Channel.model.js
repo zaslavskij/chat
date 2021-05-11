@@ -7,7 +7,7 @@ const channelsSchema = new mongoose.Schema({
     unique: true
   },
   users: {
-    type: [String],
+    type: [mongoose.Schema.Types.ObjectId],
     default: []
   },
   messages: {
@@ -18,12 +18,20 @@ const channelsSchema = new mongoose.Schema({
           type: Date,
           default: Date.now
         },
-        author: {
+        nickname: {
           required: true,
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'User'
+          type: String,
+          ref: 'User.nickname'
         },
         message: {
+          type: String,
+          required: true
+        },
+        date: {
+          type: String,
+          required: true
+        },
+        time: {
           type: String,
           required: true
         }
@@ -33,10 +41,19 @@ const channelsSchema = new mongoose.Schema({
   }
 })
 
-// channelsSchema.methods = {
-//   async addPost(channel) {
-//     this.
-//   }
-// }
+channelsSchema.statics = {
+  async addPost({ channel, nickname, message, timestamp, date, time }) {
+    const ch = await this.findOne({ title: channel })
+    ch.messages.push({ nickname, message, timestamp, date, time })
+    await ch.save()
+  },
+
+  async getChannels(userId) {
+    const channels = await this.find({
+      users: mongoose.Types.ObjectId(userId)
+    })
+    return channels
+  }
+}
 
 export default mongoose.model('channels', channelsSchema)

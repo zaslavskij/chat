@@ -27,11 +27,17 @@ export default function channelsReducer(state = initialState, action) {
         ...state,
         list: {
           ...state.list,
-          [action.selected]: {
-            ...state.list[action.selected],
+          [action.channel]: {
+            ...state.list[action.channel],
             messages: [
-              ...state.list[action.selected].messages,
-              { nickname: action.nickname, timestamp: +new Date(), message: action.message }
+              ...state.list[action.channel].messages,
+              {
+                nickname: action.nickname,
+                timestamp: action.timestamp,
+                time: action.time,
+                date: action.date,
+                message: action.message
+              }
             ]
           }
         }
@@ -68,10 +74,10 @@ export function sendMessage(message) {
       user: {
         user: { nickname }
       },
-      channels: { selected }
+      channels: { selected: channel }
     } = getState()
 
-    getSocket().send(JSON.stringify({ type: ws.CHAT.SEND_TO_SERVER, message, nickname, selected }))
+    getSocket().send(JSON.stringify({ type: ws.CHAT.SEND_TO_SERVER, message, nickname, channel }))
   }
 }
 
