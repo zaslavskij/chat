@@ -20,14 +20,14 @@ const InputMessage = ({ selected }) => {
         {message.length > 0 && (
           <div className="flex">
             <button
-              className="py-2 px-2 sm:p-1 text-center items-center text-blue-400 hover:text-blue-500 mr-2 text-3xl"
+              className="py-2 px-4 sm:py-1 sm:px-2 text-center items-center text-blue-400 hover:text-blue-500 mr-2 text-3xl"
               type="button"
               onClick={() => setMessage('')}
             >
               <FaBackspace />
             </button>
             <button
-              className="text-white py-2 px-4 sm:py-1 sm:px-2 text-center items-center bg-green-400 hover:bg-green-500 text-xl"
+              className="text-white py-2 px-4 sm:py-1 sm:px-3 text-center items-center bg-green-400 hover:bg-green-500 text-xl"
               type="button"
               onClick={() => {
                 dispatch(sendMessage(message))

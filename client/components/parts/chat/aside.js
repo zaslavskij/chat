@@ -6,25 +6,28 @@ import ProfileBlock from './profile-block'
 
 const Aside = ({ nickname, channels, selected, asideToggle }) => {
   return (
-    <div className="bg-green-600 text-purple-lighter flex-none w-64 pb-6 select-none block sm:fixed sm:top-0 sm:left-0 sm:h-screen">
-      <div className="text-white mb-2 mt-3 px-4 sm:px-2 flex justify-between">
-        <div className="flex-auto">
-          <div className="flex items-center leading-tight mb-1 truncate">
-            <button
-              className="sm:flex hidden mr-2"
-              type="button"
-              onClick={() => asideToggle(false)}
-            >
-              <FaTimes />
-            </button>
+    <>
+      <div className="bg-green-600 text-purple-lighter flex-none w-64 pb-6 select-none block sm:fixed sm:top-0 sm:left-0 sm:h-screen z-10">
+        <div className="text-white mb-2 mt-3 px-4 sm:px-2 flex justify-between">
+          <div className="flex-auto">
+            <div className="flex items-center leading-tight mb-1 truncate">
+              <button
+                className="sm:flex hidden mr-2"
+                type="button"
+                onClick={() => asideToggle(false)}
+              >
+                <FaTimes />
+              </button>
 
-            <span className="font-semibold text-xl">Messenger</span>
+              <span className="font-semibold text-xl">Messenger</span>
+            </div>
+            <ProfileBlock username={nickname} />
           </div>
-          <ProfileBlock username={nickname} />
         </div>
+        <ChannelsList channels={channels} selected={selected} />
       </div>
-      <ChannelsList channels={channels} selected={selected} />
-    </div>
+      <div className="hidden sm:flex fixed top-0 left-0 w-screen h-screen bg-gray-700 opacity-75" />
+    </>
   )
 }
 
