@@ -18,12 +18,13 @@ const Chat = () => {
   }
 
   const asideTogglerWindow = debounce(() => {
-    if (window.width > 640) asideTogglerDispatch(true)
+    console.log(window.innerWidth)
+    if (window.innerWidth > 640) asideTogglerDispatch(true)
     else asideTogglerDispatch(false)
   }, 200)
 
   useEffect(() => {
-    asideTogglerDispatch()
+    asideTogglerWindow()
     window.addEventListener('resize', asideTogglerWindow)
     dispatch(getChannels())
     return () => {
