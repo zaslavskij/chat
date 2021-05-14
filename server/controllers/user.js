@@ -2,12 +2,16 @@ import jwt from 'jsonwebtoken'
 
 import config from '../config'
 import User from '../model/User.model'
+import Channel from '../model/Channel.model'
 
 async function register(req, res) {
   try {
     const { email, password } = req.body
     let user = new User({ email, password })
     await user.save()
+
+    await Channel.subscribeUser(user._id, 'general')
+
     const token = jwt.sign({ uid: user._id }, config.secret, { expiresIn: '48h' })
     user = { role: user.role, email: user.email, nickname: user.nickname }
     res.cookie('token', token, { expiresIn: 1000 * 60 * 60 * 48 })

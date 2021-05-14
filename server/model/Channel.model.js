@@ -60,6 +60,12 @@ channelsSchema.statics = {
       users: mongoose.Types.ObjectId(userId)
     })
     return channels
+  },
+
+  async subscribeUser(userId, title) {
+    const channel = await this.findOne({ title })
+    channel.users.push(mongoose.Types.ObjectId(userId))
+    await channel.save()
   }
 }
 
