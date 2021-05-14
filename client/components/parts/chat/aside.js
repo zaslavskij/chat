@@ -3,8 +3,9 @@ import { FaTimes } from 'react-icons/fa'
 
 import ChannelsList from './channels-list'
 import ProfileBlock from './profile-block'
+import UsersList from './users-list'
 
-const Aside = ({ nickname, channels, selected, asideToggle }) => {
+const Aside = ({ nickname, channels, usersOnline, selected, asideToggle }) => {
   return (
     <>
       <div className="bg-green-600 text-purple-lighter flex-none w-64 pb-6 select-none block sm:fixed sm:top-0 sm:left-0 sm:h-screen z-10">
@@ -25,6 +26,7 @@ const Aside = ({ nickname, channels, selected, asideToggle }) => {
           </div>
         </div>
         <ChannelsList channels={channels} selected={selected} />
+        <UsersList usersOnline={usersOnline} />
       </div>
       <div className="hidden sm:flex fixed top-0 left-0 w-screen h-screen bg-gray-700 opacity-75" />
     </>

@@ -1,5 +1,6 @@
 import sockjs from 'sockjs'
 import wsRouter from './ws-router'
+import ws from '../../../_common/ws-action-types'
 
 let connections = []
 
@@ -8,7 +9,24 @@ export default function initSockets(app) {
   echo.on('connection', (conn) => {
     connections.push(conn)
     conn.on('data', async (d) => {
-      wsRouter(JSON.parse(d), connections)
+      const parsedData = JSON.parse(d)
+      if (parsedData.type.indexOf('SYSTEM') === -1) {
+        await wsRouter(parsedData, connections)
+      }
+      if (parsedData.type === ws.CHAT.SYSTEM_USER_HELLO) {
+        /* eslint-disable no-param-reassign */
+        conn.userInfo = {
+          nickname: parsedData.nickname
+        }
+        const usersOnline = connections
+          .filter((c) => typeof c.userInfo !== 'undefined')
+          .map((cn) => cn.userInfo.nickname)
+
+        connections.forEach((c) =>
+          c.write(JSON.stringify({ type: ws.CHAT.UPDATE_USERS_ONLINE, usersOnline }))
+        )
+        /* eslint-enable no-param-reassign */
+      }
     })
     conn.on('close', () => {
       connections = connections.filter((c) => c.readyState !== 3)

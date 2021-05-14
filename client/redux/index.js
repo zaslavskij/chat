@@ -32,7 +32,6 @@ if (typeof ENABLE_SOCKETS !== 'undefined' && ENABLE_SOCKETS) {
     }
 
     socket.onmessage = ({ data }) => {
-      // eslint-disable-next-line no-console
       store.dispatch(JSON.parse(data))
 
       // socket.close();

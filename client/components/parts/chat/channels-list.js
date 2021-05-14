@@ -11,7 +11,9 @@ const ChannelsList = ({ channels, selected }) => {
   return (
     <div className="mb-8">
       <div className="px-4 text-white flex justify-between items-center">
-        <div className="opacity-75">Chats</div>
+        <span className="flex items-center">
+          <span className="flex mr-1">#</span> Channels
+        </span>
       </div>
       <div className="flex flex-col items-stretch h-full">
         {channels.length &&

@@ -9,9 +9,9 @@ const Channel = ({ title, selected, cb }) => {
       }}
       className={`${
         selected === title ? 'bg-gray-800' : ' '
-      } text-left cursor-pointer py-1 px-4 text-white bg-opacity-25`}
+      } text-left cursor-pointer py-1 px-8 text-white bg-opacity-25`}
     >
-      # {title}
+      {title}
     </button>
   )
 }

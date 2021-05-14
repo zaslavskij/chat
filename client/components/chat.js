@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { getChannels } from '../redux/reducers/channels'
 import { asideToggle } from '../redux/reducers/responsive'
+import { sendSystemHello } from '../redux/reducers/user'
 
 import Aside from './parts/chat/aside'
 import Header from './parts/chat/header'
@@ -13,12 +14,22 @@ import MessagesList from './parts/chat/messages-list'
 const Chat = () => {
   const dispatch = useDispatch()
 
+  const {
+    user: {
+      user: { nickname },
+      socketConnected
+    },
+
+    channels: { selected, list, usersOnline },
+
+    responsive: { asideShown }
+  } = useSelector((s) => s)
+
   const asideTogglerDispatch = (...ars) => {
     return dispatch(asideToggle(...ars))
   }
 
   const asideTogglerWindow = debounce(() => {
-    console.log(window.innerWidth)
     if (window.innerWidth > 640) asideTogglerDispatch(true)
     else asideTogglerDispatch(false)
   }, 200)
@@ -32,13 +43,11 @@ const Chat = () => {
     }
   }, [])
 
-  const {
-    user: {
-      user: { nickname }
-    },
-    channels: { selected, list },
-    responsive: { asideShown }
-  } = useSelector((s) => s)
+  useEffect(() => {
+    if (socketConnected) {
+      dispatch(sendSystemHello())
+    }
+  }, [socketConnected])
 
   const messages = typeof list[selected] !== 'undefined' ? list[selected].messages : []
 
@@ -48,6 +57,7 @@ const Chat = () => {
         <Aside
           asideToggle={asideTogglerDispatch}
           nickname={nickname}
+          usersOnline={usersOnline}
           selected={selected}
           channels={Object.keys(list)}
         />

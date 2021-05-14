@@ -1,13 +1,13 @@
 export default {
-  connected: (data) => ({
-    type: 'SOCKET_CONNECTED',
-    data
-  }),
+  connected: (dispatch) =>
+    dispatch({
+      type: 'SOCKET_CONNECTED'
+    }),
   message: (data) => {
     return JSON.parse(data)
   },
-  disconnected: (data) => ({
-    type: 'SOCKET_DISCONNECTED',
-    data
-  })
+  disconnected: (dispatch) =>
+    dispatch({
+      type: 'SOCKET_DISCONNECTED'
+    })
 }

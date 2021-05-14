@@ -11,7 +11,7 @@ const CreateChannel = () => {
     <div className="mt-2">
       {!creatingShown && (
         <button
-          className="flex w-full justify-between items-center cursor-pointer py-1 px-3 text-white bg-opacity-25"
+          className="flex w-full justify-between items-center cursor-pointer py-1 px-4 text-white bg-opacity-25"
           type="button"
           onClick={() => toggleCreating(!creatingShown)}
         >
@@ -19,12 +19,12 @@ const CreateChannel = () => {
         </button>
       )}
       {creatingShown && (
-        <div className="flex px-4">
+        <div className="flex pl-4 pr-2">
           <input
             value={val}
             placeholder="Channel name"
             onChange={({ target: { value } }) => setVal(value)}
-            className="flex rounded-md p-1"
+            className="flex flex-1 rounded-md p-1"
             type="text"
           />
           <div className="flex ml-1 text-white">
