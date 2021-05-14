@@ -38,9 +38,6 @@ export default function initSockets(app) {
       connections.forEach((c) =>
         c.write(JSON.stringify({ type: ws.CHAT.UPDATE_USERS_ONLINE, usersOnline }))
       )
-      connections.forEach((c) =>
-        c.write(JSON.stringify({ type: ws.CHAT.UPDATE_USERS_ONLINE, usersOnline }))
-      )
     })
   })
   echo.installHandlers(app, { prefix: '/ws' })
