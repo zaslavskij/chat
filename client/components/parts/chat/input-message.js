@@ -20,7 +20,7 @@ const InputMessage = ({ selected }) => {
         {message.length > 0 && (
           <div className="flex">
             <button
-              className="py-2 px-4 sm:py-1 sm:px-2 text-center items-center text-blue-400 hover:text-blue-500 mr-2 text-3xl"
+              className="py-2 px-4 sm:py-1 sm:px-2 text-center items-center text-blue-400 hover:text-blue-500 text-3xl"
               type="button"
               onClick={() => setMessage('')}
             >
