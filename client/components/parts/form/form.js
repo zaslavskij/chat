@@ -19,7 +19,7 @@ const Form = ({ parent }) => {
     }
   ]
   return (
-    <form className="bg-white px-8 pt-2 pb-8 mb-4">
+    <form className="bg-white px-8 pt-2 pb-4 mb-4">
       {fields.map((f) => {
         return <InputForm key={f.type} inputObj={f} />
       })}
@@ -27,12 +27,10 @@ const Form = ({ parent }) => {
       <div className="flex items-center justify-between">
         <ButtonDefault
           cb={parent === 'login' ? login : register}
-          title={`${parent.slice(0, 1).toUpperCase()}${parent
-            .slice(1, parent.length)
-            .toLowerCase()}`}
+          title={parent === 'login' ? 'Sign In' : 'Sign Up'}
           type="button"
           iconTitle={parent === 'login' ? 'FaSignInAlt' : 'FaUserPlus'}
-          green="blue"
+          color={parent === 'login' ? 'green' : 'blue'}
         />
       </div>
     </form>
