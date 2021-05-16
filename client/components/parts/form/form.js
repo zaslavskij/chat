@@ -1,5 +1,5 @@
 import React from 'react'
-import SubmitButton from '../buttons/submit-button'
+import ButtonDefault from '../buttons'
 import InputForm from './form-input'
 import { typeEmail, typePassword, login, register } from '../../../redux/reducers/user'
 
@@ -19,13 +19,21 @@ const Form = ({ parent }) => {
     }
   ]
   return (
-    <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <form className="bg-white px-8 pt-2 pb-8 mb-4">
       {fields.map((f) => {
         return <InputForm key={f.type} inputObj={f} />
       })}
 
       <div className="flex items-center justify-between">
-        <SubmitButton cb={parent === 'login' ? login : register} title={parent} />
+        <ButtonDefault
+          cb={parent === 'login' ? login : register}
+          title={`${parent.slice(0, 1).toUpperCase()}${parent
+            .slice(1, parent.length)
+            .toLowerCase()}`}
+          type="button"
+          iconTitle={parent === 'login' ? 'FaSignInAlt' : 'FaUserPlus'}
+          green="blue"
+        />
       </div>
     </form>
   )

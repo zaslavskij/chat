@@ -1,5 +1,5 @@
 import React from 'react'
-import SubmitButton from './parts/buttons/submit-button'
+import ButtonDefault from './parts/buttons'
 import Header from './parts/admin/header'
 import User from './parts/admin/user'
 
@@ -11,7 +11,7 @@ const AdminPanel = () => {
         <div className="flex justify-between flex-row align-middle p-3 rounded-lg mx-4 mb-4 bg-gray-100 font-mono text-md text-blue-700 whitespace-pre">
           <User username="Jozeph Huevson" />
           <div className="flex items-center flex-row">
-            <SubmitButton title="Drop" cb={alert} />
+            <ButtonDefault title="Drop" cb={alert} type="button" color="green" />
           </div>
         </div>
       </div>
