@@ -1,25 +1,21 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 
-const InputForm = ({ inputObj: { type, placeholder, inputType, cb } }) => {
-  const dispatch = useDispatch()
+const InputForm = ({ formik, field }) => {
   return (
     <div className="mb-4">
-      <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={type}>
-        {type.slice(0, 1).toUpperCase() + type.slice(1, type.length)}
+      <label htmlFor={field} className="block text-gray-600 text-sm font-bold mb-2">
+        {`${field.slice(0, 1).toUpperCase()}${field.slice(1, field.length).toUpperCase()}`}
       </label>
       <input
-        className="appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight"
-        id={placeholder}
-        type={inputType}
-        placeholder={placeholder}
-        onChange={(e) => {
-          const {
-            target: { value }
-          } = e
-          dispatch(cb(value))
-        }}
+        className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight"
+        type={`${field === 'password' ? field : 'text'}`}
+        name={field}
+        value={formik.values[field]}
+        onChange={formik.handleChange}
       />
+      {formik.errors[field] && formik.touched[field] && (
+        <span className="text-xs text-red-400 text-italic">{formik.errors[field]}</span>
+      )}
     </div>
   )
 }

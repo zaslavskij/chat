@@ -7,8 +7,6 @@ import ws from '../../../_common/ws-action-types'
 const cookies = new Cookies()
 
 const initialState = {
-  email: '',
-  password: '',
   user: {},
   socketConnected: false,
   token: cookies.get('token')
@@ -16,18 +14,13 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case types.LOGIN.TYPE_PASSWORD: {
-      return { ...state, password: action.password }
-    }
     case 'SOCKET_CONNECTED': {
       return { ...state, socketConnected: true }
     }
     case 'SOCKET_DISCONNECTED': {
       return { ...state, socketConnected: false }
     }
-    case types.LOGIN.TYPE_EMAIL: {
-      return { ...state, email: action.email }
-    }
+
     case types.LOGIN.LOGIN: {
       return { ...state, user: action.user, token: action.token, password: '' }
     }
@@ -53,9 +46,8 @@ export function typeEmail(email) {
   return { type: types.LOGIN.TYPE_EMAIL, email }
 }
 
-export function login() {
-  return async (dispatch, getStore) => {
-    const { email, password } = getStore().user
+export function login(email, password) {
+  return async (dispatch) => {
     const { data } = await axios({
       url: '/api/v1/auth',
       method: 'post',
@@ -96,11 +88,8 @@ export function sendSystemHello() {
   }
 }
 
-export function register() {
-  return async (dispatch, getStore) => {
-    const {
-      user: { email, password }
-    } = getStore()
+export function register(email, password) {
+  return async (dispatch) => {
     const { data } = await axios({
       url: '/api/v1/register',
       method: 'post',
