@@ -12,6 +12,8 @@ import Register from '../components/register'
 import NotFound from '../components/404'
 import Hello from '../components/hello'
 
+import ErrorLayer from '../components/parts/error-layer'
+
 import Startup from './startup'
 
 const Chat = React.lazy(() => import('../components/chat'))
@@ -99,6 +101,7 @@ const RootComponent = (props) => {
             <Route component={() => <NotFound />} />
           </Switch>
         </Startup>
+        <ErrorLayer />
       </RouterSelector>
     </Provider>
   )
