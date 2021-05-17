@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt-nodejs'
+import UserAccountException from '../services/errors/account'
 
 const userSchema = new mongoose.Schema(
   {
@@ -45,21 +46,21 @@ userSchema.method({
 userSchema.statics = {
   async findAndValidateUser({ email, password }) {
     if (!email) {
-      throw new Error('No Email')
+      throw new UserAccountException('No email provided', 'NO_EMAIL')
     }
     if (!password) {
-      throw new Error('No Password')
+      throw new UserAccountException('No password provided', 'NO_PASSWORD')
     }
 
     const user = await this.findOne({ email }).exec()
     if (!user) {
-      throw new Error('No User')
+      throw new UserAccountException('No user found', 'NO_USER')
     }
 
     const isPasswordOk = await user.passwordMatches(password)
 
     if (!isPasswordOk) {
-      throw new Error('PasswordIncorrect')
+      throw new UserAccountException('Your email or password incorrect', 'INCORRECT_CREDENTIALS')
     }
 
     return user

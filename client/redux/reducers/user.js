@@ -39,8 +39,8 @@ export default (state = initialState, action) => {
 }
 
 export function login(email, password) {
-  return async (dispatch) => {
-    const { data } = await axios({
+  return (dispatch) => {
+    axios({
       url: '/api/v1/auth',
       method: 'post',
       data: JSON.stringify({ email, password }),
@@ -48,24 +48,28 @@ export function login(email, password) {
         'Content-Type': 'application/json'
       }
     })
-
-    dispatch({ type: types.LOGIN.LOGIN, user: data.user, token: data.token })
-    history.push('/chat')
+      .then(({ data }) => {
+        dispatch({ type: types.LOGIN.LOGIN, user: data.user, token: data.token })
+        history.push('/chat')
+      })
+      .catch((r) => {
+        dispatch({ type: types.UI.SHOW_ERROR_MESSAGE, errorText: r.response.data.error })
+      })
   }
 }
 
 export function tryLogin() {
-  return async (dispatch) => {
-    try {
-      const { data } = await axios({
-        url: '/api/v1/auth',
-        method: 'get'
+  return (dispatch) => {
+    axios({
+      url: '/api/v1/auth',
+      method: 'get'
+    })
+      .then(({ data }) => {
+        dispatch({ type: types.LOGIN.TRY_LOGIN, user: data.user, token: data.token })
       })
-
-      dispatch({ type: types.LOGIN.TRY_LOGIN, user: data.user, token: data.token })
-    } catch (e) {
-      console.log(e)
-    }
+      .catch((r) => {
+        dispatch({ type: types.UI.SHOW_ERROR_MESSAGE, errorText: r.response.data.error })
+      })
   }
 }
 
@@ -81,8 +85,8 @@ export function sendSystemHello() {
 }
 
 export function register(email, password) {
-  return async (dispatch) => {
-    const { data } = await axios({
+  return (dispatch) => {
+    axios({
       url: '/api/v1/register',
       method: 'post',
       data: JSON.stringify({ email, password }),
@@ -90,8 +94,13 @@ export function register(email, password) {
         'Content-Type': 'application/json'
       }
     })
-    dispatch({ type: types.LOGIN.REGISTER, user: data.user, token: data.token })
-    history.push('/chat')
+      .then(({ data }) => {
+        dispatch({ type: types.LOGIN.REGISTER, user: data.user, token: data.token })
+        history.push('/chat')
+      })
+      .catch((r) => {
+        dispatch({ type: types.UI.SHOW_ERROR_MESSAGE, errorText: r.response.data.error })
+      })
   }
 }
 

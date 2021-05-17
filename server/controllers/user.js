@@ -8,6 +8,7 @@ async function register(req, res) {
   try {
     const { email, password } = req.body
     let user = new User({ email, password })
+
     await user.save()
 
     await Channel.subscribeUser(user._id, 'general')
@@ -17,7 +18,7 @@ async function register(req, res) {
     res.cookie('token', token, { expiresIn: 1000 * 60 * 60 * 48 })
     res.json({ status: 'ok', message: 'user was successfully registered', user, token })
   } catch (err) {
-    res.json({ status: 'error', message: `Error occured: ${err}` })
+    res.status(500).json({ error: err.message })
   }
 }
 
@@ -32,7 +33,7 @@ async function login(req, res) {
     res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
     res.json({ status: 'ok', user, token })
   } catch (err) {
-    res.json({ status: 'error', message: `Error occured: ${err}` })
+    res.status(500).json({ error: err.message })
   }
 }
 
@@ -47,8 +48,7 @@ async function auth(req, res) {
     res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
     res.json({ status: 'ok', token, user })
   } catch (err) {
-    console.log(err)
-    res.json({ status: 'error', err })
+    res.status(500).json({ error: err.message })
   }
 }
 

@@ -41,7 +41,7 @@ const Form = ({ parent }) => {
   return (
     <form onSubmit={formik.handleSubmit} className="bg-white px-8 pt-2 pb-4 mb-4">
       {Object.keys(formik.values).map((k) => (
-        <FormInput key={k} formik={formik} field={k} />
+        <FormInput key={k} formik={formik} field={k} parent={parent} />
       ))}
       <div className="flex items-center justify-between">
         <ButtonDefault

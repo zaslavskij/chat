@@ -1,9 +1,13 @@
 import React from 'react'
 
-const InputForm = ({ formik, field }) => {
+const InputForm = ({ formik, field, parent }) => {
   return (
     <div
-      className={`mb-4 ${field === 'isRegister' || field === 'confirm_password' ? 'hidden' : ''}`}
+      className={`mb-4 ${
+        field === 'isRegister' || (field === 'confirm_password' && parent === 'login')
+          ? 'hidden'
+          : ''
+      }`}
     >
       <label htmlFor={field} className="block text-gray-600 text-sm font-bold mb-2">
         {`${field.slice(0, 1).toUpperCase()}${field
@@ -13,7 +17,7 @@ const InputForm = ({ formik, field }) => {
       </label>
       <input
         className="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight"
-        type={`${field === 'password' ? field : 'text'}`}
+        type={`${field === 'password' || field === 'confirm_password' ? 'password' : 'text'}`}
         name={field}
         value={formik.values[field]}
         onChange={formik.handleChange}
