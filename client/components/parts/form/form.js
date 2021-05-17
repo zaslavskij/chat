@@ -11,17 +11,24 @@ const Form = ({ parent }) => {
   const formik = useFormik({
     initialValues: {
       email: '',
-      password: ''
+      password: '',
+      confirm_password: '',
+      isRegister: parent === 'register'
     },
     validationSchema: Yup.object({
       email: Yup.string().email('Invalid email format').required('Required!'),
-      password: Yup.string().min(8, 'Minimum 8 characters').required('Required!')
-      // ,
-      // confirm_password: Yup.string()
-      //   .oneOf([Yup.ref('password')], "Password's not match")
-      //   .required('Required!')
+      password: Yup.string().min(8, 'Minimum 8 characters').required('Required!'),
+      confirm_password: Yup.string().when('isRegister', {
+        is: (val) => val,
+        then: Yup.string()
+          .oneOf([Yup.ref('password')], "Password's not match")
+          .required('Required field!'),
+        otherwise: Yup.string().notRequired()
+      }),
+      isRegister: Yup.boolean().required('Required!')
     }),
     onSubmit: (values) => {
+      console.log(JSON.stringify(values, 2, 2))
       if (parent === 'login') {
         dispatch(login(values.email, values.password))
       }

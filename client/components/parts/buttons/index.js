@@ -3,7 +3,13 @@ import * as FaIcon from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
-const ButtonDefault = ({ title, cb, color = 'green', iconTitle = false, type = 'button' }) => {
+const ButtonDefault = ({
+  title,
+  cb = false,
+  color = 'green',
+  iconTitle = false,
+  type = 'button'
+}) => {
   const dispatch = useDispatch()
   const Icon = iconTitle && FaIcon[iconTitle]
 
