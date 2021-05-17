@@ -38,14 +38,6 @@ export default (state = initialState, action) => {
   }
 }
 
-export function typePassword(password) {
-  return { type: types.LOGIN.TYPE_PASSWORD, password }
-}
-
-export function typeEmail(email) {
-  return { type: types.LOGIN.TYPE_EMAIL, email }
-}
-
 export function login(email, password) {
   return async (dispatch) => {
     const { data } = await axios({
