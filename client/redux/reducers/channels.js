@@ -1,3 +1,4 @@
+import axios from 'axios'
 import types from '../types'
 import ws from '../../../_common/ws-action-types'
 import { getSocket } from '..'
@@ -59,17 +60,23 @@ export function selectChannel(selected) {
 
 export function createChannel(t) {
   return async (dispatch) => {
-    fetch('/api/v1/channels/new', {
+    axios({
+      url: '/api/v1/channels/new',
+      method: 'post',
+      data: JSON.stringify({ title: t }),
       headers: {
         'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify({ title: t })
+      }
     })
-      .then((r) => r.json())
-      .then(({ channel: { title, messages, users, _id } }) => {
-        return dispatch({ type: types.CHANNEL.CREATE_CHANNEL, title, messages, users, _id })
-      })
+      .then(
+        ({
+          data: {
+            channel: { title, messages, users, _id }
+          }
+        }) => {
+          return dispatch({ type: types.CHANNEL.CREATE_CHANNEL, title, messages, users, _id })
+        }
+      )
       .catch((r) => {
         dispatch({ type: types.UI.SHOW_ERROR_MESSAGE, errorText: r.response.data.error })
       })
@@ -91,15 +98,14 @@ export function sendMessage(message) {
 
 export function getChannels() {
   return (dispatch) => {
-    fetch('/api/v1/channels/all', {
+    axios({
+      url: '/api/v1/channels/all',
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json'
-      },
-      method: 'GET'
+      }
+    }).then(({ data: { channels } }) => {
+      return dispatch({ type: types.CHANNEL.GET_CHANNELS, channels })
     })
-      .then((r) => r.json())
-      .then(({ channels }) => {
-        return dispatch({ type: types.CHANNEL.GET_CHANNELS, channels })
-      })
   }
 }
