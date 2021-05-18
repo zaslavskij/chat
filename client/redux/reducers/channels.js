@@ -24,7 +24,7 @@ export default function channelsReducer(state = initialState, action) {
     }
 
     case ws.CHAT.UPDATE_USERS_ONLINE: {
-      return { ...state, usersOnline: action.usersOnline }
+      return { ...state, usersOnline: [...new Set(action.usersOnline)] }
     }
 
     case ws.CHAT.SEND_TO_CLIENT: {
