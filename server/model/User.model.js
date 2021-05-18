@@ -37,6 +37,14 @@ userSchema.pre('save', async function (next) {
   return next()
 })
 
+userSchema.post('save', function (error, doc, next) {
+  if (error.name === 'MongoError' && error.code === 11000) {
+    next(new UserAccountException('User with those email already registered', 'EMAIL_DUPLICATING'))
+  } else {
+    next(error)
+  }
+})
+
 userSchema.method({
   passwordMatches(password) {
     return bcrypt.compareSync(password, this.password)
