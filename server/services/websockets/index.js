@@ -17,7 +17,8 @@ export default function initSockets(app) {
       if (parsedData.type === ws.CHAT.SYSTEM_USER_HELLO) {
         /* eslint-disable no-param-reassign */
         conn.userInfo = {
-          nickname: parsedData.nickname
+          nickname: parsedData.nickname,
+          subsChannels: parsedData.subsChannels
         }
         usersOnline = connections
           .filter((c) => typeof c.userInfo !== 'undefined')

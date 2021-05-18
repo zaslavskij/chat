@@ -17,7 +17,11 @@ export async function sendMessage(action, connections) {
 
   await Channel.addPost(message)
 
-  connections.forEach((c) => {
-    c.write(JSON.stringify({ ...message, type: ws.CHAT.SEND_TO_CLIENT }))
-  })
+  connections
+    .filter((cn) => {
+      return cn.userInfo.subsChannels.includes(action.channel)
+    })
+    .forEach((c) => {
+      c.write(JSON.stringify({ ...message, type: ws.CHAT.SEND_TO_CLIENT }))
+    })
 }

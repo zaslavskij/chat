@@ -56,6 +56,7 @@ userSchema.statics = {
     if (!email) {
       throw new UserAccountException('No email provided', 'NO_EMAIL')
     }
+
     if (!password) {
       throw new UserAccountException('No password provided', 'NO_PASSWORD')
     }
