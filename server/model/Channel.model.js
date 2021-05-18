@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import User from './User.model'
 
-import ChatException from '../services/errors/chat'
+import ChannelException from '../services/errors/channel'
 
 const channelsSchema = new mongoose.Schema({
   title: {
@@ -47,7 +47,7 @@ const channelsSchema = new mongoose.Schema({
 channelsSchema.post('save', function (error, doc, next) {
   if (error.name === 'MongoError' && error.code === 11000) {
     next(
-      new ChatException('Chat with the name provided is already existing', 'CHANNEL_DUPLICATING')
+      new ChannelException('Chat with the name provided is already existing', 'CHANNEL_DUPLICATING')
     )
   } else {
     next(error)
@@ -68,9 +68,19 @@ channelsSchema.statics = {
   },
 
   async getChannels(userId) {
-    const channels = await this.find({
+    let channels = await this.find({
       users: mongoose.Types.ObjectId(userId)
     })
+    channels = channels.reduce((acc, rec) => {
+      return {
+        ...acc,
+        [rec.title]: {
+          cid: rec._id,
+          users: rec.users,
+          messages: rec.messages
+        }
+      }
+    }, {})
     return channels
   },
 

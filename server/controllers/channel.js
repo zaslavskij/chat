@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 
 import config from '../config'
 import Channel from '../model/Channel.model'
+import PrivateChat from '../model/PrivateChat.model'
 
 async function create({ body: { title } }, res) {
   try {
@@ -17,21 +18,18 @@ async function create({ body: { title } }, res) {
 async function all(req, res) {
   const jwtUser = jwt.verify(req.cookies.token, config.secret)
   try {
-    let channels = await Channel.getChannels(jwtUser.uid)
-    channels = channels.reduce((acc, rec) => {
-      return {
-        ...acc,
-        [rec.title]: {
-          cid: rec._id,
-          users: rec.users,
-          messages: rec.messages
-        }
-      }
-    }, {})
-    res.json({ message: `Channels list loaded succesfully`, channels })
-  } catch (e) {
-    console.log(e)
-    res.status(500)
+    console.log(jwtUser.uid, jwtUser.nickname)
+    console.log(jwtUser.uid, jwtUser.nickname)
+    console.log(jwtUser.uid, jwtUser.nickname)
+    console.log(jwtUser.uid, jwtUser.nickname)
+
+    const channels = await Channel.getChannels(jwtUser.uid)
+    const privateChats = await PrivateChat.getPrivateChats(jwtUser.uid, jwtUser.nickname)
+
+    res.json({ message: `Channels list loaded succesfully`, channels, privateChats })
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ error: err.message })
   }
 }
 

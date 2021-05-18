@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import config from '../config'
 import User from '../model/User.model'
 import Channel from '../model/Channel.model'
+import PrivateChat from '../model/PrivateChat.model'
 
 async function register(req, res) {
   try {
@@ -11,9 +12,11 @@ async function register(req, res) {
 
     await user.save()
 
-    await Channel.subscribeUser(user._id, 'general')
+    await PrivateChat.initChatsForNewUser(user._id, user.nickname)
 
-    const token = jwt.sign({ uid: user._id }, config.secret, { expiresIn: '48h' })
+    await Channel.subscribeUser(user._id, 'general')
+    const payload = { uid: user._id, nickname: user.nickname }
+    const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
     user = { role: user.role, email: user.email, nickname: user.nickname }
     res.cookie('token', token, { expiresIn: 1000 * 60 * 60 * 48 })
     res.json({ status: 'ok', message: 'user was successfully registered', user, token })
@@ -26,7 +29,7 @@ async function login(req, res) {
   try {
     let user = await User.findAndValidateUser(req.body)
     user = user.toObject()
-    const payload = { uid: user._id }
+    const payload = { uid: user._id, nickname: user.nickname }
     const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
     user = { role: user.role, email: user.email, nickname: user.nickname }
 
@@ -42,7 +45,7 @@ async function auth(req, res) {
     const jwtUser = jwt.verify(req.cookies.token, config.secret)
     let user = await User.findById(jwtUser.uid)
 
-    const payload = { uid: user._id }
+    const payload = { uid: user._id, nickname: user.nickname }
     const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
     user = { role: user.role, email: user.email, nickname: user.nickname }
     res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })

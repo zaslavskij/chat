@@ -1,6 +1,6 @@
-function ChatException(message, code) {
+function ChannelException(message, code) {
   const error = new Error(message)
-  error.name = 'ChatException'
+  error.name = 'ChannelException'
   error.code = code
 
   error.toString = () => {
@@ -10,6 +10,6 @@ function ChatException(message, code) {
   return error
 }
 
-ChatException.prototype = Object.create(Error.prototype)
+ChannelException.prototype = Object.create(Error.prototype)
 
-export default ChatException
+export default ChannelException
