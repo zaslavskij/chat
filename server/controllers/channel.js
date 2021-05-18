@@ -18,11 +18,6 @@ async function create({ body: { title } }, res) {
 async function all(req, res) {
   const jwtUser = jwt.verify(req.cookies.token, config.secret)
   try {
-    console.log(jwtUser.uid, jwtUser.nickname)
-    console.log(jwtUser.uid, jwtUser.nickname)
-    console.log(jwtUser.uid, jwtUser.nickname)
-    console.log(jwtUser.uid, jwtUser.nickname)
-
     const channels = await Channel.getChannels(jwtUser.uid)
     const privateChats = await PrivateChat.getPrivateChats(jwtUser.uid, jwtUser.nickname)
 

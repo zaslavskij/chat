@@ -42,9 +42,7 @@ const PrivateChatSchema = new mongoose.Schema(
 
 PrivateChatSchema.statics = {
   async initChatsForNewUser(currentUserId, nickname) {
-    const allUsers = await User.find({}).then((users) =>
-      users.filter((u) => mongoose.Types.ObjectId(u._id) !== mongoose.Types.ObjectId(currentUserId))
-    )
+    const allUsers = await User.find({ _id: { $ne: currentUserId } })
 
     await Promise.all(
       allUsers.map(async (u) => {
@@ -68,20 +66,20 @@ PrivateChatSchema.statics = {
   },
 
   async getPrivateChats(currentUserId, nickname) {
-    try {
-      const privateChats = await this.find({
-        users: { $nin: [mongoose.Types.ObjectId(currentUserId)] }
-      })
+    const privateChats = await this.find({
+      users: { $nin: [mongoose.Types.ObjectId(currentUserId)] }
+    })
 
-      return privateChats.reduce((acc, rec) => {
-        return { ...acc, [rec.users.find((u) => u.nickname !== nickname).nickname]: { ...rec } }
-      }, {})
-    } catch (err) {
-      throw new Error(err.message)
-    } finally {
-      // eslint-disable-next-line
-      return { message: 'fuck off' }
-    }
+    return privateChats.reduce((acc, rec) => {
+      return {
+        ...acc,
+        [rec.users.find((u) => u.nickname !== nickname).nickname]: {
+          chatId: rec._id,
+          users: rec.users,
+          messages: rec.messages
+        }
+      }
+    }, {})
   }
 }
 
