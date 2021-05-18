@@ -3,7 +3,7 @@ import types from '../types'
 import ws from '../../../_common/ws-action-types'
 import { getSocket } from '..'
 
-const initialState = { selected: '', list: {}, usersOnline: [] }
+const initialState = { selected: '', list: {} }
 
 export default function channelsReducer(state = initialState, action) {
   switch (action.type) {
@@ -22,10 +22,6 @@ export default function channelsReducer(state = initialState, action) {
     }
     case types.CHANNEL.SELECT_CHANNEL: {
       return { ...state, selected: action.selected }
-    }
-
-    case ws.CHAT.UPDATE_USERS_ONLINE: {
-      return { ...state, usersOnline: [...new Set(action.usersOnline)] }
     }
 
     case ws.CHAT.SEND_TO_CLIENT: {

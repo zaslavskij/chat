@@ -20,7 +20,9 @@ const Chat = () => {
       socketConnected
     },
 
-    channels: { selected, list, usersOnline },
+    channels: { selected, list },
+
+    privateChats: { usersOnline },
 
     responsive: { asideShown }
   } = useSelector((s) => s)
