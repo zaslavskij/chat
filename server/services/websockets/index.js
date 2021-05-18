@@ -14,7 +14,7 @@ export default function initSockets(app) {
       if (parsedData.type.indexOf('SYSTEM') === -1) {
         await wsRouter(parsedData, connections)
       }
-      if (parsedData.type === ws.CHAT.SYSTEM_USER_HELLO) {
+      if (parsedData.type === ws.SYSTEM.USER_HELLO) {
         /* eslint-disable no-param-reassign */
         conn.userInfo = {
           nickname: parsedData.nickname,
@@ -25,7 +25,7 @@ export default function initSockets(app) {
           .map((cn) => cn.userInfo.nickname)
 
         connections.forEach((c) =>
-          c.write(JSON.stringify({ type: ws.CHAT.UPDATE_USERS_ONLINE, usersOnline }))
+          c.write(JSON.stringify({ type: ws.PRIVATE_CHATS.UPDATE_USERS_ONLINE, usersOnline }))
         )
         /* eslint-enable no-param-reassign */
       }
@@ -37,7 +37,7 @@ export default function initSockets(app) {
         .map((cn) => cn.userInfo.nickname)
 
       connections.forEach((c) =>
-        c.write(JSON.stringify({ type: ws.CHAT.UPDATE_USERS_ONLINE, usersOnline }))
+        c.write(JSON.stringify({ type: ws.PRIVATE_CHATS.UPDATE_USERS_ONLINE, usersOnline }))
       )
     })
   })

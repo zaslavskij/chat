@@ -46,10 +46,10 @@ const Chat = () => {
   }, [])
 
   useEffect(() => {
-    if (socketConnected) {
+    if (socketConnected && Object.keys(list).length) {
       dispatch(sendSystemHello())
     }
-  }, [socketConnected])
+  }, [socketConnected, list])
 
   const messages = typeof list[selected] !== 'undefined' ? list[selected].messages : []
 

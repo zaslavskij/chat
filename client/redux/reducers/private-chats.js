@@ -10,7 +10,7 @@ export default function reducer(state = initialState, action) {
     case types.PRIVATE_CHATS.GET_PRIVATE_CHATS: {
       return { ...state, list: action.list }
     }
-    case ws.CHAT.UPDATE_USERS_ONLINE: {
+    case ws.PRIVATE_CHATS.UPDATE_USERS_ONLINE: {
       return { ...state, usersOnline: [...new Set(action.usersOnline)] }
     }
     default:

@@ -24,7 +24,7 @@ export default function channelsReducer(state = initialState, action) {
       return { ...state, selected: action.selected }
     }
 
-    case ws.CHAT.SEND_TO_CLIENT: {
+    case ws.CHANNEL.SEND_TO_CLIENT: {
       return {
         ...state,
         list: {
@@ -88,7 +88,9 @@ export function sendMessage(message) {
       channels: { selected: channel }
     } = getState()
 
-    getSocket().send(JSON.stringify({ type: ws.CHAT.SEND_TO_SERVER, message, nickname, channel }))
+    getSocket().send(
+      JSON.stringify({ type: ws.CHANNEL.SEND_TO_SERVER, message, nickname, channel })
+    )
   }
 }
 

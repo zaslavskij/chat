@@ -81,8 +81,8 @@ export function sendSystemHello() {
 
     const subsChannels = Object.keys(getStore().channels.list)
 
-    getSocket().send(JSON.stringify({ type: ws.CHAT.SYSTEM_USER_HELLO, nickname, subsChannels }))
-    dispatch({ type: ws.CHAT.SYSTEM_USER_HELLO })
+    getSocket().send(JSON.stringify({ type: ws.SYSTEM.USER_HELLO, nickname, subsChannels }))
+    dispatch({ type: ws.SYSTEM.USER_HELLO })
   }
 }
 
