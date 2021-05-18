@@ -70,6 +70,9 @@ export function createChannel(t) {
       .then(({ channel: { title, messages, users, _id } }) => {
         return dispatch({ type: types.CHANNEL.CREATE_CHANNEL, title, messages, users, _id })
       })
+      .catch((r) => {
+        dispatch({ type: types.UI.SHOW_ERROR_MESSAGE, errorText: r.response.data.error })
+      })
   }
 }
 

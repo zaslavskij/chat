@@ -9,9 +9,8 @@ async function create({ body: { title } }, res) {
     channel = await channel.save()
     // eslint-disable-next-line
     res.json({ message: `Channel ${title} was succesfully created`, channel })
-  } catch (e) {
-    console.log(e)
-    res.status(500)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
   }
 }
 

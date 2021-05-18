@@ -1,6 +1,8 @@
 import mongoose from 'mongoose'
 import User from './User.model'
 
+import ChatException from '../services/errors/chat'
+
 const channelsSchema = new mongoose.Schema({
   title: {
     required: true,
@@ -39,6 +41,16 @@ const channelsSchema = new mongoose.Schema({
       }
     ],
     default: []
+  }
+})
+
+channelsSchema.post('save', function (error, doc, next) {
+  if (error.name === 'MongoError' && error.code === 11000) {
+    next(
+      new ChatException('Chat with the name provided is already existing', 'CHANNEL_DUPLICATING')
+    )
+  } else {
+    next(error)
   }
 })
 
