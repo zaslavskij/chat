@@ -25,8 +25,15 @@ const Aside = ({ nickname, channels, privateChats, selected, asideToggle, roles 
             <ProfileBlock username={nickname} />
           </div>
         </div>
-        <ChannelsList roles={roles} channels={channels} selected={selected} />
-        <PrivateChatsList privateChats={privateChats} />
+        <ChannelsList
+          roles={roles}
+          channels={channels}
+          selected={selected.chatType === 'channels' ? selected.name : false}
+        />
+        <PrivateChatsList
+          privateChats={privateChats}
+          selected={selected.chatType !== 'channels' ? selected.name : false}
+        />
       </div>
       <div className="hidden sm:flex fixed top-0 left-0 w-screen h-screen bg-gray-700 opacity-75" />
     </>

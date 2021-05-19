@@ -3,25 +3,12 @@ import types from '../types'
 import ws from '../../../_common/ws-action-types'
 import { getSocket } from '..'
 
-const initialState = { selected: '', list: {} }
+const initialState = { list: {} }
 
 export default function channelsReducer(state = initialState, action) {
   switch (action.type) {
     case types.CHANNEL.GET_CHANNELS: {
       return { ...state, selected: Object.keys(action.channels)[0], list: action.channels }
-    }
-    case types.CHANNEL.CREATE_CHANNEL: {
-      return {
-        ...state,
-        selected: action.title,
-        list: {
-          ...state.list,
-          [action.title]: { _id: action._id, users: action.users, messages: action.messages }
-        }
-      }
-    }
-    case types.CHANNEL.SELECT_CHANNEL: {
-      return { ...state, selected: action.selected }
     }
 
     case ws.CHANNEL.SEND_TO_CLIENT: {
@@ -48,10 +35,6 @@ export default function channelsReducer(state = initialState, action) {
     default:
       return state
   }
-}
-
-export function selectChannel(selected) {
-  return { type: types.CHANNEL.SELECT_CHANNEL, selected }
 }
 
 export function createChannel(t) {

@@ -51,14 +51,9 @@ const Chat = () => {
     }
   }, [socketConnected, list])
 
-  // const messages =
-  //   typeof [selected.type][selected.name] !== 'undefined'
-  //     ? [selected.type][selected.name].messages
-  //     : []
-
-  function getMessages({ type, name }) {
+  function getMessages({ chatType, name }) {
     let messages = []
-    if (type === 'channel')
+    if (chatType === 'channel')
       messages =
         typeof list[name] !== 'undefined' && list[name].messages !== 'undefined'
           ? list[name].messages
