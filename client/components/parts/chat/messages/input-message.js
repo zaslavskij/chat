@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { FaPaperPlane, FaBackspace } from 'react-icons/fa'
 
-import { sendMessage } from '../../../redux/reducers/channels'
+import { sendMessage } from '../../../../redux/reducers/channels'
 
 const InputMessage = ({ selected }) => {
   const [message, setMessage] = useState('')

@@ -8,8 +8,8 @@ import { sendSystemHello } from '../redux/reducers/user'
 
 import Aside from './parts/chat/aside'
 import Header from './parts/chat/header'
-import InputMessage from './parts/chat/input-message'
-import MessagesList from './parts/chat/messages-list'
+import InputMessage from './parts/chat/messages/input-message'
+import MessagesList from './parts/chat/messages/messages-list'
 
 const Chat = () => {
   const dispatch = useDispatch()

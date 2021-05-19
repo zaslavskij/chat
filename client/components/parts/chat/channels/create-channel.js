@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { FaPlus, FaTimes } from 'react-icons/fa'
-import { createChannel } from '../../../redux/reducers/channels'
+import { createChannel } from '../../../../redux/reducers/channels'
 
 const CreateChannel = () => {
   const dispatch = useDispatch()

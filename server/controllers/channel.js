@@ -23,7 +23,6 @@ async function all(req, res) {
 
     res.json({ message: `Channels list loaded succesfully`, channels, privateChats })
   } catch (err) {
-    console.log(err)
     res.status(500).json({ error: err.message })
   }
 }

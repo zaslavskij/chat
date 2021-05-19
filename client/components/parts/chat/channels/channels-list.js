@@ -1,18 +1,12 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 
-import { selectChannel } from '../../../redux/reducers/channels'
+import { selectChannel } from '../../../../redux/reducers/channels'
 import Channel from './channel'
 import CreateChannel from './create-channel'
 
 const ChannelsList = ({ channels, selected, roles }) => {
   const dispatch = useDispatch()
-  console.log(roles)
-  console.log(roles)
-  console.log(roles)
-  console.log(roles)
-  console.log(roles)
-  console.log(roles)
   return (
     <div className="mb-8">
       <div className="px-4 text-white flex justify-between items-center">

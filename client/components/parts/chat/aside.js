@@ -1,9 +1,9 @@
 import React from 'react'
 import { FaTimes } from 'react-icons/fa'
 
-import ChannelsList from './channels-list'
+import ChannelsList from './channels/channels-list'
 import ProfileBlock from './profile-block'
-import PrivateChatsList from './private-chats-list'
+import PrivateChatsList from './private_chats/private-chats-list'
 
 const Aside = ({ nickname, channels, privateChats, selected, asideToggle, roles }) => {
   return (
