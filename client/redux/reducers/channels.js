@@ -63,7 +63,7 @@ export function createChannel(t) {
     axios({
       url: '/api/v1/channels/new',
       method: 'post',
-      data: JSON.stringify({ title: t }),
+      data: JSON.stringify({ title: t, type: 'channel' }),
       headers: {
         'Content-Type': 'application/json'
       }

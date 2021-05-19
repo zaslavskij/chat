@@ -13,6 +13,12 @@ const channelsSchema = new mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     default: []
   },
+  type: {
+    type: String,
+    enum: ['channel', 'dialog'],
+    required: true
+  },
+
   messages: {
     type: [
       {
