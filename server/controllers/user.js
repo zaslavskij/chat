@@ -12,6 +12,7 @@ async function register(req, res) {
     await user.save()
 
     await Channel.subscribeUser(user._id, 'general')
+    await Channel.initNewDialogs(user._id)
 
     const token = jwt.sign({ uid: user._id }, config.secret, { expiresIn: '48h' })
     user = { role: user.role, email: user.email, nickname: user.nickname }

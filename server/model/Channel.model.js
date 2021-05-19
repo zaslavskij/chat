@@ -5,7 +5,9 @@ import ChatException from '../services/errors/chat'
 
 const channelsSchema = new mongoose.Schema({
   title: {
-    required: true,
+    required() {
+      return this.type === 'channel'
+    },
     type: String,
     unique: true
   },
@@ -74,16 +76,56 @@ channelsSchema.statics = {
   },
 
   async getChannels(userId) {
-    const channels = await this.find({
-      users: mongoose.Types.ObjectId(userId)
+    let channels = await this.find({
+      users: mongoose.Types.ObjectId(userId),
+      type: 'channel'
     })
-    return channels
+
+    channels = channels.reduce(
+      (acc, rec) => ({
+        ...acc,
+        [rec.title]: {
+          cid: rec._id,
+          users: rec.users,
+          messages: rec.messages
+        }
+      }),
+      {}
+    )
+
+    let dialogs = await this.find({
+      users: mongoose.Types.ObjectId(userId),
+      type: 'dialog'
+    })
+
+    dialogs = dialogs.reduce((acc, rec) => {
+      return {
+        ...acc,
+        [dialogs.users.find((u) => u._id !== userId)]: {
+          id: rec._id,
+          messages: rec.messages,
+          users: rec.users
+        }
+      }
+    }, {})
+
+    return { channels, dialogs }
   },
 
   async subscribeUser(userId, title) {
     const channel = await this.findOne({ title })
     channel.users.push(mongoose.Types.ObjectId(userId))
     await channel.save()
+  },
+
+  async initNewDialogs(userId) {
+    const users = await User.find({ _id: { $ne: userId } })
+
+    await Promise.all(
+      users.map(async (u) => {
+        await new this({ users: [u._id, userId] })
+      })
+    )
   }
 }
 

@@ -19,18 +19,9 @@ async function create(req, res) {
 async function all(req, res) {
   const jwtUser = jwt.verify(req.cookies.token, config.secret)
   try {
-    let channels = await Channel.getChannels(jwtUser.uid)
-    channels = channels.reduce((acc, rec) => {
-      return {
-        ...acc,
-        [rec.title]: {
-          cid: rec._id,
-          users: rec.users,
-          messages: rec.messages
-        }
-      }
-    }, {})
-    res.json({ message: `Channels list loaded succesfully`, channels })
+    const { channels, dialogs } = await Channel.getChannels(jwtUser.uid)
+
+    res.json({ message: `Channels and dialogs lists loaded succesfully`, channels, dialogs })
   } catch (e) {
     console.log(e)
     res.status(500)
