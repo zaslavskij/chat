@@ -16,13 +16,13 @@ const Chat = () => {
 
   const {
     user: {
-      user: { nickname },
+      user: { nickname, roles },
       socketConnected
     },
 
     channels: { selected, list },
 
-    privateChats: { usersOnline },
+    privateChats: { privateChats },
 
     responsive: { asideShown }
   } = useSelector((s) => s)
@@ -57,9 +57,10 @@ const Chat = () => {
     <div className="font-sans antialiased h-screen flex">
       {asideShown && (
         <Aside
+          roles={roles}
           asideToggle={asideTogglerDispatch}
           nickname={nickname}
-          usersOnline={usersOnline}
+          privateChats={privateChats}
           selected={selected}
           channels={Object.keys(list)}
         />

@@ -102,8 +102,9 @@ export function getChannels() {
       headers: {
         'Content-Type': 'application/json'
       }
-    }).then(({ data: { channels } }) => {
-      return dispatch({ type: types.CHANNEL.GET_CHANNELS, channels })
+    }).then(({ data: { channels, privateChats } }) => {
+      dispatch({ type: types.CHANNEL.GET_CHANNELS, channels })
+      dispatch({ type: types.PRIVATE_CHATS.GET_PRIVATE_CHATS, privateChats })
     })
   }
 }

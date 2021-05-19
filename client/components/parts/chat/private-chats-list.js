@@ -1,6 +1,6 @@
 import React from 'react'
 
-const UsersList = ({ usersOnline }) => {
+const UsersList = ({ privateChats }) => {
   return (
     <div className="py-8 mx-2  border-t border-white border-opacity-50">
       <div className="text-white flex justify-between items-center">
@@ -9,9 +9,14 @@ const UsersList = ({ usersOnline }) => {
           Users:
         </span>
       </div>
-      {usersOnline.map((nickname) => (
-        <div className="px-4 opacity-75 text-white" key={nickname}>
-          {nickname}
+      {Object.keys(privateChats).map((title) => (
+        <div
+          className={`px-4 ${
+            privateChats[title].online ? 'font-medium opactity-100' : 'opacity-75'
+          }  text-white`}
+          key={title}
+        >
+          {title}
         </div>
       ))}
     </div>

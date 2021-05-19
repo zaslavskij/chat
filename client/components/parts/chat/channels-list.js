@@ -5,9 +5,14 @@ import { selectChannel } from '../../../redux/reducers/channels'
 import Channel from './channel'
 import CreateChannel from './create-channel'
 
-const ChannelsList = ({ channels, selected }) => {
+const ChannelsList = ({ channels, selected, roles }) => {
   const dispatch = useDispatch()
-
+  console.log(roles)
+  console.log(roles)
+  console.log(roles)
+  console.log(roles)
+  console.log(roles)
+  console.log(roles)
   return (
     <div className="mb-8">
       <div className="px-4 text-white flex justify-between items-center">
@@ -25,7 +30,7 @@ const ChannelsList = ({ channels, selected }) => {
               cb={(ch) => dispatch(selectChannel(ch))}
             />
           ))}
-        <CreateChannel />
+        {roles.some((r) => r === 'admin') && <CreateChannel />}
       </div>
     </div>
   )
