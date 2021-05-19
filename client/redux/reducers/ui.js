@@ -1,7 +1,11 @@
 import types from '../types'
 
 const initialState = {
-  asideShown: true
+  asideShown: true,
+  selected: {
+    type: 'channels',
+    name: 'general'
+  }
 }
 
 export default function responsive(state = initialState, action) {

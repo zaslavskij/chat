@@ -20,11 +20,11 @@ const Chat = () => {
       socketConnected
     },
 
-    channels: { selected, list },
+    channels: { list },
 
     privateChats: { privateChats },
 
-    responsive: { asideShown }
+    ui: { asideShown, selected }
   } = useSelector((s) => s)
 
   const asideTogglerDispatch = (...ars) => {
@@ -51,7 +51,28 @@ const Chat = () => {
     }
   }, [socketConnected, list])
 
-  const messages = typeof list[selected] !== 'undefined' ? list[selected].messages : []
+  // const messages =
+  //   typeof [selected.type][selected.name] !== 'undefined'
+  //     ? [selected.type][selected.name].messages
+  //     : []
+
+  function getMessages({ type, name }) {
+    let messages = []
+    if (type === 'channel')
+      messages =
+        typeof list[name] !== 'undefined' && list[name].messages !== 'undefined'
+          ? list[name].messages
+          : []
+    else
+      messages =
+        typeof privateChats[name] !== 'undefined' && privateChats[name].messages !== 'undefined'
+          ? privateChats[name].messages
+          : []
+
+    return messages
+  }
+
+  const messages = getMessages(selected)
 
   return (
     <div className="font-sans antialiased h-screen flex">
@@ -66,9 +87,9 @@ const Chat = () => {
         />
       )}
       <div className="flex-1 flex flex-col bg-white overflow-hidden">
-        <Header asideToggle={asideTogglerDispatch} selected={selected} />
+        <Header asideToggle={asideTogglerDispatch} selected={selected.name} />
         <MessagesList messages={messages} />
-        <InputMessage selected={selected} />
+        <InputMessage selected={selected.name} />
       </div>
     </div>
   )
