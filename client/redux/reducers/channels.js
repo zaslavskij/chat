@@ -6,13 +6,19 @@ import { getSocket } from '..'
 const initialState = {
   selected: '',
   channels: {},
+  dialogs: {},
   usersOnline: []
 }
 
 export default function channelsReducer(state = initialState, action) {
   switch (action.type) {
     case types.CHANNEL.GET_CHANNELS: {
-      return { ...state, selected: Object.keys(action.channels)[0], channels: action.channels }
+      return {
+        ...state,
+        selected: Object.keys(action.channels)[0],
+        channels: action.channels,
+        dialogs: action.dialogs
+      }
     }
     case types.CHANNEL.CREATE_CHANNEL: {
       return {
@@ -108,8 +114,8 @@ export function getChannels() {
       headers: {
         'Content-Type': 'application/json'
       }
-    }).then(({ data: { channels } }) => {
-      return dispatch({ type: types.CHANNEL.GET_CHANNELS, channels })
+    }).then(({ data: { channels, dialogs } }) => {
+      return dispatch({ type: types.CHANNEL.GET_CHANNELS, channels, dialogs })
     })
   }
 }

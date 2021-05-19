@@ -94,20 +94,22 @@ channelsSchema.statics = {
     )
 
     let dialogs = await this.find({
-      users: mongoose.Types.ObjectId(userId),
+      users: { $elemMatch: { id: mongoose.Types.ObjectId(userId) } },
       type: 'dialog'
     })
 
     dialogs = dialogs.reduce((acc, rec) => {
       return {
         ...acc,
-        [dialogs.users.find((u) => u._id !== userId)]: {
+        [rec.users.find((u) => u._id !== userId).nickname]: {
           id: rec._id,
           messages: rec.messages,
           users: rec.users
         }
       }
     }, {})
+
+    console.log(dialogs)
 
     return { channels, dialogs }
   },
