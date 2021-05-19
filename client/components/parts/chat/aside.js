@@ -1,6 +1,8 @@
 import React from 'react'
 import { FaTimes } from 'react-icons/fa'
 
+import { setSelected } from '../../../redux/reducers/ui'
+
 import ChannelsList from './channels/channels-list'
 import ProfileBlock from './profile-block'
 import PrivateChatsList from './private_chats/private-chats-list'
@@ -29,10 +31,12 @@ const Aside = ({ nickname, channels, privateChats, selected, asideToggle, roles 
           roles={roles}
           channels={channels}
           selected={selected.chatType === 'channels' ? selected.name : false}
+          setSelected={setSelected}
         />
         <PrivateChatsList
           privateChats={privateChats}
           selected={selected.chatType !== 'channels' ? selected.name : false}
+          setSelected={setSelected}
         />
       </div>
       <div className="hidden sm:flex fixed top-0 left-0 w-screen h-screen bg-gray-700 opacity-75" />

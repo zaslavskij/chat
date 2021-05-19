@@ -1,11 +1,10 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 
-import { selectChannel } from '../../../../redux/reducers/channels'
 import Channel from './channel'
 import CreateChannel from './create-channel'
 
-const ChannelsList = ({ channels, selected, roles }) => {
+const ChannelsList = ({ channels, selected, roles, setSelected }) => {
   const dispatch = useDispatch()
   return (
     <div className="mb-8">
@@ -21,7 +20,7 @@ const ChannelsList = ({ channels, selected, roles }) => {
               key={c}
               title={c}
               selected={selected}
-              cb={(ch) => dispatch(selectChannel(ch))}
+              cb={(ch) => dispatch(setSelected('channels', ch))}
             />
           ))}
         {roles.some((r) => r === 'admin') && <CreateChannel />}

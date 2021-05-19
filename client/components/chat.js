@@ -13,7 +13,7 @@ import MessagesList from './parts/chat/messages/messages-list'
 
 const Chat = () => {
   const dispatch = useDispatch()
-
+  const messages = []
   const {
     user: {
       user: { nickname, roles },
@@ -50,24 +50,6 @@ const Chat = () => {
       dispatch(sendSystemHello())
     }
   }, [socketConnected, list])
-
-  function getMessages({ chatType, name }) {
-    let messages = []
-    if (chatType === 'channel')
-      messages =
-        typeof list[name] !== 'undefined' && list[name].messages !== 'undefined'
-          ? list[name].messages
-          : []
-    else
-      messages =
-        typeof privateChats[name] !== 'undefined' && privateChats[name].messages !== 'undefined'
-          ? privateChats[name].messages
-          : []
-
-    return messages
-  }
-
-  const messages = getMessages(selected)
 
   return (
     <div className="font-sans antialiased h-screen flex">
