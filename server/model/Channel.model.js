@@ -1,7 +1,8 @@
 import mongoose from 'mongoose'
+import ObjectID from 'bson-objectid'
 import User from './User.model'
 
-import ChatException from '../services/errors/chat'
+// import ChatException from '../services/errors/chat'
 
 const channelsSchema = new mongoose.Schema({
   title: {
@@ -9,7 +10,8 @@ const channelsSchema = new mongoose.Schema({
       return this.type === 'channel'
     },
     type: String,
-    unique: true
+    unique: true,
+    sparse: true
   },
   users: {
     type: [Object],
@@ -52,15 +54,15 @@ const channelsSchema = new mongoose.Schema({
   }
 })
 
-channelsSchema.post('save', function (error, doc, next) {
-  if (error.name === 'MongoError' && error.code === 11000) {
-    next(
-      new ChatException('Chat with the name provided is already existing', 'CHANNEL_DUPLICATING')
-    )
-  } else {
-    next(error)
-  }
-})
+// channelsSchema.post('save', function (error, doc, next) {
+//   if (error.name === 'MongoError' && error.code === 11000) {
+//     next(
+//       new ChatException('Chat with the name provided is already existing', 'CHANNEL_DUPLICATING')
+//     )
+//   } else {
+//     next(error)
+//   }
+// })
 
 channelsSchema.statics = {
   async addPost({ channel, nickname, message, timestamp, date, time }) {
@@ -126,12 +128,14 @@ channelsSchema.statics = {
     await Promise.all(
       users.map(async (u) => {
         const privateChat = new this({
+          title: ObjectID(),
           users: [
             { id: u._id, nickname: u.nickname },
             { id: currentUser._id, nickname: currentUser.nickname }
           ],
           type: 'dialog'
         })
+
         await privateChat.save()
       })
     )
