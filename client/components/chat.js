@@ -20,7 +20,7 @@ const Chat = () => {
       socketConnected
     },
 
-    channels: { selected, channels, usersOnline },
+    channels: { selected, channels, dialogs },
 
     responsive: { asideShown }
   } = useSelector((s) => s)
@@ -58,7 +58,7 @@ const Chat = () => {
         <Aside
           asideToggle={asideTogglerDispatch}
           nickname={nickname}
-          usersOnline={usersOnline}
+          dialogs={dialogs}
           selected={selected}
           channels={Object.keys(channels)}
         />
