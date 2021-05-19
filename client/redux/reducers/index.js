@@ -3,7 +3,7 @@ import { connectRouter } from 'connected-react-router'
 import user from './user'
 import channels from './channels'
 import privateChats from './private-chats'
-import responsive from './responsive'
+import ui from './ui'
 import errors from './errors'
 
 const createRootReducer = (history) =>
@@ -12,7 +12,7 @@ const createRootReducer = (history) =>
     user,
     channels,
     privateChats,
-    responsive,
+    ui,
     errors
   })
 
