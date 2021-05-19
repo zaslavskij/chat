@@ -71,7 +71,7 @@ channelsSchema.statics = {
       ch.messages.push({ nickname, message, timestamp, date, time })
       await ch.save()
     } else {
-      throw new Error('No credentials to wraite posts at the channel')
+      throw new Error('No credentials to write posts at the channel')
     }
   },
 

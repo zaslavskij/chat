@@ -18,8 +18,9 @@ export default function initSockets(app) {
         /* eslint-disable no-param-reassign */
         conn.userInfo = {
           nickname: parsedData.nickname,
-          subsChannels: parsedData.subsChannels
+          channels: parsedData.channels
         }
+
         usersOnline = connections
           .filter((c) => typeof c.userInfo !== 'undefined')
           .map((cn) => cn.userInfo.nickname)

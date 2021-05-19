@@ -3,19 +3,23 @@ import types from '../types'
 import ws from '../../../_common/ws-action-types'
 import { getSocket } from '..'
 
-const initialState = { selected: '', list: {}, usersOnline: [] }
+const initialState = {
+  selected: '',
+  channels: {},
+  usersOnline: []
+}
 
 export default function channelsReducer(state = initialState, action) {
   switch (action.type) {
     case types.CHANNEL.GET_CHANNELS: {
-      return { ...state, selected: Object.keys(action.channels)[0], list: action.channels }
+      return { ...state, selected: Object.keys(action.channels)[0], channels: action.channels }
     }
     case types.CHANNEL.CREATE_CHANNEL: {
       return {
         ...state,
         selected: action.title,
-        list: {
-          ...state.list,
+        channels: {
+          ...state.channels,
           [action.title]: { _id: action._id, users: action.users, messages: action.messages }
         }
       }
@@ -24,19 +28,19 @@ export default function channelsReducer(state = initialState, action) {
       return { ...state, selected: action.selected }
     }
 
-    case ws.CHAT.UPDATE_USERS_ONLINE: {
-      return { ...state, usersOnline: [...new Set(action.usersOnline)] }
-    }
+    // case ws.CHAT.UPDATE_USERS_ONLINE: {
+    //   return { ...state, usersOnline: [...new Set(action.usersOnline)] }
+    // }
 
     case ws.CHAT.SEND_TO_CLIENT: {
       return {
         ...state,
-        list: {
-          ...state.list,
+        channels: {
+          ...state.channels,
           [action.channel]: {
-            ...state.list[action.channel],
+            ...state.channels[action.channel],
             messages: [
-              ...state.list[action.channel].messages,
+              ...state.channels[action.channel].messages,
               {
                 nickname: action.nickname,
                 timestamp: action.timestamp,

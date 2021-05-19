@@ -19,7 +19,7 @@ export async function sendMessage(action, connections) {
 
   connections
     .filter((cn) => {
-      return cn.userInfo.subsChannels.includes(action.channel)
+      return cn.userInfo.channels.includes(action.channel)
     })
     .forEach((c) => {
       c.write(JSON.stringify({ ...message, type: ws.CHAT.SEND_TO_CLIENT }))

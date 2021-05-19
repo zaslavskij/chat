@@ -20,7 +20,7 @@ const Chat = () => {
       socketConnected
     },
 
-    channels: { selected, list, usersOnline },
+    channels: { selected, channels, usersOnline },
 
     responsive: { asideShown }
   } = useSelector((s) => s)
@@ -44,12 +44,13 @@ const Chat = () => {
   }, [])
 
   useEffect(() => {
-    if (socketConnected) {
+    console.log(socketConnected, Object.keys(channels).length > 0)
+    if (socketConnected && Object.keys(channels).length) {
       dispatch(sendSystemHello())
     }
-  }, [socketConnected])
+  }, [socketConnected, channels])
 
-  const messages = typeof list[selected] !== 'undefined' ? list[selected].messages : []
+  const messages = typeof channels[selected] !== 'undefined' ? channels[selected].messages : []
 
   return (
     <div className="font-sans antialiased h-screen flex">
@@ -59,7 +60,7 @@ const Chat = () => {
           nickname={nickname}
           usersOnline={usersOnline}
           selected={selected}
-          channels={Object.keys(list)}
+          channels={Object.keys(channels)}
         />
       )}
       <div className="flex-1 flex flex-col bg-white overflow-hidden">
