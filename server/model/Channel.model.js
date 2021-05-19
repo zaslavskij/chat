@@ -101,7 +101,9 @@ channelsSchema.statics = {
     dialogs = dialogs.reduce((acc, rec) => {
       return {
         ...acc,
-        [rec.users.find((u) => u._id !== userId).nickname]: {
+        [rec.users.find((u) => {
+          return String(u.id) !== String(userId)
+        }).nickname]: {
           id: rec._id,
           messages: rec.messages,
           users: rec.users
@@ -125,7 +127,7 @@ channelsSchema.statics = {
       users.map(async (u) => {
         const privateChat = new this({
           users: [
-            { nickname: u.nickname, id: u._id },
+            { id: u._id, nickname: u.nickname },
             { id: currentUser._id, nickname: currentUser.nickname }
           ],
           type: 'dialog'
