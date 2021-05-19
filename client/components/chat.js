@@ -20,7 +20,7 @@ const Chat = () => {
       socketConnected
     },
 
-    channels: { selected, channels, dialogs },
+    channels: { chatsFetched, selected, channels, dialogs },
 
     responsive: { asideShown }
   } = useSelector((s) => s)
@@ -44,11 +44,10 @@ const Chat = () => {
   }, [])
 
   useEffect(() => {
-    console.log(socketConnected, Object.keys(channels).length > 0)
-    if (socketConnected && Object.keys(channels).length) {
+    if (socketConnected && chatsFetched) {
       dispatch(sendSystemHello())
     }
-  }, [socketConnected, channels])
+  }, [socketConnected, chatsFetched])
 
   const messages = typeof channels[selected] !== 'undefined' ? channels[selected].messages : []
 

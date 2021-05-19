@@ -22,9 +22,9 @@ async function all(req, res) {
     const { channels, dialogs } = await Channel.getChannels(jwtUser.uid)
 
     res.json({ message: `Channels and dialogs lists loaded succesfully`, channels, dialogs })
-  } catch (e) {
-    console.log(e)
-    res.status(500)
+  } catch (err) {
+    console.log(err)
+    res.status(500).json({ error: err.message })
   }
 }
 

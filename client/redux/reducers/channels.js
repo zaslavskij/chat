@@ -7,6 +7,7 @@ const initialState = {
   selected: '',
   channels: {},
   dialogs: {},
+  chatsFetched: false,
   usersOnline: []
 }
 
@@ -17,7 +18,8 @@ export default function channelsReducer(state = initialState, action) {
         ...state,
         selected: Object.keys(action.channels)[0],
         channels: action.channels,
-        dialogs: action.dialogs
+        dialogs: action.dialogs,
+        chatsFetched: true
       }
     }
     case types.CHANNEL.CREATE_CHANNEL: {
@@ -34,9 +36,19 @@ export default function channelsReducer(state = initialState, action) {
       return { ...state, selected: action.selected }
     }
 
-    // case ws.CHAT.UPDATE_USERS_ONLINE: {
-    //   return { ...state, usersOnline: [...new Set(action.usersOnline)] }
-    // }
+    case ws.CHAT.UPDATE_USERS_ONLINE: {
+      const usersOnline = new Set(action.usersOnline)
+      return {
+        ...state,
+        dialogs: Object.keys(state.dialogs).reduce(
+          (acc, rec) => ({
+            ...acc,
+            [rec]: { ...state.dialogs[rec], online: usersOnline.has(rec) }
+          }),
+          {}
+        )
+      }
+    }
 
     case ws.CHAT.SEND_TO_CLIENT: {
       return {

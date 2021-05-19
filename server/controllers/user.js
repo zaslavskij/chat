@@ -19,6 +19,7 @@ async function register(req, res) {
     res.cookie('token', token, { expiresIn: 1000 * 60 * 60 * 48 })
     res.json({ status: 'ok', message: 'user was successfully registered', user, token })
   } catch (err) {
+    console.log(err)
     res.status(500).json({ error: err.message })
   }
 }
@@ -34,6 +35,7 @@ async function login(req, res) {
     res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
     res.json({ status: 'ok', user, token })
   } catch (err) {
+    console.log(err)
     res.status(500).json({ error: err.message })
   }
 }
@@ -49,6 +51,7 @@ async function auth(req, res) {
     res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
     res.json({ status: 'ok', token, user })
   } catch (err) {
+    console.log(err)
     res.status(500).json({ error: err.message })
   }
 }

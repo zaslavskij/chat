@@ -109,8 +109,6 @@ channelsSchema.statics = {
       }
     }, {})
 
-    console.log(dialogs)
-
     return { channels, dialogs }
   },
 

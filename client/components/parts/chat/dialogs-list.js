@@ -10,7 +10,12 @@ const DialogsList = ({ dialogs }) => {
         </span>
       </div>
       {Object.keys(dialogs).map((title) => (
-        <div className="px-4 opacity-75 text-white" key={title}>
+        <div
+          className={`px-4  ${
+            dialogs[title].online ? 'opacity-100 text-medium' : 'opacity-75'
+          }  text-white`}
+          key={title}
+        >
           {title}
         </div>
       ))}
