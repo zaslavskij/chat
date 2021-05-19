@@ -12,7 +12,7 @@ const channelsSchema = new mongoose.Schema({
     unique: true
   },
   users: {
-    type: [mongoose.Schema.Types.ObjectId],
+    type: [Object],
     default: []
   },
   type: {
@@ -120,10 +120,17 @@ channelsSchema.statics = {
 
   async initNewDialogs(userId) {
     const users = await User.find({ _id: { $ne: userId } })
-
+    const currentUser = await User.findOne({ _id: userId })
     await Promise.all(
       users.map(async (u) => {
-        await new this({ users: [u._id, userId] })
+        const privateChat = new this({
+          users: [
+            { nickname: u.nickname, id: u._id },
+            { id: currentUser._id, nickname: currentUser.nickname }
+          ],
+          type: 'dialog'
+        })
+        await privateChat.save()
       })
     )
   }
