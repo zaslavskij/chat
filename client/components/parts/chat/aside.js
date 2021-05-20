@@ -5,7 +5,7 @@ import ChannelsList from './channels-list'
 import ProfileBlock from './profile-block'
 import DialogsList from './dialogs-list'
 
-const Aside = ({ nickname, channels, dialogs, selected, asideToggle }) => {
+const Aside = ({ roles, nickname, channels, dialogs, selected, asideToggle }) => {
   return (
     <>
       <div className="bg-green-600 text-purple-lighter flex-none w-64 pb-6 select-none block sm:fixed sm:top-0 sm:left-0 sm:h-screen z-10">
@@ -25,7 +25,7 @@ const Aside = ({ nickname, channels, dialogs, selected, asideToggle }) => {
             <ProfileBlock username={nickname} />
           </div>
         </div>
-        <ChannelsList channels={channels} selected={selected} />
+        <ChannelsList roles={roles} channels={channels} selected={selected} />
         <DialogsList dialogs={dialogs} />
       </div>
       <div className="hidden sm:flex fixed top-0 left-0 w-screen h-screen bg-gray-700 opacity-75" />

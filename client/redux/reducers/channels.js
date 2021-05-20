@@ -38,11 +38,6 @@ export default function channelsReducer(state = initialState, action) {
 
     case ws.CHAT.UPDATE_USERS_ONLINE: {
       const usersOnline = new Set(action.usersOnline)
-      console.log(usersOnline)
-      console.log(usersOnline)
-      console.log(usersOnline)
-      console.log(usersOnline)
-      console.log(usersOnline)
       return {
         ...state,
         dialogs: Object.keys(state.dialogs).reduce(

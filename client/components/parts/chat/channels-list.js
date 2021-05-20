@@ -5,7 +5,7 @@ import { selectChannel } from '../../../redux/reducers/channels'
 import Channel from './channel'
 import CreateChannel from './create-channel'
 
-const ChannelsList = ({ channels, selected }) => {
+const ChannelsList = ({ roles, channels, selected }) => {
   const dispatch = useDispatch()
 
   return (
@@ -25,7 +25,7 @@ const ChannelsList = ({ channels, selected }) => {
               cb={(ch) => dispatch(selectChannel(ch))}
             />
           ))}
-        <CreateChannel />
+        {roles.includes('admin') && <CreateChannel />}
       </div>
     </div>
   )

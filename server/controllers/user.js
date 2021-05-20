@@ -15,7 +15,7 @@ async function register(req, res) {
     await Channel.initNewDialogs(user._id)
 
     const token = jwt.sign({ uid: user._id }, config.secret, { expiresIn: '48h' })
-    user = { role: user.role, email: user.email, nickname: user.nickname }
+    user = { roles: user.roles, email: user.email, nickname: user.nickname }
     res.cookie('token', token, { expiresIn: 1000 * 60 * 60 * 48 })
     res.json({ status: 'ok', message: 'user was successfully registered', user, token })
   } catch (err) {
@@ -30,7 +30,7 @@ async function login(req, res) {
     user = user.toObject()
     const payload = { uid: user._id }
     const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
-    user = { role: user.role, email: user.email, nickname: user.nickname }
+    user = { roles: user.roles, email: user.email, nickname: user.nickname }
 
     res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
     res.json({ status: 'ok', user, token })
@@ -47,7 +47,7 @@ async function auth(req, res) {
 
     const payload = { uid: user._id }
     const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
-    user = { role: user.role, email: user.email, nickname: user.nickname }
+    user = { roles: user.roles, email: user.email, nickname: user.nickname }
     res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
     res.json({ status: 'ok', token, user })
   } catch (err) {

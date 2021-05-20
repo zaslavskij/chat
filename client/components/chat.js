@@ -16,7 +16,7 @@ const Chat = () => {
 
   const {
     user: {
-      user: { nickname },
+      user: { nickname, roles },
       socketConnected
     },
 
@@ -55,6 +55,7 @@ const Chat = () => {
     <div className="font-sans antialiased h-screen flex">
       {asideShown && (
         <Aside
+          roles={roles}
           asideToggle={asideTogglerDispatch}
           nickname={nickname}
           dialogs={dialogs}
