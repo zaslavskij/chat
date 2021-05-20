@@ -8,6 +8,7 @@ async function create(req, res) {
     const jwtUser = jwt.verify(req.cookies.token, config.secret)
     let channel = new Channel({ title: req.body.title, type: req.body.type, users: [jwtUser.uid] })
     channel = await channel.save()
+    await Channel.subscribeUser(jwtUser.uid, req.body.title)
     // eslint-disable-next-line
     res.json({ message: `Channel ${req.body.title} was succesfully created`, channel })
   } catch (err) {

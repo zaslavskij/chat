@@ -117,6 +117,12 @@ channelsSchema.statics = {
   },
 
   async subscribeUser(userId, title) {
+    console.log(userId, title)
+    console.log(userId, title)
+    console.log(userId, title)
+    console.log(userId, title)
+    console.log(userId, title)
+    console.log(userId, title)
     const channel = await this.findOne({ title })
     channel.users.push(mongoose.Types.ObjectId(userId))
     await channel.save()
