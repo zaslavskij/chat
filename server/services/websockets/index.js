@@ -36,6 +36,8 @@ export default function initSockets(app) {
     conn.on('close', () => {
       connections = connections.filter((c) => c.readyState !== 3)
 
+      usersOnline = connections.map((cn) => cn.userInfo.nickname)
+
       connections.forEach((c) =>
         c.write(JSON.stringify({ type: ws.CHAT.UPDATE_USERS_ONLINE, usersOnline }))
       )

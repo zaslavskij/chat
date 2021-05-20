@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import ObjectID from 'bson-objectid'
 import User from './User.model'
 
-// import ChatException from '../services/errors/chat'
+import ChatException from '../services/errors/chat'
 
 const channelsSchema = new mongoose.Schema({
   title: {
@@ -54,15 +54,15 @@ const channelsSchema = new mongoose.Schema({
   }
 })
 
-// channelsSchema.post('save', function (error, doc, next) {
-//   if (error.name === 'MongoError' && error.code === 11000) {
-//     next(
-//       new ChatException('Chat with the name provided is already existing', 'CHANNEL_DUPLICATING')
-//     )
-//   } else {
-//     next(error)
-//   }
-// })
+channelsSchema.post('save', function (error, doc, next) {
+  if (error.name === 'MongoError' && error.code === 11000) {
+    next(
+      new ChatException('Chat with the name provided is already existing', 'CHANNEL_DUPLICATING')
+    )
+  } else {
+    next(error)
+  }
+})
 
 channelsSchema.statics = {
   async addPost({ channel, nickname, message, timestamp, date, time }) {
