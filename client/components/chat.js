@@ -10,6 +10,7 @@ import Aside from './parts/chat/aside'
 import Header from './parts/chat/header'
 import InputMessage from './parts/chat/input-message'
 import MessagesList from './parts/chat/messages-list'
+import ManageChannel from './parts/chat/manage-channel'
 
 const Chat = () => {
   const dispatch = useDispatch()
@@ -68,6 +69,7 @@ const Chat = () => {
         <MessagesList messages={messages} />
         <InputMessage selected={selected} />
       </div>
+      <ManageChannel />
     </div>
   )
 }

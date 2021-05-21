@@ -3,7 +3,7 @@ import { FaBars } from 'react-icons/fa'
 
 const Header = ({ selected, asideToggle }) => {
   return (
-    <div className="border-b px-3 py-2 items-center flex">
+    <div className="border-b px-3 h-12 items-center flex">
       <button className="sm:flex hidden mr-2" type="button" onClick={() => asideToggle(true)}>
         <FaBars className="mr-2 text-gray-500 hover:text-gray-600 text-xl hidden sm:flex" />
       </button>
