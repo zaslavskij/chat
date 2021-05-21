@@ -5,6 +5,10 @@ import { getSocket } from '..'
 
 const initialState = {
   selected: '',
+  selection: {
+    channelType: 'channel',
+    name: 'general'
+  },
   channels: {},
   dialogs: {},
   chatsFetched: false,
@@ -48,6 +52,10 @@ export default function channelsReducer(state = initialState, action) {
           {}
         )
       }
+    }
+
+    case types.CHANNEL.CHANGE_SELECTION: {
+      return { ...state, selection: { channelType: action.channelType, name: action.name } }
     }
 
     case ws.CHAT.SEND_TO_CLIENT: {
@@ -116,6 +124,10 @@ export function sendMessage(message) {
 
     getSocket().send(JSON.stringify({ type: ws.CHAT.SEND_TO_SERVER, message, nickname, channel }))
   }
+}
+
+export function changeSelection(channelType, name) {
+  return { type: types.CHANNEL.CHANGE_SELECTION, channelType, name }
 }
 
 export function getChannels() {

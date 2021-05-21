@@ -1,11 +1,16 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { FaTimes } from 'react-icons/fa'
+
+import { changeSelection } from '../../../redux/reducers/channels'
 
 import ChannelsList from './channels-list'
 import ProfileBlock from './profile-block'
 import DialogsList from './dialogs-list'
 
 const Aside = ({ roles, nickname, channels, dialogs, selected, asideToggle }) => {
+  const dispatch = useDispatch()
+  const selectionDispatch = (...args) => dispatch(changeSelection(...args))
   return (
     <>
       <div className="bg-green-600 text-purple-lighter flex-none w-64 pb-6 select-none block sm:fixed sm:top-0 sm:left-0 sm:h-screen z-10">
@@ -25,8 +30,13 @@ const Aside = ({ roles, nickname, channels, dialogs, selected, asideToggle }) =>
             <ProfileBlock username={nickname} />
           </div>
         </div>
-        <ChannelsList roles={roles} channels={channels} selected={selected} />
-        <DialogsList dialogs={dialogs} />
+        <ChannelsList
+          selectionDispatch={selectionDispatch}
+          roles={roles}
+          channels={channels}
+          selected={selected}
+        />
+        <DialogsList selectionDispatch={selectionDispatch} dialogs={dialogs} />
       </div>
       <div className="hidden sm:flex fixed top-0 left-0 w-screen h-screen bg-gray-700 opacity-75" />
     </>

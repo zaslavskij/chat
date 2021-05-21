@@ -1,13 +1,9 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 
-import { selectChannel } from '../../../redux/reducers/channels'
 import Channel from './channel'
 import CreateChannel from './create-channel'
 
-const ChannelsList = ({ roles, channels, selected }) => {
-  const dispatch = useDispatch()
-
+const ChannelsList = ({ selectionDispatch, roles, channels, selected }) => {
   return (
     <div className="mb-8">
       <div className="px-4 text-white flex justify-between items-center">
@@ -18,12 +14,7 @@ const ChannelsList = ({ roles, channels, selected }) => {
       <div className="flex flex-col items-stretch h-full">
         {channels.length > 0 &&
           channels.map((c) => (
-            <Channel
-              key={c}
-              title={c}
-              selected={selected}
-              cb={(ch) => dispatch(selectChannel(ch))}
-            />
+            <Channel cb={selectionDispatch} key={c} title={c} selected={selected} />
           ))}
         {roles.includes('admin') && <CreateChannel />}
       </div>

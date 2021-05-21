@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { getChannels } from '../redux/reducers/channels'
-import { asideToggle } from '../redux/reducers/responsive'
+import { asideToggle } from '../redux/reducers/ui'
 import { sendSystemHello } from '../redux/reducers/user'
 
 import Aside from './parts/chat/aside'
@@ -23,7 +23,7 @@ const Chat = () => {
 
     channels: { chatsFetched, selected, channels, dialogs },
 
-    responsive: { asideShown }
+    ui: { asideShown }
   } = useSelector((s) => s)
 
   const asideTogglerDispatch = (...ars) => {

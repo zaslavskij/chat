@@ -2,7 +2,7 @@ import { combineReducers } from 'redux'
 import { connectRouter } from 'connected-react-router'
 import user from './user'
 import channels from './channels'
-import responsive from './responsive'
+import ui from './ui'
 import errors from './errors'
 
 const createRootReducer = (history) =>
@@ -10,7 +10,7 @@ const createRootReducer = (history) =>
     router: connectRouter(history),
     user,
     channels,
-    responsive,
+    ui,
     errors
   })
 
