@@ -1,9 +1,9 @@
 import React from 'react'
 
-import Channel from './channel'
+import ChannelButton from './channel-button'
 import CreateChannel from './create-channel'
 
-const ChannelsList = ({ selectionDispatch, roles, channels, selected }) => {
+const ChannelsList = ({ selectionDispatch, roles, channels, selection }) => {
   return (
     <div className="mb-8">
       <div className="px-4 text-white flex justify-between items-center">
@@ -13,9 +13,17 @@ const ChannelsList = ({ selectionDispatch, roles, channels, selected }) => {
       </div>
       <div className="flex flex-col items-stretch h-full">
         {channels.length > 0 &&
-          channels.map((c) => (
-            <Channel cb={selectionDispatch} key={c} title={c} selected={selected} />
-          ))}
+          channels.map((c) => {
+            console.log(selection.channelType, selection.title)
+            return (
+              <ChannelButton
+                cb={selectionDispatch}
+                key={c}
+                title={c}
+                selected={selection.channelType === 'channels' && selection.title === c}
+              />
+            )
+          })}
         {roles.includes('admin') && <CreateChannel />}
       </div>
     </div>

@@ -21,7 +21,7 @@ const Chat = () => {
       socketConnected
     },
 
-    channels: { chatsFetched, selected, channels, dialogs },
+    channels,
 
     ui: { asideShown }
   } = useSelector((s) => s)
@@ -44,13 +44,19 @@ const Chat = () => {
     }
   }, [])
 
+  const { chatsFetched, selected, dialogs, selection } = channels
+
   useEffect(() => {
     if (socketConnected && chatsFetched) {
       dispatch(sendSystemHello())
     }
   }, [socketConnected, chatsFetched])
 
-  const messages = typeof channels[selected] !== 'undefined' ? channels[selected].messages : []
+  const messages =
+    typeof channels[selection.channelType][selection.title] !== 'undefined' &&
+    typeof channels[selection.channelType][selection.title].messages !== 'undefined'
+      ? channels[selection.channelType][selection.title].messages
+      : []
 
   return (
     <div className="font-sans antialiased h-screen flex">
@@ -60,12 +66,16 @@ const Chat = () => {
           asideToggle={asideTogglerDispatch}
           nickname={nickname}
           dialogs={dialogs}
-          selected={selected}
-          channels={Object.keys(channels)}
+          selection={selection}
+          channels={Object.keys(channels.channels)}
         />
       )}
       <div className="flex-1 flex flex-col bg-white overflow-hidden">
-        <Header asideToggle={asideTogglerDispatch} selected={selected} />
+        <Header
+          asideToggle={asideTogglerDispatch}
+          title={selection.title}
+          isChannel={selection.channelType === 'channels'}
+        />
         <MessagesList messages={messages} />
         <InputMessage selected={selected} />
       </div>

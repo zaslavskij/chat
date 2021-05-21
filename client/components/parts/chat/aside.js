@@ -8,7 +8,7 @@ import ChannelsList from './channels-list'
 import ProfileBlock from './profile-block'
 import DialogsList from './dialogs-list'
 
-const Aside = ({ roles, nickname, channels, dialogs, selected, asideToggle }) => {
+const Aside = ({ roles, nickname, channels, dialogs, selection, asideToggle }) => {
   const dispatch = useDispatch()
   const selectionDispatch = (...args) => dispatch(changeSelection(...args))
   return (
@@ -34,9 +34,13 @@ const Aside = ({ roles, nickname, channels, dialogs, selected, asideToggle }) =>
           selectionDispatch={selectionDispatch}
           roles={roles}
           channels={channels}
-          selected={selected}
+          selection={selection}
         />
-        <DialogsList selectionDispatch={selectionDispatch} dialogs={dialogs} />
+        <DialogsList
+          selection={selection}
+          selectionDispatch={selectionDispatch}
+          dialogs={dialogs}
+        />
       </div>
       <div className="hidden sm:flex fixed top-0 left-0 w-screen h-screen bg-gray-700 opacity-75" />
     </>

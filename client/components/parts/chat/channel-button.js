@@ -1,12 +1,12 @@
 import React from 'react'
 
-const Channel = ({ title, selected, cb }) => {
+const ChannelButton = ({ title, selected, cb }) => {
   return (
     <button
       type="button"
-      onClick={() => cb('channel', title)}
+      onClick={() => cb('channels', title)}
       className={`${
-        selected === title ? 'bg-gray-800' : ' '
+        selected ? 'bg-gray-800' : ' '
       } text-left cursor-pointer py-1 px-8 text-white bg-opacity-25`}
     >
       {title}
@@ -14,4 +14,4 @@ const Channel = ({ title, selected, cb }) => {
   )
 }
 
-export default Channel
+export default ChannelButton

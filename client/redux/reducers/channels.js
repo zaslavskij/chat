@@ -4,10 +4,9 @@ import ws from '../../../_common/ws-action-types'
 import { getSocket } from '..'
 
 const initialState = {
-  selected: '',
   selection: {
-    channelType: 'channel',
-    name: 'general'
+    channelType: 'channels',
+    title: 'general'
   },
   channels: {},
   dialogs: {},
@@ -20,7 +19,7 @@ export default function channelsReducer(state = initialState, action) {
     case types.CHANNEL.GET_CHANNELS: {
       return {
         ...state,
-        selected: Object.keys(action.channels)[0],
+        selection: { title: Object.keys(action.channels)[0], channelType: 'channels' },
         channels: action.channels,
         dialogs: action.dialogs,
         chatsFetched: true
@@ -29,7 +28,7 @@ export default function channelsReducer(state = initialState, action) {
     case types.CHANNEL.CREATE_CHANNEL: {
       return {
         ...state,
-        selected: action.title,
+        selection: { ...state.selection, title: action.title },
         channels: {
           ...state.channels,
           [action.title]: { _id: action._id, users: action.users, messages: action.messages }
@@ -55,7 +54,7 @@ export default function channelsReducer(state = initialState, action) {
     }
 
     case types.CHANNEL.CHANGE_SELECTION: {
-      return { ...state, selection: { channelType: action.channelType, name: action.name } }
+      return { ...state, selection: { channelType: action.channelType, title: action.title } }
     }
 
     case ws.CHAT.SEND_TO_CLIENT: {
@@ -126,8 +125,8 @@ export function sendMessage(message) {
   }
 }
 
-export function changeSelection(channelType, name) {
-  return { type: types.CHANNEL.CHANGE_SELECTION, channelType, name }
+export function changeSelection(channelType, title) {
+  return { type: types.CHANNEL.CHANGE_SELECTION, channelType, title }
 }
 
 export function getChannels() {

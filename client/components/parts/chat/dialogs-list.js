@@ -1,7 +1,7 @@
 import React from 'react'
 import DialogButton from './dialog-button'
 
-const DialogsList = ({ selectionDispatch, dialogs }) => {
+const DialogsList = ({ selectionDispatch, dialogs, selection }) => {
   return (
     <div className="py-8 mx-2  border-t border-white border-opacity-50">
       <div className="text-white flex justify-between items-center">
@@ -13,6 +13,7 @@ const DialogsList = ({ selectionDispatch, dialogs }) => {
           cb={selectionDispatch}
           title={title}
           key={title}
+          selected={selection.channelType === 'dialogs' && selection.title === title}
         />
       ))}
     </div>
