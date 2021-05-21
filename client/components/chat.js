@@ -69,7 +69,7 @@ const Chat = () => {
         <MessagesList messages={messages} />
         <InputMessage selected={selected} />
       </div>
-      <ManageChannel />
+      {false && <ManageChannel />}
     </div>
   )
 }
