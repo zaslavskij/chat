@@ -26,10 +26,6 @@ export default function initSockets(app) {
         connections = connections.filter((c) => typeof c.userInfo !== 'undefined')
 
         if (connections.length) {
-          console.log(
-            'on connection',
-            connections.map((c) => c)
-          )
           usersOnline = connections.map((cn) => cn.userInfo.nickname)
 
           connections.forEach((c) =>
@@ -41,11 +37,6 @@ export default function initSockets(app) {
     })
     conn.on('close', () => {
       connections = connections.filter((c) => c.readyState !== 3)
-
-      console.log(
-        'lost connection',
-        connections.map((c) => c)
-      )
 
       if (connections.length) {
         usersOnline = connections.map((cn) => cn.userInfo.nickname)

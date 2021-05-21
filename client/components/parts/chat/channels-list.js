@@ -16,7 +16,7 @@ const ChannelsList = ({ roles, channels, selected }) => {
         </span>
       </div>
       <div className="flex flex-col items-stretch h-full">
-        {channels.length &&
+        {channels.length > 0 &&
           channels.map((c) => (
             <Channel
               key={c}
