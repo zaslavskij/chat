@@ -4,7 +4,7 @@ import { FaPaperPlane, FaBackspace } from 'react-icons/fa'
 
 import { sendMessage } from '../../../redux/reducers/channels'
 
-const InputMessage = ({ selected }) => {
+const InputMessage = ({ channelTitle, isChannel }) => {
   const [message, setMessage] = useState('')
   const dispatch = useDispatch()
   return (
@@ -15,7 +15,7 @@ const InputMessage = ({ selected }) => {
           className="w-full px-4 py-2"
           value={message}
           onChange={({ target: { value } }) => setMessage(value)}
-          placeholder={`Message to: #${selected}`}
+          placeholder={`Message to: ${isChannel ? '#' : '@'}${channelTitle}`}
         />
         {message.length > 0 && (
           <div className="flex">

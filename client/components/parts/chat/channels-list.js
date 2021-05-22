@@ -7,7 +7,7 @@ const ChannelsList = ({ selectionDispatch, roles, channels, selection }) => {
   return (
     <div className="mb-8">
       <div className="px-4 text-white flex justify-between items-center">
-        <span className="flex items-center">
+        <span className="flex items-center mb-1">
           <span className="flex mr-1">#</span> Channels
         </span>
       </div>

@@ -3,9 +3,9 @@ import DialogButton from './dialog-button'
 
 const DialogsList = ({ selectionDispatch, dialogs, selection }) => {
   return (
-    <div className="py-8 mx-2  border-t border-white border-opacity-50">
+    <div className="py-6">
       <div className="text-white flex justify-between items-center">
-        <span className="flex items-center ml-4">Users:</span>
+        <span className="flex items-center ml-4 mb-1">Users:</span>
       </div>
       {Object.keys(dialogs).map((title) => (
         <DialogButton

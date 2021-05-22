@@ -9,7 +9,7 @@ const Header = ({ title, asideToggle, isChannel }) => {
       </button>
 
       <h3 className="text-gray-700 mb-1 font-extrabold">
-        {isChannel ? '#' : ''}
+        {isChannel ? '#' : '@'}
         {title}
       </h3>
     </div>

@@ -5,7 +5,7 @@ const DialogButton = ({ online, title, selected, cb }) => {
     <button
       type="button"
       onClick={() => cb('dialogs', title)}
-      className={`px-4 w-full flex items-center ${
+      className={`px-4 py-1 w-full flex items-center ${
         online ? 'opacity-100 text-medium' : 'opacity-75'
       } ${selected ? 'bg-gray-800' : ' '} text-white bg-opacity-25`}
       key={title}

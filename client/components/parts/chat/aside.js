@@ -36,6 +36,7 @@ const Aside = ({ roles, nickname, channels, dialogs, selection, asideToggle }) =
           channels={channels}
           selection={selection}
         />
+        <div className="mx-2 border-t border-white border-opacity-50" />
         <DialogsList
           selection={selection}
           selectionDispatch={selectionDispatch}
