@@ -14,7 +14,6 @@ const ChannelsList = ({ selectionDispatch, roles, channels, selection }) => {
       <div className="flex flex-col items-stretch h-full">
         {channels.length > 0 &&
           channels.map((c) => {
-            console.log(selection.channelType, selection.title)
             return (
               <ChannelButton
                 cb={selectionDispatch}

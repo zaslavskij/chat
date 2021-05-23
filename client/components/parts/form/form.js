@@ -28,7 +28,6 @@ const Form = ({ parent }) => {
       isRegister: Yup.boolean().required('Required!')
     }),
     onSubmit: (values) => {
-      console.log(JSON.stringify(values, 2, 2))
       if (parent === 'login') {
         dispatch(login(values.email, values.password))
       }

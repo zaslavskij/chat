@@ -54,7 +54,7 @@ const channelsSchema = new mongoose.Schema({
   }
 })
 
-channelsSchema.post('save', function (error, doc, next) {
+channelsSchema.post('save', function saveFunc(error, doc, next) {
   if (error.name === 'MongoError' && error.code === 11000) {
     next(
       new ChatException('Chat with the name provided is already existing', 'CHANNEL_DUPLICATING')
@@ -65,11 +65,15 @@ channelsSchema.post('save', function (error, doc, next) {
 })
 
 channelsSchema.statics = {
-  async addPost({ channel, nickname, message, timestamp, date, time }) {
-    const ch = await this.findOne({ title: channel })
+  async addPost({ cid, nickname, message, timestamp, date, time }) {
+    const ch = await this.findOne({ _id: cid })
     const user = await User.findOne({ nickname })
 
-    if (ch.users.includes(user._id)) {
+    const isCredentialsIsOk =
+      ch.users.includes(mongoose.Types.ObjectId(user._id)) ||
+      ch.users.some((u) => String(u.id) === String(user._id))
+
+    if (isCredentialsIsOk) {
       ch.messages.push({ nickname, message, timestamp, date, time })
       await ch.save()
     } else {
@@ -106,7 +110,7 @@ channelsSchema.statics = {
         [rec.users.find((u) => {
           return String(u.id) !== String(userId)
         }).nickname]: {
-          id: rec._id,
+          cid: rec._id,
           messages: rec.messages,
           users: rec.users
         }
@@ -117,12 +121,6 @@ channelsSchema.statics = {
   },
 
   async subscribeUser(userId, title) {
-    console.log(userId, title)
-    console.log(userId, title)
-    console.log(userId, title)
-    console.log(userId, title)
-    console.log(userId, title)
-    console.log(userId, title)
     const channel = await this.findOne({ title })
     channel.users.push(mongoose.Types.ObjectId(userId))
     await channel.save()

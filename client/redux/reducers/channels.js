@@ -60,12 +60,12 @@ export default function channelsReducer(state = initialState, action) {
     case ws.CHAT.SEND_TO_CLIENT: {
       return {
         ...state,
-        channels: {
-          ...state.channels,
-          [action.channel]: {
-            ...state.channels[action.channel],
+        [action.channelType]: {
+          ...state[action.channelType],
+          [action.title]: {
+            ...state[action.channelType][action.title],
             messages: [
-              ...state.channels[action.channel].messages,
+              ...state[action.channelType][action.title].messages,
               {
                 nickname: action.nickname,
                 timestamp: action.timestamp,
@@ -78,6 +78,7 @@ export default function channelsReducer(state = initialState, action) {
         }
       }
     }
+
     default:
       return state
   }
@@ -114,14 +115,13 @@ export function createChannel(t) {
 
 export function sendMessage(message) {
   return (dispatch, getState) => {
-    const {
-      user: {
-        user: { nickname }
-      },
-      channels: { selected: channel }
-    } = getState()
+    const { nickname } = getState().user.user
+    const { title, channelType } = getState().channels.selection
+    const { cid } = getState().channels[channelType][title]
 
-    getSocket().send(JSON.stringify({ type: ws.CHAT.SEND_TO_SERVER, message, nickname, channel }))
+    getSocket().send(
+      JSON.stringify({ type: ws.CHAT.SEND_TO_SERVER, message, nickname, cid, title, channelType })
+    )
   }
 }
 

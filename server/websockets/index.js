@@ -1,6 +1,6 @@
 import sockjs from 'sockjs'
 import wsRouter from './ws-router'
-import ws from '../../../_common/ws-action-types'
+import ws from '../../_common/ws-action-types'
 
 let connections = []
 let usersOnline = []
@@ -19,8 +19,7 @@ export default function initSockets(app) {
 
         conn.userInfo = {
           nickname: parsedData.nickname,
-          channels: parsedData.channels,
-          dialogs: parsedData.dialogs
+          channelsCommonIds: parsedData.channelsCommonIds
         }
 
         connections = connections.filter((c) => typeof c.userInfo !== 'undefined')

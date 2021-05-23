@@ -18,7 +18,7 @@ import regRouter from './routes/register'
 import authRouter from './routes/auth'
 import channelRouter from './routes/channel'
 
-import webSockets from './services/websockets'
+import webSockets from './websockets'
 
 const Root = () => ''
 
@@ -77,8 +77,10 @@ try {
   //   Root = (props) => <items.Root {...props} />
   //   console.log(JSON.stringify(items.Root))
   // })()
+  // eslint-disable-next-line
   console.log(Root)
 } catch (ex) {
+  // eslint-disable-next-line
   console.log(' run yarn build:prod to enable ssr')
 }
 
@@ -143,4 +145,5 @@ if (config.isSocketsEnabled) {
   webSockets(app)
 }
 
+// eslint-disable-next-line
 console.log(`Serving at http://localhost:${port}`)
