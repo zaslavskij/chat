@@ -18,8 +18,8 @@ async function create(req, res) {
 }
 
 async function all(req, res) {
-  const jwtUser = jwt.verify(req.cookies.token, config.secret)
   try {
+    const jwtUser = jwt.verify(req.cookies.token, config.secret)
     const { channels, dialogs } = await Channel.getChannels(jwtUser.uid)
 
     res.json({ message: `Channels and dialogs lists loaded succesfully`, channels, dialogs })

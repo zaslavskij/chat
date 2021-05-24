@@ -4,12 +4,10 @@ export function validateRequest(req, res, next, schema) {
     stripUnknown: true
   })
   if (error) {
-    res.status(400).json(
-      res.status(400).json({
-        status: 'error',
-        message: `Validation error: ${error.details.map((x) => x.message).join(', ')}`
-      })
-    )
+    res.status(400).json({
+      status: 'error',
+      message: `Validation error: ${error.details.map((x) => x.message).join(', ')}`
+    })
   } else {
     req.body = value
     next()

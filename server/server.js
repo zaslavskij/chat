@@ -11,6 +11,8 @@ import passport from 'passport'
 import mongooseService from './services/mongoose'
 import passportJWT from './services/passport'
 
+import auth from './middleware/auth'
+
 import config from './config'
 import Html from '../client/html'
 
@@ -21,52 +23,6 @@ import channelRouter from './routes/channel'
 import webSockets from './websockets'
 
 const Root = () => ''
-
-// const usersData = [
-//   {
-//     email: 'steve@jobs.com',
-//     password: 'huislona1',
-//     channels: ['general', 'dev talks', 'mvp']
-//   },
-//   {
-//     email: 'anna@pavkina.com',
-//     password: 'huislona1',
-//     channels: ['general', 'mvp']
-//   },
-//   {
-//     email: 'alex@zaslavskij.com',
-//     password: 'huislona1',
-//     channels: ['general']
-//   }
-// ]
-
-// usersData.forEach(async (item) => {
-//   const user = new User(item)
-//   await user.save()
-// })
-
-// const channels = [
-//   {
-//     title: 'general',
-//     users: [],
-//     messages: []
-//   },
-//   {
-//     title: 'mvp',
-//     users: [],
-//     messages: []
-//   },
-//   {
-//     title: 'dev talks',
-//     users: [],
-//     messages: []
-//   }
-// ]
-
-// channels.forEach(async (item) => {
-//   const channel = new Channel(item)
-//   await channel.save()
-// })
 
 try {
   // eslint-disable-next-line import/no-unresolved
@@ -104,7 +60,7 @@ middleware.forEach((it) => server.use(it))
 
 server.use('/api/v1/register', regRouter)
 server.use('/api/v1/auth', authRouter)
-server.use('/api/v1/channels', channelRouter)
+server.use('/api/v1/channels', auth(['user']), channelRouter)
 
 server.use('/api/', (req, res) => {
   res.status(404)

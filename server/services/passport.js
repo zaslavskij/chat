@@ -1,18 +1,16 @@
-import passportJWT from 'passport-jwt'
+import PassportJWT from 'passport-jwt'
 import User from '../model/User.model'
 import config from '../config'
 
-const cookieExtractor = (req) => {
-  return req && req.cookies && req.cookies.token
-}
+const cookieExtractor = (req) => req && req.cookies && req.cookies.token
 
-const jwtOptions = {
+const options = {
   secretOrKey: config.secret,
-  jwtFromRequest: passportJWT.ExtractJwt.fromExtractors([cookieExtractor])
+  jwtFromRequest: PassportJWT.ExtractJwt.fromExtractors([cookieExtractor])
 }
 
-const jwtStrategy = new passportJWT.Strategy(jwtOptions, (jwtPayload, done) => {
-  User.findById(jwtPayload.uid, (err, user) => {
+const JwtStrategy = new PassportJWT.Strategy(options, async (payload, done) => {
+  User.findById(payload.uid, (err, user) => {
     if (err) {
       return done(err, null)
     }
@@ -25,4 +23,4 @@ const jwtStrategy = new passportJWT.Strategy(jwtOptions, (jwtPayload, done) => {
   })
 })
 
-exports.jwt = jwtStrategy
+exports.jwt = JwtStrategy
