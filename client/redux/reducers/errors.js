@@ -1,4 +1,5 @@
 import types from '../types'
+import ws from '../../../_common/ws-action-types/chat'
 
 const initialState = {
   errorShown: false,
@@ -7,6 +8,9 @@ const initialState = {
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+    case ws.SEND_ERROR_TO_CLIENT: {
+      return { ...state, errorShown: true, errorText: action.errorText }
+    }
     case types.UI.SHOW_ERROR_MESSAGE: {
       return { ...state, errorShown: true, errorText: action.errorText }
     }

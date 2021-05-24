@@ -1,15 +1,12 @@
 import Joi from 'joi'
-import validateRequest from '.'
+import { validateRequest } from '.'
 
 const userSchema = Joi.object({
-  email: Joi.email().required(),
+  email: Joi.string().required().email(),
   password: Joi.string().min(8).max(16).required()
 })
 
-function validateUserBody(req, res, next) {
+// eslint-disable-next-line
+export function validateUserBody(req, res, next) {
   validateRequest(req, res, next, userSchema)
-}
-
-module.exports = {
-  validateUserBody
 }
