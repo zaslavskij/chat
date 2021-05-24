@@ -17,6 +17,6 @@ export function validateChannelBody(req, res, next) {
   validateRequest(req, res, next, channelSchema)
 }
 
-export function validatePostWS(data, conn) {
-  return validateWsAction(data, postSchema, conn)
+export function validatePostWS(data) {
+  return validateWsAction(data, postSchema)
 }

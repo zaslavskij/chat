@@ -15,7 +15,7 @@ export async function sendMessage(action, connections) {
       message: action.message,
       nickname: action.nickname,
       timestamp
-    })()
+    })
 
     message = {
       ...message,

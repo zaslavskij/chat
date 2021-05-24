@@ -67,8 +67,8 @@ export function tryLogin() {
       .then(({ data }) => {
         dispatch({ type: types.LOGIN.TRY_LOGIN, user: data.user, token: data.token })
       })
-      .catch((r) => {
-        dispatch({ type: types.UI.SHOW_ERROR_MESSAGE, errorText: r.response.data.error })
+      .catch(() => {
+        dispatch({ type: types.UI.SHOW_ERROR_MESSAGE, errorText: 'SERVER TEMPORARILY UNAVAILABLE' })
       })
   }
 }
