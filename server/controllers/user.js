@@ -41,19 +41,21 @@ async function login(req, res) {
 }
 
 async function auth(req, res) {
-  try {
-    const jwtUser = jwt.verify(req.cookies.token, config.secret)
-    let user = await User.findById(jwtUser.uid)
+  if (!req.cookies.token)
+    res.status(401).json({ status: 'error', message: 'JWT-token must be provided' })
+  else
+    try {
+      const jwtUser = jwt.verify(req.cookies.token, config.secret)
+      let user = await User.findById(jwtUser.uid)
 
-    const payload = { uid: user._id }
-    const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
-    user = { roles: user.roles, email: user.email, nickname: user.nickname }
-    res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
-    res.json({ status: 'ok', token, user })
-  } catch (err) {
-    console.log(err)
-    res.status(500).json({ error: err.message })
-  }
+      const payload = { uid: user._id }
+      const token = jwt.sign(payload, config.secret, { expiresIn: '48h' })
+      user = { roles: user.roles, email: user.email, nickname: user.nickname }
+      res.cookie('token', token, { maxAge: 1000 * 60 * 60 * 48 })
+      res.json({ status: 'ok', token, user })
+    } catch (err) {
+      res.status(500).json({ error: err.message })
+    }
 }
 
 export default { register, login, auth }
