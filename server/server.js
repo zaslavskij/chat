@@ -8,6 +8,11 @@ import React from 'react'
 import cookieParser from 'cookie-parser'
 import passport from 'passport'
 
+import swaggerJsdoc from 'swagger-jsdoc'
+import swaggerUi from 'swagger-ui-express'
+
+import swaggerOptions from './docs/swagger-options'
+
 import mongooseService from './services/mongoose'
 import passportJWT from './services/passport'
 
@@ -42,6 +47,9 @@ try {
 
 const port = process.env.PORT || 8090
 const server = express()
+
+const specs = swaggerJsdoc(swaggerOptions)
+server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }))
 
 mongooseService.connect()
 

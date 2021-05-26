@@ -4,55 +4,58 @@ import User from './User.model'
 
 import ChatException from '../services/errors/chat'
 
-const channelsSchema = new mongoose.Schema({
-  title: {
-    required() {
-      return this.type === 'channel'
+const channelsSchema = new mongoose.Schema(
+  {
+    title: {
+      required() {
+        return this.type === 'channel'
+      },
+      type: String,
+      unique: true,
+      sparse: true
     },
-    type: String,
-    unique: true,
-    sparse: true
-  },
-  users: {
-    type: [Object],
-    default: []
-  },
-  type: {
-    type: String,
-    enum: ['channel', 'dialog'],
-    required: true
-  },
+    users: {
+      type: [Object],
+      default: []
+    },
+    type: {
+      type: String,
+      enum: ['channel', 'dialog'],
+      required: true
+    },
 
-  messages: {
-    type: [
-      {
-        timestamp: {
-          required: true,
-          type: Date,
-          default: Date.now
-        },
-        nickname: {
-          required: true,
-          type: String,
-          ref: 'User.nickname'
-        },
-        message: {
-          type: String,
-          required: true
-        },
-        date: {
-          type: String,
-          required: true
-        },
-        time: {
-          type: String,
-          required: true
+    messages: {
+      type: [
+        {
+          timestamp: {
+            required: true,
+            type: Date,
+            default: Date.now
+          },
+          nickname: {
+            required: true,
+            type: String,
+            ref: 'User.nickname'
+          },
+          message: {
+            type: String,
+            required: true
+          },
+          date: {
+            type: String,
+            required: true
+          },
+          time: {
+            type: String,
+            required: true
+          }
         }
-      }
-    ],
-    default: []
-  }
-})
+      ],
+      default: []
+    }
+  },
+  { timestamps: true }
+)
 
 channelsSchema.post('save', function saveFunc(error, doc, next) {
   if (error.name === 'MongoError' && error.code === 11000) {
