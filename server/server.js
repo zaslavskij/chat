@@ -11,6 +11,8 @@ import passport from 'passport'
 import swaggerJsdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 
+import fileUpload from 'express-fileupload'
+
 import swaggerOptions from './docs/swagger-options'
 
 import mongooseService from './services/mongoose'
@@ -24,6 +26,7 @@ import Html from '../client/html'
 import regRouter from './routes/register'
 import authRouter from './routes/auth'
 import channelRouter from './routes/channel'
+import s3Router from './routes/s3'
 
 import webSockets from './websockets'
 
@@ -59,7 +62,10 @@ const middleware = [
   express.static(path.resolve(__dirname, '../dist/assets')),
   bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }),
   bodyParser.json({ limit: '50mb', extended: true }),
-  cookieParser()
+  cookieParser(),
+  fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 }
+  })
 ]
 
 passport.use('jwt', passportJWT.jwt)
@@ -69,6 +75,8 @@ middleware.forEach((it) => server.use(it))
 server.use('/api/v1/register', regRouter)
 server.use('/api/v1/auth', authRouter)
 server.use('/api/v1/channels', auth(['user']), channelRouter)
+// server.use('/api/v1/upload', auth(['user']), s3Router)
+server.use('/api/v1/upload', s3Router)
 
 server.use('/api/', (req, res) => {
   res.status(404)
