@@ -10,6 +10,11 @@ const router = express.Router()
 /**
  * @swagger
  * components:
+ *   securitySchemes:
+ *     cookieAuth:
+ *       type: apiKey
+ *       in: cookie
+ *       name: token
  *   schemas:
  *     Channel:
  *       type: object
@@ -29,7 +34,7 @@ const router = express.Router()
  *             type: string
  *           description: Array of users, who subscribed on channel
  *         type:
- *           type: enum
+ *           type: string
  *           enum:
  *             - channel
  *             - dialog
@@ -49,23 +54,23 @@ const router = express.Router()
  *               nickname:
  *                 type: string
  *                 description: nickname of post's author
+ *               message:
+ *                 type: string
+ *                 description: message
  *               date:
  *                 type: string
  *                 description: Date in format 'MM/dd/yyyy', based on 'timestamp'
  *               time:
  *                 type: string
  *                 description: Date in format 'HH:MM:SS', based on 'timestamp'
- *               message:
- *                 type: string
- *                 description: message
  *           description: Array of all channel's messages
  *         createdAt:
  *           type: string
  *           format: date
  *           description: The date of the record creation.
  *       example:
- *         title: General
- *         type: channel
+ *         email: steve@jobs.com
+ *         type: apple4life4ever
  */
 
 /**
