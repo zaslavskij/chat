@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { FaPaperPlane, FaBackspace } from 'react-icons/fa'
 
+import AttachImage from './attach-image'
 import { sendMessage } from '../../../redux/reducers/channels'
 
 const InputMessage = ({ channelTitle, isChannel }) => {
@@ -17,10 +18,11 @@ const InputMessage = ({ channelTitle, isChannel }) => {
           onChange={({ target: { value } }) => setMessage(value)}
           placeholder={`Message to: ${isChannel ? '#' : '@'}${channelTitle}`}
         />
+        <AttachImage />
         {message.length > 0 && (
           <div className="flex">
             <button
-              className="py-2 px-4 sm:py-1 sm:px-2 text-center items-center text-blue-400 hover:text-blue-500 text-3xl"
+              className="py-2 px-4 sm:py-1 sm:px-2 text-center items-center text-red-400 hover:text-red-500 text-3xl"
               type="button"
               onClick={() => setMessage('')}
             >

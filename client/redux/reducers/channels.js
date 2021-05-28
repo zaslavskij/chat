@@ -56,7 +56,7 @@ export default function channelsReducer(state = initialState, action) {
     case types.CHANNEL.CHANGE_SELECTION: {
       return { ...state, selection: { channelType: action.channelType, title: action.title } }
     }
-
+    case types.GET_URL_MESSAGE:
     case ws.CHAT.SEND_TO_CLIENT: {
       return {
         ...state,
@@ -140,5 +140,33 @@ export function getChannels() {
     }).then(({ data: { channels, dialogs } }) => {
       return dispatch({ type: types.CHANNEL.GET_CHANNELS, channels, dialogs })
     })
+  }
+}
+
+export function sendPicture(file) {
+  return (dispatch) => {
+    const formData = new FormData()
+    formData.append('image', file)
+    axios
+      .post('/api/v1/upload/image', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(({ data: { channelType, title, nickname, timestamp, time, date, message } }) =>
+        dispatch({
+          type: types.GET_URL_MESSAGE,
+          channelType,
+          title,
+          nickname,
+          timestamp,
+          time,
+          date,
+          message
+        })
+      )
+      .catch((r) => {
+        dispatch({ type: types.UI.SHOW_ERROR_MESSAGE, errorText: r.response.data.error })
+      })
   }
 }

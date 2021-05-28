@@ -19,7 +19,7 @@ const Startup = (props) => {
   useEffect(() => {
     setTimeout(() => {
       if (errorShown) dispatch(hideError())
-    }, 4000)
+    }, 2000)
   }, [errorShown])
 
   return (

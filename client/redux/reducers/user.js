@@ -24,6 +24,7 @@ export default (state = initialState, action) => {
     case types.LOGIN.LOGIN: {
       return { ...state, user: action.user, token: action.token, password: '' }
     }
+
     case types.LOGIN.TRY_LOGIN: {
       return { ...state, user: action.user, token: action.token, password: '' }
     }

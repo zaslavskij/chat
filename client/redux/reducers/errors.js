@@ -25,3 +25,7 @@ export default function reducer(state = initialState, action) {
 export function hideError() {
   return { type: types.UI.HIDE_ERROR_MESSAGE }
 }
+
+export function showError(errorText) {
+  return { type: types.UI.SHOW_ERROR_MESSAGE, errorText }
+}

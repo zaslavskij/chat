@@ -75,8 +75,8 @@ middleware.forEach((it) => server.use(it))
 server.use('/api/v1/register', regRouter)
 server.use('/api/v1/auth', authRouter)
 server.use('/api/v1/channels', auth(['user']), channelRouter)
-// server.use('/api/v1/upload', auth(['user']), s3Router)
-server.use('/api/v1/upload', s3Router)
+server.use('/api/v1/upload', auth(['user']), s3Router)
+// server.use('/api/v1/upload', s3Router)
 
 server.use('/api/', (req, res) => {
   res.status(404)
