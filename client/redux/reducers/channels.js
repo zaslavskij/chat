@@ -56,7 +56,7 @@ export default function channelsReducer(state = initialState, action) {
     case types.CHANNEL.CHANGE_SELECTION: {
       return { ...state, selection: { channelType: action.channelType, title: action.title } }
     }
-    case types.GET_URL_MESSAGE:
+    case types.CHANNEL.GET_URL_MESSAGE:
     case ws.CHAT.SEND_TO_CLIENT: {
       return {
         ...state,
@@ -144,29 +144,45 @@ export function getChannels() {
 }
 
 export function sendPicture(file) {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const { nickname: nicknameS } = getState().user.user
+    const { title: titleS, channelType: channelTypeS } = getState().channels.selection
+    const { cid } = getState().channels[channelTypeS][titleS]
     const formData = new FormData()
     formData.append('image', file)
+    formData.append('channelType', channelTypeS)
+    formData.append('nickname', nicknameS)
+    formData.append('title', titleS)
+    formData.append('cid', cid)
+
     axios
       .post('/api/v1/upload/image', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       })
-      .then(({ data: { channelType, title, nickname, timestamp, time, date, message } }) =>
-        dispatch({
-          type: types.GET_URL_MESSAGE,
-          channelType,
-          title,
-          nickname,
-          timestamp,
-          time,
-          date,
-          message
-        })
+      .then(
+        ({
+          data: {
+            message: { channelType, title, nickname, timestamp, time, date, message }
+          }
+        }) => {
+          console.log('REDUX', channelType, title, nickname, timestamp, time, date, message)
+          dispatch({
+            type: types.CHANNEL.GET_URL_MESSAGE,
+            channelType,
+            title,
+            nickname,
+            timestamp,
+            time,
+            date,
+            message
+          })
+        }
       )
       .catch((r) => {
-        dispatch({ type: types.UI.SHOW_ERROR_MESSAGE, errorText: r.response.data.error })
+        console.log(r)
+        // dispatch({ type: types.UI.SHOW_ERROR_MESSAGE, errorText: r.response.data.error })
       })
   }
 }

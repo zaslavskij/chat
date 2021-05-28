@@ -1,7 +1,7 @@
 import { format } from 'date-fns'
 import Channel from '../../model/Channel.model'
 import ws from '../../../_common/ws-action-types'
-import { validatePostWS } from '../../validation/channel'
+import { validatePostDirectly } from '../../validation/channel'
 
 // eslint-disable-next-line
 export async function sendMessage(action, connections) {
@@ -10,7 +10,7 @@ export async function sendMessage(action, connections) {
   const currConnection = connections.find((c) => c.userInfo.nickname === action.nickname)
 
   try {
-    let message = validatePostWS({
+    let message = validatePostDirectly({
       cid: action.cid,
       message: action.message,
       nickname: action.nickname,

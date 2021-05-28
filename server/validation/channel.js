@@ -1,5 +1,5 @@
 import Joi from 'joi'
-import { validateRequest, validateWsAction } from '.'
+import { validateRequest, validateData } from '.'
 
 const channelSchema = Joi.object({
   title: Joi.string().min(3).max(30).required(),
@@ -17,6 +17,6 @@ export function validateChannelBody(req, res, next) {
   validateRequest(req, res, next, channelSchema)
 }
 
-export function validatePostWS(data) {
-  return validateWsAction(data, postSchema)
+export function validatePostDirectly(data) {
+  return validateData(data, postSchema)
 }

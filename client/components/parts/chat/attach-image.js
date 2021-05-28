@@ -9,7 +9,7 @@ const AttachImage = () => {
   const input = useRef(null)
   const dispatch = useDispatch()
   const handleChange = () => {
-    console.log(input.current.files[0])
+    // console.log(input.current.files[0])
     if (input.current.files[0].size > 2000000) {
       dispatch(showError('Filesize too big!'))
     } else {

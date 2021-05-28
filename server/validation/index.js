@@ -14,7 +14,7 @@ export function validateRequest(req, res, next, schema) {
   }
 }
 
-export function validateWsAction(data, schema) {
+export function validateData(data, schema) {
   const { error, value } = schema.validate(data, {
     abortEarly: false,
     stripUnknown: true
