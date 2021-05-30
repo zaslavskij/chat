@@ -56,8 +56,8 @@ export default function channelsReducer(state = initialState, action) {
     case types.CHANNEL.CHANGE_SELECTION: {
       return { ...state, selection: { channelType: action.channelType, title: action.title } }
     }
-    case types.CHANNEL.GET_URL_MESSAGE:
     case ws.CHAT.SEND_TO_CLIENT: {
+      console.log(JSON.stringify(action, 2, 2))
       return {
         ...state,
         [action.channelType]: {
@@ -161,28 +161,9 @@ export function sendPicture(file) {
           'Content-Type': 'multipart/form-data'
         }
       })
-      .then(
-        ({
-          data: {
-            message: { channelType, title, nickname, timestamp, time, date, message }
-          }
-        }) => {
-          console.log('REDUX', channelType, title, nickname, timestamp, time, date, message)
-          dispatch({
-            type: types.CHANNEL.GET_URL_MESSAGE,
-            channelType,
-            title,
-            nickname,
-            timestamp,
-            time,
-            date,
-            message
-          })
-        }
-      )
       .catch((r) => {
         console.log(r)
-        // dispatch({ type: types.UI.SHOW_ERROR_MESSAGE, errorText: r.response.data.error })
+        dispatch({ type: types.UI.SHOW_ERROR_MESSAGE, errorText: r.response.data.error })
       })
   }
 }

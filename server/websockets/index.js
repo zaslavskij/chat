@@ -48,3 +48,7 @@ export default function initSockets(app) {
   })
   echo.installHandlers(app, { prefix: '/ws' })
 }
+
+export function getWsConnections() {
+  return connections
+}

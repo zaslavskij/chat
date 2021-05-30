@@ -1,11 +1,11 @@
 import jwt from 'jsonwebtoken'
 import ObjectID from 'bson-objectid'
-import { format } from 'date-fns'
 
 import config from '../config'
 import s3 from '../services/s3'
+import { getWsConnections } from '../websockets'
+import { sendMessage } from '../websockets/ws-controller/channel'
 import Channel from '../model/Channel.model'
-import { validatePostDirectly } from '../validation/channel'
 
 async function create(req, res) {
   try {
@@ -40,32 +40,20 @@ async function uploadAndPostImageUrl(req, res) {
       .uploadObject(fileName, req.files.image.mimetype, Buffer.from(req.files.image.data, 'binary'))
       .then(async (imagePath) => {
         const url = `https://imena.s3.amazonaws.com/${imagePath}`
-        const timestamp = +new Date()
-        let message = validatePostDirectly({
+        const connections = getWsConnections()
+        const message = {
           cid: req.body.cid,
           message: `[${url}](${url})`,
           nickname: req.body.nickname,
-          timestamp
-        })
-
-        message = {
-          ...message,
-          date: format(timestamp, 'MM/dd/yyyy'),
-          time: format(timestamp, 'HH:MM:SS')
+          title: req.body.title,
+          channelType: req.body.channelType
         }
-        console.log(message)
-        console.log(message)
-        console.log(message)
-        console.log(message)
-        console.log(message)
-        await Channel.addPost(message)
-        res.json({ status: 'ok', message })
+
+        await sendMessage(message, connections)
+
+        res.json({ status: 'ok' })
       })
   } catch (err) {
-    console.log(err)
-    console.log(err)
-    console.log(err)
-    console.log(err)
     res.status(500).json({ error: err.message })
   }
 }
