@@ -43,7 +43,8 @@ async function uploadAndPostImageUrl(req, res) {
         const connections = getWsConnections()
         const message = {
           cid: req.body.cid,
-          message: `[${url}](${url})`,
+          message: `[${url}](${url})
+          ![alt text](${url} "alt text")`,
           nickname: req.body.nickname,
           title: req.body.title,
           channelType: req.body.channelType

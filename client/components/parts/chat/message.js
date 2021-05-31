@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
+// import MessageLink from './components/link'
 
 const Message = ({ date, time, nickname, message }) => {
   return (
@@ -13,9 +14,30 @@ const Message = ({ date, time, nickname, message }) => {
             {time}
           </span>
         </div>
-        <span className="text-black leading-normal">
-          <ReactMarkdown>{message}</ReactMarkdown>
-        </span>
+        <ReactMarkdown
+          className="text-black leading-normal"
+          components={{
+            // eslint-disable-next-line
+            a: ({ node, ...props }) => (
+              // eslint-disable-next-line
+              <a
+                target="_blank"
+                rel="noreferrer"
+                className="text-blue-500 hover:text-blue-600 font-bold"
+                {...props}
+              />
+            ), // eslint-disable-next-line
+            img: ({ node, ...props }) => (
+              // eslint-disable-next-line
+              <img
+                className="p-2 my-2 w-full max-w-2xl h-auto flex border rounded border-gray-200"
+                {...props}
+              />
+            )
+          }}
+        >
+          {message}
+        </ReactMarkdown>
       </div>
     </div>
   )
