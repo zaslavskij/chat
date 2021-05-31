@@ -17,7 +17,9 @@ const config = {
   resolve: {
     alias: {
       d3: 'd3/index.js',
-      'react-dom': '@hot-loader/react-dom'
+      'react-dom': '@hot-loader/react-dom',
+      'react/jsx-dev-runtime': 'react/jsx-dev-runtime.js',
+      'react/jsx-runtime': 'react/jsx-runtime.js'
     }
   },
   output: {
@@ -47,7 +49,7 @@ const config = {
         target: `http://localhost:${process.env.PORT || 8090}`,
         secure: false,
         changeOrigin: true,
-        ws: (process.env.ENABLE_SOCKETS || false)
+        ws: process.env.ENABLE_SOCKETS || false
       }
     ]
   },
