@@ -16,7 +16,7 @@ const AttachImage = () => {
     }
   }
   return (
-    <div className="py-2 px-4 sm:py-1 sm:px-2 text-center items-center text-blue-400 hover:text-blue-500 text-3xl cursor-pointer relative">
+    <div className="py-2 overflow-hidden px-4 sm:py-1 sm:px-2 text-center items-center text-blue-400 hover:text-blue-500 text-3xl cursor-pointer relative">
       <FaImage />
       <input
         ref={input}
