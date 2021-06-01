@@ -1,6 +1,14 @@
 import React from 'react'
 import { FaBars } from 'react-icons/fa'
 
+if (process.env.NODE_ENV === 'development') {
+  const whyDidYouRender = require('@welldone-software/why-did-you-render')
+  whyDidYouRender(React, {
+    trackAllPureComponents: true,
+    trackExtraHooks: [[require('react-redux/lib'), 'useSelector']]
+  })
+}
+
 const Header = ({ title, asideToggle, isChannel }) => {
   return (
     <div className="border-b px-3 h-12 items-center flex">
