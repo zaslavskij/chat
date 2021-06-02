@@ -1,5 +1,5 @@
 import { debounce } from 'lodash'
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { getChannels } from '../redux/reducers/channels'
@@ -46,6 +46,8 @@ const Chat = () => {
 
   const { chatsFetched, dialogs, selection } = channels
 
+  const asideChannels = useMemo(() => Object.keys(channels.channels), [channels])
+
   useEffect(() => {
     if (socketConnected && chatsFetched) {
       dispatch(sendSystemHello())
@@ -70,7 +72,7 @@ const Chat = () => {
           dialogs={dialogs}
           selection={selection}
           asideTogglerWindow={asideTogglerWindow}
-          channels={Object.keys(channels.channels)}
+          asideChannels={asideChannels}
         />
       )}
       <div className="flex-1 flex flex-col bg-white overflow-hidden">

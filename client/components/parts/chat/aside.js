@@ -11,7 +11,7 @@ import DialogsList from './dialogs-list'
 const Aside = ({
   roles,
   nickname,
-  channels,
+  asideChannels,
   dialogs,
   selection,
   asideToggle,
@@ -44,7 +44,7 @@ const Aside = ({
         <ChannelsList
           selectionDispatch={selectionDispatch}
           roles={roles}
-          channels={channels}
+          channels={asideChannels}
           selection={selection}
         />
         <div className="mx-2 border-t border-white border-opacity-50" />
