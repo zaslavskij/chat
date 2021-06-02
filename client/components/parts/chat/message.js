@@ -30,7 +30,7 @@ const Message = ({ date, time, nickname, message }) => {
             img: ({ node, ...props }) => (
               // eslint-disable-next-line
               <img
-                className="p-2 my-2 w-full max-w-2xl h-auto flex border rounded border-gray-200"
+                className="p-2 my-2 w-full max-w-xs h-auto flex border rounded border-gray-200"
                 {...props}
               />
             )
