@@ -72,7 +72,7 @@ const Chat = () => {
           channels={Object.keys(channels.channels)}
         />
       )}
-      <div className="flex-1 flex flex-col bg-white overflow-hidden fixed top-0 left-0 w-screen h-screen">
+      <div className="flex-1 flex flex-col bg-white overflow-hidden">
         <Header asideToggle={asideTogglerDispatch} title={selection.title} isChannel={isChannel} />
         <MessagesList messages={messages} />
         <InputMessage isChannel={isChannel} channelTitle={selection.title} />

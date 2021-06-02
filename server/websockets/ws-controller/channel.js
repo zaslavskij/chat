@@ -5,18 +5,14 @@ import { validatePostDirectly } from '../../validation/channel'
 
 // eslint-disable-next-line
 export async function sendMessage(action, connections) {
-  console.log(`
-  --------------------------------------------------------
-
-  action: ${JSON.stringify(action)}
-  connections length: ${connections.length}
-  --------------------------------------------------------
-  
-  
-  `)
   const timestamp = +new Date()
 
-  const currConnection = connections.find((c) => c.userInfo.nickname === action.nickname)
+  const currConnection = connections.find(
+    (c) =>
+      typeof c.userInfo !== 'undefined' &&
+      c.userInfo.nickname !== 'undefined' &&
+      c.userInfo.nickname === action.nickname
+  )
 
   try {
     let message = validatePostDirectly({
@@ -30,7 +26,8 @@ export async function sendMessage(action, connections) {
       ...message,
       date: format(timestamp, 'MM/dd/yyyy'),
       time: format(timestamp, 'HH:MM:SS'),
-      channelType: action.channelType
+      channelType: action.channelType,
+      title: action.title
     }
 
     await Channel.addPost(message)
@@ -44,14 +41,21 @@ export async function sendMessage(action, connections) {
         )
       })
       .forEach((c) => {
-        c.write(
-          JSON.stringify({
-            ...message,
-            type: ws.CHAT.SEND_TO_CLIENT,
-            title: action.title,
-            channelType: action.channelType
-          })
-        )
+        if (c.userInfo.nickname !== message.title)
+          c.write(
+            JSON.stringify({
+              ...message,
+              type: ws.CHAT.SEND_TO_CLIENT
+            })
+          )
+        else
+          c.write(
+            JSON.stringify({
+              ...message,
+              title: action.nickname,
+              type: ws.CHAT.SEND_TO_CLIENT
+            })
+          )
       })
   } catch (err) {
     currConnection.write(

@@ -22,7 +22,9 @@ export default function initSockets(app) {
           channelsCommonIds: parsedData.channelsCommonIds
         }
 
-        connections = connections.filter((c) => typeof c.userInfo !== 'undefined')
+        connections = connections.filter(
+          (c) => typeof c.userInfo !== 'undefined' && typeof c.userInfo.nickname !== 'undefined'
+        )
 
         if (connections.length) {
           usersOnline = connections.map((cn) => cn.userInfo.nickname)
