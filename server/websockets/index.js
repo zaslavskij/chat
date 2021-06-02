@@ -22,12 +22,12 @@ export default function initSockets(app) {
           channelsCommonIds: parsedData.channelsCommonIds
         }
 
-        connections = connections.filter(
-          (c) => typeof c.userInfo !== 'undefined' && typeof c.userInfo.nickname !== 'undefined'
-        )
-
         if (connections.length) {
-          usersOnline = connections.map((cn) => cn.userInfo.nickname)
+          usersOnline = connections
+            .filter(
+              (c) => typeof c.userInfo !== 'undefined' && typeof c.userInfo.nickname !== 'undefined'
+            )
+            .map((cn) => cn.userInfo.nickname)
 
           connections.forEach((c) =>
             c.write(JSON.stringify({ type: ws.CHAT.UPDATE_USERS_ONLINE, usersOnline }))
@@ -37,7 +37,12 @@ export default function initSockets(app) {
       }
     })
     conn.on('close', () => {
-      connections = connections.filter((c) => c.readyState !== 3)
+      connections = connections.filter(
+        (c) =>
+          c.readyState !== 3 &&
+          typeof c.userInfo !== 'undefined' &&
+          typeof c.userInfo.nickname !== 'undefined'
+      )
 
       if (connections.length) {
         usersOnline = connections.map((cn) => cn.userInfo.nickname)

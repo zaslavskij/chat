@@ -69,6 +69,7 @@ const Chat = () => {
           nickname={nickname}
           dialogs={dialogs}
           selection={selection}
+          asideTogglerWindow={asideTogglerWindow}
           channels={Object.keys(channels.channels)}
         />
       )}

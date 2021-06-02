@@ -8,9 +8,20 @@ import ChannelsList from './channels-list'
 import ProfileBlock from './profile-block'
 import DialogsList from './dialogs-list'
 
-const Aside = ({ roles, nickname, channels, dialogs, selection, asideToggle }) => {
+const Aside = ({
+  roles,
+  nickname,
+  channels,
+  dialogs,
+  selection,
+  asideToggle,
+  asideTogglerWindow
+}) => {
   const dispatch = useDispatch()
-  const selectionDispatch = (...args) => dispatch(changeSelection(...args))
+  const selectionDispatch = (...args) => {
+    dispatch(changeSelection(...args))
+    asideTogglerWindow(false)
+  }
   return (
     <>
       <div className="bg-green-600 text-purple-lighter flex-none w-64 pb-6 select-none block sm:fixed sm:top-0 sm:left-0 sm:h-screen z-10">

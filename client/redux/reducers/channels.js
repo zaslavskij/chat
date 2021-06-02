@@ -3,10 +3,22 @@ import types from '../types'
 import ws from '../../../_common/ws-action-types'
 import { getSocket } from '..'
 
+function getSelectionField(field) {
+  let chat = localStorage.getItem('chat')
+  if (!chat) return false
+  chat = JSON.parse(chat)
+  const selectionDefined = typeof chat.selection !== 'undefined'
+
+  if (selectionDefined) {
+    return chat.selection[field]
+  }
+  return false
+}
+
 const initialState = {
   selection: {
-    channelType: 'channels',
-    title: 'general'
+    channelType: getSelectionField('channelType') || 'channels',
+    title: getSelectionField('title') || 'general'
   },
   channels: {},
   dialogs: {},
@@ -19,7 +31,6 @@ export default function channelsReducer(state = initialState, action) {
     case types.CHANNEL.GET_CHANNELS: {
       return {
         ...state,
-        selection: { title: Object.keys(action.channels)[0], channelType: 'channels' },
         channels: action.channels,
         dialogs: action.dialogs,
         chatsFetched: true
@@ -34,9 +45,6 @@ export default function channelsReducer(state = initialState, action) {
           [action.title]: { _id: action._id, users: action.users, messages: action.messages }
         }
       }
-    }
-    case types.CHANNEL.SELECT_CHANNEL: {
-      return { ...state, selected: action.selected }
     }
 
     case ws.CHAT.UPDATE_USERS_ONLINE: {
@@ -54,6 +62,16 @@ export default function channelsReducer(state = initialState, action) {
     }
 
     case types.CHANNEL.CHANGE_SELECTION: {
+      let chat = localStorage.getItem('chat')
+      if (!chat) {
+        localStorage.setItem('chat', {
+          selection: { channelType: action.channelType, title: action.title }
+        })
+      } else {
+        chat = JSON.parse(chat)
+        chat = { ...chat, selection: { channelType: action.channelType, title: action.title } }
+      }
+      localStorage.setItem('chat', JSON.stringify(chat))
       return { ...state, selection: { channelType: action.channelType, title: action.title } }
     }
     case ws.CHAT.SEND_TO_CLIENT: {
