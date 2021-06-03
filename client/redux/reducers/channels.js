@@ -4,9 +4,8 @@ import ws from '../../../_common/ws-action-types'
 import { getSocket } from '..'
 
 function getSelectionField(field) {
-  let chat = localStorage.getItem('chat')
+  const chat = JSON.parse(localStorage.getItem('chat'))
   if (!chat) return false
-  chat = JSON.parse(chat)
   const selectionDefined = typeof chat.selection !== 'undefined'
 
   if (selectionDefined) {
