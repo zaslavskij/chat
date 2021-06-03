@@ -1,12 +1,12 @@
 module.exports = {
-  purge: [
-    './client/**/*.html',
-    './client/**/*.jsx',
-    './client/**/*.js',
-    './client/**/**/*.html',
-    './client/**/**/*.jsx',
-    './client/**/**/*.js'
-  ],
+  // purge: [
+  //   './client/**/*.html',
+  //   './client/**/*.jsx',
+  //   './client/**/*.js',
+  //   './client/**/**/*.html',
+  //   './client/**/**/*.jsx',
+  //   './client/**/**/*.js'
+  // ],
   target: 'relaxed',
   prefix: '',
   important: false,
