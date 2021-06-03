@@ -1,7 +1,6 @@
 module.exports = {
   purge: {
-    content: ['./client/**/*.html', './client/**/*.jsx', './client/**/*.js'],
-    safelist: ['bg-green-500', 'hover:bg-green-700', 'bg-blue-500', 'hover:bg-blue-700']
+    content: ['./client/**/*.html', './client/**/*.jsx', './client/**/*.js']
   },
   target: 'relaxed',
   prefix: '',

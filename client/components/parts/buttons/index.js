@@ -13,7 +13,9 @@ const ButtonDefault = ({
   const dispatch = useDispatch()
   const Icon = iconTitle && FaIcon[iconTitle]
 
-  const btnClasses = `flex font-medium items-center bg-${color}-500 mr-6 hover:bg-${color}-700 text-white py-2 px-4 rounded transition-colors duration-300 ease-in-out uppercase`
+  const btnClasses = `flex font-medium items-center ${
+    color === 'green' ? 'bg-green-500 hover:bg-green-700' : 'bg-blue-500 hover:bg-blue-700'
+  } mr-6  text-white py-2 px-4 rounded transition-colors duration-300 ease-in-out uppercase`
   const linkClasses = `flex mr-2`
 
   switch (type) {
