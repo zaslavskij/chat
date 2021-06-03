@@ -1,5 +1,5 @@
 import { debounce } from 'lodash'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { getChannels } from '../redux/reducers/channels'
@@ -26,14 +26,17 @@ const Chat = () => {
     ui: { asideShown }
   } = useSelector((s) => s)
 
-  const asideTogglerDispatch = (...ars) => {
+  const asideTogglerDispatch = useCallback((...ars) => {
     return dispatch(asideToggle(...ars))
-  }
+  }, [])
 
-  const asideTogglerWindow = debounce(() => {
-    if (window.innerWidth > 640) asideTogglerDispatch(true)
-    else asideTogglerDispatch(false)
-  }, 200)
+  const asideTogglerWindow = useCallback(
+    debounce(() => {
+      if (window.innerWidth > 640) asideTogglerDispatch(true)
+      else asideTogglerDispatch(false)
+    }, 200),
+    []
+  )
 
   useEffect(() => {
     asideTogglerWindow()
@@ -64,7 +67,7 @@ const Chat = () => {
 
   return (
     <div className="font-sans antialiased h-screen flex">
-      {asideShown && (
+      {asideShown && Object.keys(channels).length && Object.keys(dialogs).length && (
         <Aside
           roles={roles}
           asideToggle={asideTogglerDispatch}
