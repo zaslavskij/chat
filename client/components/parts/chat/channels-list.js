@@ -1,12 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 
 import ChannelButton from './channel-button'
 import CreateChannel from './create-channel'
 
 const ChannelsList = ({ selectionDispatch, roles, channels, selection }) => {
-  useEffect(() => {
-    // console.log('ChannelsList mounted')
-  })
   return (
     <div className="mb-8">
       <div className="px-4 text-white flex justify-between items-center">

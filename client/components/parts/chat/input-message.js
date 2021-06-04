@@ -15,6 +15,12 @@ const InputMessage = ({ channelTitle, isChannel }) => {
           type="text"
           className="w-full px-4 py-2"
           value={message}
+          onKeyDown={({ key }) => {
+            if (key === 'Enter') {
+              dispatch(sendMessage(message))
+              setMessage('')
+            }
+          }}
           onChange={({ target: { value } }) => setMessage(value)}
           placeholder={`Message to: ${isChannel ? '#' : '@'}${channelTitle}`}
         />

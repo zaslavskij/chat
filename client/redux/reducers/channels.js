@@ -74,10 +74,6 @@ export default function channelsReducer(state = initialState, action) {
       return { ...state, selection: { channelType: action.channelType, title: action.title } }
     }
     case ws.CHAT.SEND_TO_CLIENT: {
-      console.log(action.title)
-      const d = state[action.channelType]
-      const ch = d[action.title]
-      console.log(ch)
       return {
         ...state,
         [action.channelType]: {

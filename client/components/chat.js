@@ -49,7 +49,9 @@ const Chat = () => {
 
   const { chatsFetched, dialogs, selection } = channels
 
-  const asideChannels = useMemo(() => Object.keys(channels.channels), [channels])
+  const asideChannels = useMemo(() => Object.keys(channels.channels), [
+    Object.keys(channels.channels).length
+  ])
 
   useEffect(() => {
     if (socketConnected && chatsFetched) {

@@ -22,9 +22,10 @@ const Aside = ({
     dispatch(changeSelection(...args))
     asideTogglerWindow(false)
   }
+
   return (
     <>
-      <div className="bg-green-600 text-purple-lighter flex-none w-64 pb-6 select-none block sm:fixed sm:top-0 sm:left-0 sm:h-screen z-10">
+      <div className="bg-green-600 text-purple-lighter flex-none w-64 pb-6 select-none block sm:fixed sm:top-0 sm:left-0 sm:h-screen z-20">
         <div className="text-white mb-2 mt-3 px-4 sm:px-2 flex justify-between">
           <div className="flex-auto">
             <div className="flex items-center leading-tight mb-1 truncate">
@@ -54,7 +55,13 @@ const Aside = ({
           dialogs={dialogs}
         />
       </div>
-      <div className="hidden sm:flex fixed top-0 left-0 w-screen h-screen bg-gray-700 opacity-75" />
+      <button
+        type="button"
+        onClick={() => asideToggle(false)}
+        className="hidden sm:flex fixed top-0 left-0 w-screen h-screen bg-gray-700 opacity-75 text-opacity-0 z-10"
+      >
+        close aside
+      </button>
     </>
   )
 }
