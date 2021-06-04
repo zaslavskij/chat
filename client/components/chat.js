@@ -53,6 +53,8 @@ const Chat = () => {
     Object.keys(channels.channels).length
   ])
 
+  const asideDialogs = useMemo(() => dialogs, [Object.keys(dialogs).length])
+
   useEffect(() => {
     if (socketConnected && chatsFetched) {
       dispatch(sendSystemHello())
@@ -69,12 +71,12 @@ const Chat = () => {
 
   return (
     <div className="font-sans antialiased h-screen flex">
-      {asideShown && Object.keys(channels).length && Object.keys(dialogs).length && (
+      {asideShown && Object.keys(channels).length > 0 && Object.keys(dialogs).length > 0 && (
         <Aside
           roles={roles}
           asideToggle={asideTogglerDispatch}
           nickname={nickname}
-          dialogs={dialogs}
+          dialogs={asideDialogs}
           selection={selection}
           asideTogglerWindow={asideTogglerWindow}
           asideChannels={asideChannels}

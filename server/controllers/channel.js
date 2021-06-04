@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken'
 import ObjectID from 'bson-objectid'
 
+import sharp from 'sharp'
+
 import config from '../config'
 import s3 from '../services/s3'
 import { getWsConnections } from '../websockets'
@@ -35,9 +37,13 @@ async function all(req, res) {
 
 async function uploadAndPostImageUrl(req, res) {
   try {
-    const fileName = `${new ObjectID().toString()}.${req.files.image.mimetype.split('/').pop()}`
+    const extension = req.files.image.mimetype.split('/').pop()
+    const fileName = `${new ObjectID().toString()}.${extension}`
+
+    const file = await sharp(req.files.image.data).resize(550).jpeg({ mozjpeg: true }).toBuffer()
+
     await s3
-      .uploadObject(fileName, req.files.image.mimetype, Buffer.from(req.files.image.data, 'binary'))
+      .uploadObject(fileName, req.files.image.mimetype, Buffer.from(file, 'binary'))
       .then(async (imagePath) => {
         const url = `https://imena.s3.amazonaws.com/${imagePath}`
         const connections = getWsConnections()
