@@ -1,7 +1,10 @@
 import { format } from 'date-fns'
-import Channel from '../../model/Channel.model'
+// import Channel from '../../model/Channel.model'
 import ws from '../../../_common/ws-action-types'
 import { validatePostDirectly } from '../../validation/channel'
+import * as redisQueue from '../../redis/messages'
+
+redisQueue.initialize()
 
 // eslint-disable-next-line
 export async function sendMessage(action, connections) {
@@ -30,7 +33,8 @@ export async function sendMessage(action, connections) {
       title: action.title
     }
 
-    await Channel.addPost(message)
+    redisQueue.sendToQueue(message)
+    // await Channel.addPost(message)
 
     connections
       .filter((cn) => {

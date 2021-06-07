@@ -108,6 +108,8 @@ router.post(
   (req, res, next) => channelController.create(req, res, next)
 )
 
+router.post('/clear-history', channelController.clearMessages)
+
 router.get('/all', channelController.all)
 
 export default router

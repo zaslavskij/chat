@@ -84,6 +84,25 @@ channelsSchema.statics = {
     }
   },
 
+  async clearMessages(cid) {
+    try {
+      const channel = await this.findOne({ _id: cid })
+      channel.messages = []
+      await channel.save()
+    } catch (err) {
+      console.log(err)
+    }
+  },
+
+  async addMultiplePosts(sendingQ) {
+    return Promise.all(
+      sendingQ.map((message) => {
+        return this.addPost(message)
+      })
+    )
+      .then(() => console.log('DATABASE: all messages saved successfull'))
+      .catch(console.error)
+  },
   async getChannels(userId) {
     let channels = await this.find({
       users: mongoose.Types.ObjectId(userId),

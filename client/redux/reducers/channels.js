@@ -60,6 +60,16 @@ export default function channelsReducer(state = initialState, action) {
       }
     }
 
+    case types.CHANNEL.CLEAR_HISTORY: {
+      return {
+        ...state,
+        [action.channelType]: {
+          ...state[action.channelType],
+          [action.title]: { ...state[action.channelType][action.title], messages: [] }
+        }
+      }
+    }
+
     case types.CHANNEL.CHANGE_SELECTION: {
       let chat = localStorage.getItem('chat')
       if (!chat) {
@@ -156,6 +166,33 @@ export function getChannels() {
     }).then(({ data: { channels, dialogs } }) => {
       return dispatch({ type: types.CHANNEL.GET_CHANNELS, channels, dialogs })
     })
+  }
+}
+
+export function clearChannelHistory() {
+  return (dispatch, getState) => {
+    const { title, channelType } = getState().channels.selection
+    const { cid } = getState().channels[channelType][title]
+    axios({
+      url: '/api/v1/channels/clear-history',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: JSON.stringify({ cid, title, channelType })
+    })
+      .then(({ data }) => {
+        console.log(data)
+        console.log(data)
+        dispatch({
+          type: types.CHANNEL.CLEAR_HISTORY,
+          cid: data.cid,
+          title: data.title,
+          channelType: data.channelType
+        })
+      })
+      .catch((r) => {
+        console.log(r)
+        dispatch({ type: types.UI.SHOW_ERROR_MESSAGE, errorText: r.response.data.error })
+      })
   }
 }
 

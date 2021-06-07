@@ -83,7 +83,12 @@ const Chat = () => {
         />
       )}
       <div className="flex-1 flex flex-col bg-white overflow-hidden">
-        <Header asideToggle={asideTogglerDispatch} title={selection.title} isChannel={isChannel} />
+        <Header
+          roles={roles}
+          asideToggle={asideTogglerDispatch}
+          title={selection.title}
+          isChannel={isChannel}
+        />
         <MessagesList messages={messages} />
         <InputMessage isChannel={isChannel} channelTitle={selection.title} />
       </div>
