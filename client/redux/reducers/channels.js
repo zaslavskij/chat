@@ -3,21 +3,10 @@ import types from '../types'
 import ws from '../../../_common/ws-action-types'
 import { getSocket } from '..'
 
-function getSelectionField(field) {
-  const chat = JSON.parse(localStorage.getItem('chat'))
-  if (!chat) return false
-  const selectionDefined = typeof chat.selection !== 'undefined'
-
-  if (selectionDefined) {
-    return chat.selection[field]
-  }
-  return false
-}
-
 const initialState = {
   selection: {
-    channelType: getSelectionField('channelType') || 'channels',
-    title: getSelectionField('title') || 'general'
+    channelType: 'channels',
+    title: 'general'
   },
   channels: {},
   dialogs: {},
@@ -60,7 +49,7 @@ export default function channelsReducer(state = initialState, action) {
       }
     }
 
-    case types.CHANNEL.CLEAR_HISTORY: {
+    case ws.CHAT.SEND_TO_CLIENT_CLEAR_HISTORY: {
       return {
         ...state,
         [action.channelType]: {
@@ -173,26 +162,17 @@ export function clearChannelHistory() {
   return (dispatch, getState) => {
     const { title, channelType } = getState().channels.selection
     const { cid } = getState().channels[channelType][title]
-    axios({
-      url: '/api/v1/channels/clear-history',
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      data: JSON.stringify({ cid, title, channelType })
-    })
-      .then(({ data }) => {
-        console.log(data)
-        console.log(data)
-        dispatch({
-          type: types.CHANNEL.CLEAR_HISTORY,
-          cid: data.cid,
-          title: data.title,
-          channelType: data.channelType
-        })
+    const { nickname } = getState().user.user
+
+    getSocket().send(
+      JSON.stringify({
+        type: ws.CHAT.SEND_TO_SERVER_CLEAR_HISTORY,
+        cid,
+        nickname,
+        title,
+        channelType
       })
-      .catch((r) => {
-        console.log(r)
-        dispatch({ type: types.UI.SHOW_ERROR_MESSAGE, errorText: r.response.data.error })
-      })
+    )
   }
 }
 

@@ -36,21 +36,6 @@ async function all(req, res) {
   }
 }
 
-async function clearMessages(req, res) {
-  try {
-    const { cid, title, channelType } = req.body
-    console.log('REQUEST', cid, title, channelType)
-    console.log('REQUEST', cid, title, channelType)
-    console.log('REQUEST', cid, title, channelType)
-    console.log('REQUEST', cid, title, channelType)
-    console.log('REQUEST', cid, title, channelType)
-    await Channel.clearMessages(cid)
-    res.json({ status: 'ok', cid, title, channelType })
-  } catch (err) {
-    res.status(500).json({ error: err.message })
-  }
-}
-
 async function uploadAndPostImageUrl(req, res) {
   try {
     const extension = req.files.image.mimetype.split('/').pop()
@@ -83,4 +68,4 @@ async function uploadAndPostImageUrl(req, res) {
   }
 }
 
-export default { create, all, uploadAndPostImageUrl, clearMessages }
+export default { create, all, uploadAndPostImageUrl }

@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-// import Channel from '../../model/Channel.model'
+import Channel from '../../model/Channel.model'
 import ws from '../../../_common/ws-action-types'
 import { validatePostDirectly } from '../../validation/channel'
 import * as redisQueue from '../../redis/messages'
@@ -34,7 +34,6 @@ export async function sendMessage(action, connections) {
     }
 
     redisQueue.sendToQueue(message)
-    // await Channel.addPost(message)
 
     connections
       .filter((cn) => {
@@ -60,6 +59,48 @@ export async function sendMessage(action, connections) {
               type: ws.CHAT.SEND_TO_CLIENT
             })
           )
+      })
+  } catch (err) {
+    currConnection.write(
+      JSON.stringify({ type: ws.CHAT.SEND_ERROR_TO_CLIENT, errorText: err.toString() })
+    )
+  }
+}
+
+export async function clearMessages(action, connections) {
+  const currConnection = connections.find(
+    (c) =>
+      typeof c.userInfo !== 'undefined' &&
+      c.userInfo.nickname !== 'undefined' &&
+      c.userInfo.nickname === action.nickname
+  )
+  try {
+    const { cid, title, channelType } = action
+    await Channel.clearMessages(cid)
+
+    connections
+      .filter((cn) => {
+        return (
+          typeof cn.userInfo !== 'undefined' &&
+          typeof cn.userInfo.channelsCommonIds !== 'undefined' &&
+          cn.userInfo.channelsCommonIds.includes(action.cid)
+        )
+      })
+      .forEach((c) => {
+        if (c.userInfo.nickname !== action.title) {
+          c.write(
+            JSON.stringify({ type: ws.CHAT.SEND_TO_CLIENT_CLEAR_HISTORY, cid, title, channelType })
+          )
+        } else {
+          c.write(
+            JSON.stringify({
+              type: ws.CHAT.SEND_TO_CLIENT_CLEAR_HISTORY,
+              cid,
+              title: action.nickname,
+              channelType
+            })
+          )
+        }
       })
   } catch (err) {
     currConnection.write(

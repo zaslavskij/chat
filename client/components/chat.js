@@ -53,7 +53,10 @@ const Chat = () => {
     Object.keys(channels.channels).length
   ])
 
-  const asideDialogs = useMemo(() => dialogs, [Object.keys(dialogs).length])
+  const asideDialogs = useMemo(() => dialogs, [
+    Object.keys(dialogs).length,
+    Object.values(dialogs).filter((i) => i.online).length
+  ])
 
   useEffect(() => {
     if (socketConnected && chatsFetched) {

@@ -16,7 +16,6 @@ export default function initSockets(app) {
       }
       if (parsedData.type === ws.CHAT.SYSTEM_USER_HELLO) {
         /* eslint-disable no-param-reassign */
-
         conn.userInfo = {
           nickname: parsedData.nickname,
           channelsCommonIds: parsedData.channelsCommonIds
@@ -29,9 +28,9 @@ export default function initSockets(app) {
             )
             .map((cn) => cn.userInfo.nickname)
 
-          connections.forEach((c) =>
+          connections.forEach((c) => {
             c.write(JSON.stringify({ type: ws.CHAT.UPDATE_USERS_ONLINE, usersOnline }))
-          )
+          })
         }
         /* eslint-enable no-param-reassign */
       }

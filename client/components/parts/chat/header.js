@@ -29,10 +29,10 @@ const Header = ({ title, asideToggle, isChannel, roles }) => {
       {roles.some((r) => r === 'admin') && (
         <button
           type="button"
-          className="flex px-2 border rounded border-gray-500 text-gray-600"
+          className="flex px-2 border rounded border-gray-500 text-gray-600 hover:bg-gray-400 hover:text-white"
           onClick={() => dispatch(clearChannelHistory())}
         >
-          clear messages
+          clear history
         </button>
       )}
     </div>
