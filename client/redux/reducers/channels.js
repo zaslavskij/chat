@@ -182,6 +182,7 @@ export function sendPicture(file) {
     const { title: titleS, channelType: channelTypeS } = getState().channels.selection
     const { cid } = getState().channels[channelTypeS][titleS]
     const formData = new FormData()
+
     formData.append('image', file)
     formData.append('channelType', channelTypeS)
     formData.append('nickname', nicknameS)

@@ -94,10 +94,12 @@ channelsSchema.statics = {
     }
   },
 
-  async addMultiplePosts(sendingQ) {
+  async saveMessagesQueue(msgsQ) {
     return Promise.all(
-      sendingQ.map((message) => {
-        return this.addPost(message)
+      Object.keys(msgsQ).map(async (cid) => {
+        const channel = await this.findOne({ _id: cid })
+        channel.messages = [...channel.messages, ...msgsQ[cid]]
+        await channel.save()
       })
     )
       .then(() => console.log('DATABASE: all messages saved successfull'))
