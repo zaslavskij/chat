@@ -27,13 +27,19 @@ const Message = ({ date, time, nickname, message }) => {
                 {...props}
               />
             ), // eslint-disable-next-line
-            img: ({ node, ...props }) => (
-              // eslint-disable-next-line
-              <img
-                className="p-2 my-2 w-full max-w-xs h-auto flex border rounded border-gray-200"
-                {...props}
-              />
-            )
+            img: ({ node, ...props }) => {
+              const { width, height } = JSON.parse(props.title)
+              return (
+                // eslint-disable-next-line
+                <img
+                  className="p-2 my-2 w-full max-w-xs h-auto flex border rounded border-gray-200"
+                  {...props}
+                  title=""
+                  width={width}
+                  height={height}
+                />
+              )
+            }
           }}
         >
           {message}

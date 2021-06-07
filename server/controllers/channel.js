@@ -15,9 +15,9 @@ async function create(req, res) {
     let channel = new Channel({ title: req.body.title, type: req.body.type, users: [jwtUser.uid] })
     channel = await channel.save()
     await Channel.subscribeUser(jwtUser.uid, req.body.title)
-    // eslint-disable-next-line
     res.json({ message: `Channel ${req.body.title} was succesfully created`, channel })
   } catch (err) {
+    // eslint-disable-next-line
     console.log(err)
     res.status(500).json({ error: err.message })
   }
@@ -30,6 +30,7 @@ async function all(req, res) {
 
     res.json({ message: `Channels and dialogs lists loaded succesfully`, channels, dialogs })
   } catch (err) {
+    // eslint-disable-next-line
     console.log(err)
     res.status(500).json({ error: err.message })
   }
@@ -41,17 +42,17 @@ async function uploadAndPostImageUrl(req, res) {
     const newMime = req.files.image.mimetype.replace(extension, 'jpeg')
     const fileName = `${new ObjectID().toString()}.jpeg`
 
-    const file = await sharp(req.files.image.data).resize(550).jpeg({ mozjpeg: true }).toBuffer()
+    const image = await sharp(req.files.image.data).resize(550).jpeg({ mozjpeg: true })
 
-    await s3
-      .uploadObject(fileName, newMime, Buffer.from(file, 'binary'))
-      .then(async (imagePath) => {
+    await image.toBuffer(async (err, data, info) => {
+      await s3.uploadObject(fileName, newMime, data).then(async (imagePath) => {
         const url = `https://imena.s3.amazonaws.com/${imagePath}`
         const connections = getWsConnections()
         const message = {
           cid: req.body.cid,
-          message: `[${url}](${url})
-          ![alt text](${url} "alt text")`,
+
+          message: `[${url}](${url}) 
+          ![image uploaded by: ${req.body.nickname}](${url} '{"width": "${info.width}", "height": "${info.height}"}')`,
           nickname: req.body.nickname,
           title: req.body.title,
           channelType: req.body.channelType
@@ -61,6 +62,7 @@ async function uploadAndPostImageUrl(req, res) {
 
         res.json({ status: 'ok' })
       })
+    })
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
