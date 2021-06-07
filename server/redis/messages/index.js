@@ -2,7 +2,7 @@ import redis from 'redis'
 import Channel from '../../model/Channel.model'
 
 export function initialize() {
-  const subscriber = redis.createClient(process.env.REDIS_URL)
+  const subscriber = redis.createClient(process.env.HEROKU_REDIS_MAROON_URL)
 
   let msgsQ = {}
 
@@ -30,7 +30,7 @@ export function initialize() {
   }, 1000 * 60 * 5)
 }
 
-const publisher = redis.createClient(process.env.REDIS_URL)
+const publisher = redis.createClient(process.env.HEROKU_REDIS_MAROON_URL)
 export const sendToQueue = (message) => {
   publisher.publish('chat_msgs', JSON.stringify(message))
 }
