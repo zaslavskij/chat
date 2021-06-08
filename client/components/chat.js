@@ -1,5 +1,5 @@
 import { debounce } from 'lodash'
-import React, { useEffect, useMemo, useCallback } from 'react'
+import React, { useEffect, useMemo, useCallback, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { getChannels } from '../redux/reducers/channels'
@@ -38,12 +38,24 @@ const Chat = () => {
     []
   )
 
+  const [chatHeight, setChatHeight] = useState('auto')
+
+  const adjustHeight = useCallback(
+    debounce(() => {
+      setChatHeight(`${window.innerHeight}px`)
+    }, 100),
+    []
+  )
+
   useEffect(() => {
     asideTogglerWindow()
+    adjustHeight()
     window.addEventListener('resize', asideTogglerWindow)
+    window.addEventListener('resize', adjustHeight)
     dispatch(getChannels())
     return () => {
       window.removeEventListener('resize', asideTogglerWindow)
+      window.removeEventListener('resize', adjustHeight)
     }
   }, [])
 
@@ -73,7 +85,7 @@ const Chat = () => {
   const isChannel = selection.channelType === 'channels'
 
   return (
-    <div className="font-sans antialiased h-screen flex">
+    <div style={{ height: chatHeight }} className="font-sans antialiased h-screen flex">
       {asideShown && Object.keys(channels).length > 0 && Object.keys(dialogs).length > 0 && (
         <Aside
           roles={roles}
