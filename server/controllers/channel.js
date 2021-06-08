@@ -9,6 +9,8 @@ import { getWsConnections } from '../websockets'
 import { sendMessage } from '../websockets/ws-controller/channel'
 import Channel from '../model/Channel.model'
 
+import { getRedisMessages } from '../redis/messages'
+
 async function create(req, res) {
   try {
     const jwtUser = jwt.verify(req.cookies.token, config.secret)
@@ -26,7 +28,27 @@ async function create(req, res) {
 async function all(req, res) {
   try {
     const jwtUser = jwt.verify(req.cookies.token, config.secret)
-    const { channels, dialogs } = await Channel.getChannels(jwtUser.uid)
+    let { channels, dialogs } = await Channel.getChannels(jwtUser.uid)
+
+    const redisMessages = getRedisMessages()
+
+    const mergeWithRedis = (chat) =>
+      Object.entries(chat).reduce((acc, rec) => {
+        const [title, content] = rec
+        const { cid } = content
+        const redisMessagesCurrent = redisMessages[cid]
+
+        if (typeof redisMessagesCurrent !== 'undefined')
+          return {
+            ...acc,
+            [title]: { ...content, messages: [...content.messages, ...redisMessagesCurrent] }
+          }
+
+        return { ...acc, [title]: { ...content } }
+      }, {})
+
+    channels = mergeWithRedis(channels)
+    dialogs = mergeWithRedis(dialogs)
 
     res.json({ message: `Channels and dialogs lists loaded succesfully`, channels, dialogs })
   } catch (err) {

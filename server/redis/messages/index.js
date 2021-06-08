@@ -1,10 +1,13 @@
 import redis from 'redis'
+import config from '../../config'
 import Channel from '../../model/Channel.model'
 
-export function initialize() {
-  const subscriber = redis.createClient(process.env.HEROKU_REDIS_MAROON_URL)
+let msgsQ = {}
 
-  let msgsQ = {}
+export function initialize() {
+  const subscriber = redis.createClient(
+    config.env !== 'development' ? process.env.HEROKU_REDIS_MAROON_URL : ''
+  )
 
   // eslint-disable-next-line
   subscriber.on('message', function (channel, message) {
@@ -30,7 +33,11 @@ export function initialize() {
   }, 1000 * 60 * 5)
 }
 
-const publisher = redis.createClient(process.env.HEROKU_REDIS_MAROON_URL)
+const publisher = redis.createClient(
+  config.env !== 'development' ? process.env.HEROKU_REDIS_MAROON_URL : ''
+)
 export const sendToQueue = (message) => {
   publisher.publish('chat_msgs', JSON.stringify(message))
 }
+
+export const getRedisMessages = () => msgsQ
