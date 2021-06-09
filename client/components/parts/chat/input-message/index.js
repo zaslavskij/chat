@@ -17,16 +17,11 @@ const InputMessage = ({ channelTitle, isChannel }) => {
         <TextareaAutosize
           minRows={1}
           maxRows={4}
-          onHeightChange={(height, obj) => {
-            if (message.length === 0) {
-              // eslint-disable-next-line
-              obj.rowHeight = 1
-            }
-          }}
           className="w-full px-4 pt-2 pb-1 resize-none"
           value={message}
-          onKeyDown={(e) => {
+          onKeyDown={async (e) => {
             if (e.keyCode === 13 && !e.shiftKey) {
+              e.preventDefault()
               dispatch(sendMessage(message.replace(/\n/gm, '  \n')))
               setMessage('')
             }
@@ -39,7 +34,7 @@ const InputMessage = ({ channelTitle, isChannel }) => {
         <InputControls
           message={message}
           setMessage={setMessage}
-          sendDispMessage={(...args) => dispatch(sendMessage(...args))}
+          sendDispMessage={() => dispatch(sendMessage(message.replace(/\n/gm, '  \n')))}
         />
       </div>
     </div>
