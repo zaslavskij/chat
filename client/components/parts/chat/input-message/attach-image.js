@@ -2,15 +2,15 @@ import React, { useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { FaImage } from 'react-icons/fa'
 
-import { showError } from '../../../redux/reducers/errors'
-import { sendPicture } from '../../../redux/reducers/channels'
+import { showError } from '../../../../redux/reducers/errors'
+import { sendPicture } from '../../../../redux/reducers/channels'
 
 const AttachImage = () => {
   const input = useRef(null)
   const dispatch = useDispatch()
   const handleChange = () => {
-    if (input.current.files[0].size > 1000000) {
-      dispatch(showError('Filesize too big! it will be under 1mb'))
+    if (input.current.files[0].size > 8000000) {
+      dispatch(showError('Filesize too big! it will be under 8mb'))
     } else {
       dispatch(sendPicture(input.current.files[0]))
     }
