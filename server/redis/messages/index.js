@@ -41,3 +41,7 @@ export const sendToQueue = (message) => {
 }
 
 export const getRedisMessages = () => msgsQ
+
+export function clearRedisMessages() {
+  msgsQ = {}
+}

@@ -76,7 +76,10 @@ export async function clearMessages(action, connections) {
   )
   try {
     const { cid, title, channelType } = action
+    // clear channel data in DB
     await Channel.clearMessages(cid)
+    // clear channel data in Redis
+    redisQueue.clearRedisMessages()
 
     connections
       .filter((cn) => {
