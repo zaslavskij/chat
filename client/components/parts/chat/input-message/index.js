@@ -1,19 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import isMobile from 'is-mobile'
 import { useDispatch } from 'react-redux'
 
 import TextareaAutosize from 'react-textarea-autosize'
 
 import InputControls from './input-controls'
+import StatusBar from './status-bar'
 
 import { sendMessage } from '../../../../redux/reducers/channels'
 
 const InputMessage = ({ channelTitle, isChannel }) => {
   const [message, setMessage] = useState('')
+  const [isFewСharactersLeft, toggleFewСharactersLeft] = useState(false)
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    if (message.length >= 350) toggleFewСharactersLeft(true)
+    else toggleFewСharactersLeft(false)
+  }, [message])
+
   return (
-    <div className="pb-6 px-4 border-t pt-4 border-gray-200 flex-none">
+    <div className="px-4 border-t pt-2 pb-4 border-gray-200 flex-none">
+      <StatusBar msgLength={message.length} isFewСharactersLeft={isFewСharactersLeft} />
+
       <div className="flex rounded-lg border-2 border-grey items-center overflow-hidden">
         <TextareaAutosize
           minRows={1}

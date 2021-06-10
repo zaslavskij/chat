@@ -6,7 +6,7 @@ const InputControls = ({ message, setMessage, sendDispMessage }) => {
   return (
     <>
       <AttachImage />
-      {message.length > 0 && (
+      {message.length > 0 && message.length < 500 && (
         <div className="flex">
           <button
             className="py-2 px-2 sm:py-1 sm:px-2 text-center items-center text-red-400 hover:text-red-500 text-3xl"

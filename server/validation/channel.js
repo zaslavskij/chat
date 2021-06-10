@@ -8,7 +8,7 @@ const channelSchema = Joi.object({
 
 const postSchema = Joi.object({
   cid: Joi.string().min(3).max(30).required(),
-  message: Joi.string().min(2).max(400).required(),
+  message: Joi.string().min(2).max(500).required(),
   nickname: Joi.string().min(3).max(30).required(),
   timestamp: Joi.date().timestamp()
 })
