@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import isMobile from 'is-mobile'
 import { useDispatch } from 'react-redux'
 
 import TextareaAutosize from 'react-textarea-autosize'
@@ -20,7 +21,7 @@ const InputMessage = ({ channelTitle, isChannel }) => {
           className="w-full px-4 pt-2 pb-1 resize-none"
           value={message}
           onKeyDown={async (e) => {
-            if (e.keyCode === 13 && !e.shiftKey) {
+            if (e.keyCode === 13 && !e.shiftKey && !isMobile()) {
               e.preventDefault()
               dispatch(sendMessage(message.replace(/\n/gm, '  \n')))
               setMessage('')
