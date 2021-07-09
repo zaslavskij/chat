@@ -71,7 +71,7 @@
         "@react-icons/all-files": "^4.1.0",
         "@welldone-software/why-did-you-render": "^6.1.4",
         "aws-sdk": "^2.916.0",
-        "axios": "^0.20.0",
+        "axios": "^0.21.1",
         "babel-core": "7.0.0-bridge.0",
         "babel-eslint": "10.1.0",
         "babel-jest": "^26.3.0",
